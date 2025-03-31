@@ -1,0 +1,67 @@
+% aquest algorisme ha de permetre poder fer totes les combinacions possibles d'un joc d'elements (elsQjuguen)
+% envers un altre (llocsONcombinen), d'una forma universal i per qualsevol cosa
+% Ho aplicarem d'entrada a la composicio de linies de la Biblia 42L de Guttenberg (Tesi de Luz Ma. Rangel)
+
+2 /llocsONcombinen exch def  % el nombre d'espais entre paraules de la frase a generar la combinatoria
+
+(1234)  % desem els espais diferents a combinar en una cadena i expresats per ordre numeric comencant per 1
+/elsQjuguen exch def
+
+elsQjuguen length /hiJuguen exch def  % nombre d'espais a combinar (els tipus 4 determinats x la Luz)
+
+% deduim el valor inicial de la combinatoria
+0
+llocsONcombinen dup string /iniE exch def
+{
+ iniE 1 index elsQjuguen 0 get put 1 add
+}repeat
+pop iniE cvx exec /iniE exch def % valor inicial de la combinatoria d'espais
+
+% deduim el valor final de la combinatoria
+0
+llocsONcombinen dup string /MaxE exch def
+{
+ MaxE 1 index elsQjuguen hiJuguen 1 sub get put 1 add
+}repeat
+pop MaxE cvx exec /MaxE exch def  % valor final de la combinatoria d'espais
+
+%iniE MaxE pstack quit
+
+% confeccionem un diccionari avaluador de validesa dels digits on...
+/digitsBons hiJuguen dict def
+digitsBons begin
+elsQjuguen
+{  % per cadascun dels digits...
+ dup 1 string dup /NullEncode filter dup 4 -1 roll write closefile  % desarem el digit en una cadena com a valor
+ exch 3 string cvs cvn exch def  % desarem el seu codi ascii com a clau
+} forall
+end
+
+/iK 0 def  % comptador de combinatories
+
+%/Kampora 256 def  % sortim pel nombre de la combinatoria maxima?
+
+llocsONcombinen string /lONcS exch def  % fem el buffer la combinatoria
+2 string /2S exch def  % fem el buffer de l'ascii del digit a avaluar
+
+-1 vmreclaim  %?
+
+{  % loooop
+ /esBona true def
+ iniE lONcS cvs  % posem el comptador numeric en una cadena
+ {  % forall d'analisi de tota la cadena
+  digitsBons exch 2S cvs known  % existeix al diccionari de digits permesos?
+  not {/esBona false def exit}if
+ }forall
+
+ esBona
+ {  % nomes si es bona ho treiem x pantalleta i fem correr el comptador de combinatories
+  iniE ==  % treiem x la pantalleta
+  iK 1 add /iK exch def  % comptador de combinatories
+  iniE MaxE eq {iK == exit}if  % pleguem per la darrer combinacio permesa?
+ }if
+ iniE 1 add /iniE exch def  % comptador numeric
+ %iK Kampora eq {exit}if  % pleguem pel maxim nombre de combinacions?
+}loop
+
+

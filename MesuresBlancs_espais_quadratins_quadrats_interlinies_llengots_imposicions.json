@@ -1,0 +1,729 @@
+{
+"Espais, quadratins i quadrats":[
+ {
+  "Espais, quadratins i quadrats": "Cos 6",
+  "Column3": "Cos 8",
+  "Column4": "Cos 10",
+  "Column5": "Cos 12",
+  "Column6": "Cos 14",
+  "Column7": "Cos 16",
+  "Column8": "Cos 18",
+  "Column9": "Cos 20",
+  "Column10": "Cos 24",
+  "Column11": "Cos 28",
+  "Column12": "Cos 30",
+  "Column13": "Cos 32",
+  "Column14": "Cos 36",
+  "Column15": "Cos 42",
+  "Column16": "Cos 48",
+  "Column17": "Cos 54"
+ },
+ {
+  "Column1": "1 pt",
+  "Espais, quadratins i quadrats": "6 × 1 pt",
+  "Column3": "8 × 1 pt",
+  "Column4": "10 × 1 pt",
+  "Column5": "12 × 1 pt",
+  "Column7": "16 × 1 pt",
+  "Column8": "18 × 1 pt",
+  "Column9": "20 × 1 pt",
+  "Column10": "24 × 1 pt",
+  "Column11": "28 × 1 pt",
+  "Column12": "30 × 1 pt",
+  "Column13": "32 × 1 pt",
+  "Column14": "36 × 1 pt",
+  "Column15": "42 × 1 pt",
+  "Column16": "48 × 1 pt",
+  "Column17": "54 × 1 pt"
+ },
+ {
+  "Column1": "2 pt",
+  "Espais, quadratins i quadrats": "6 × 2 pt",
+  "Column3": "8 × 2 pt",
+  "Column7": "16 × 2 pt",
+  "Column8": "18 × 2 pt",
+  "Column10": "24 × 2 pt",
+  "Column12": "30 × 2 pt",
+  "Column14": "36 × 2 pt",
+  "Column15": "42 × 2 pt",
+  "Column16": "48 × 2 pt",
+  "Column17": "54 × 2 pt"
+ },
+ {
+  "Column1": "3 pt",
+  "Column3": "8 × 3 pt",
+  "Column7": "16 × 3 pt",
+  "Column8": "18 × 3 pt",
+  "Column10": "24 × 3 pt",
+  "Column12": "30 × 3 pt",
+  "Column14": "36 × 3 pt",
+  "Column15": "42 × 3 pt",
+  "Column16": "48 × 3 pt",
+  "Column17": "54 × 3 pt"
+ },
+ {
+  "Column1": " 1\/4 ",
+  "Espais, quadratins i quadrats": "6 × 1\/4",
+  "Column3": "8 × 1\/4",
+  "Column4": "10 × 1\/4",
+  "Column5": "12 × 1\/4",
+  "Column6": "14 × 1\/4",
+  "Column7": "16 × 1\/4",
+  "Column8": "18 × 1\/4",
+  "Column10": "24 × 1\/4",
+  "Column11": "28 × 1\/4",
+  "Column13": "32 × 1\/4",
+  "Column14": "36 × 1\/4",
+  "Column16": "48 × 1\/4"
+ },
+ {
+  "Column1": " 1\/3 ",
+  "Espais, quadratins i quadrats": "6 × 1\/3",
+  "Column3": "8 × 1\/3",
+  "Column4": "10 × 1\/3",
+  "Column5": "12 × 1\/3",
+  "Column6": "14 × 1\/3",
+  "Column7": "16 × 1\/3",
+  "Column8": "18 × 1\/3",
+  "Column10": "24 × 1\/3",
+  "Column11": "28 × 1\/3",
+  "Column13": "32 × 1\/3",
+  "Column14": "36 × 1\/3",
+  "Column16": "48 × 1\/3"
+ },
+ {
+  "Column1": " 1\/2 ",
+  "Espais, quadratins i quadrats": "6 × 1\/2",
+  "Column3": "8 × 1\/2",
+  "Column4": "10 × 1\/2",
+  "Column5": "12 × 1\/2",
+  "Column6": "14 × 1\/2",
+  "Column7": "16 × 1\/2",
+  "Column8": "18 × 1\/2",
+  "Column10": "24 × 1\/2",
+  "Column11": "28 × 1\/2",
+  "Column14": "36 × 1\/2",
+  "Column16": "48 × 1\/2"
+ },
+ {
+  "Column1": 6,
+  "Espais, quadratins i quadrats": "6 × 6"
+ },
+ {
+  "Column1": 8,
+  "Column3": "8 × 8",
+  "Column5": "12 × 8*"
+ },
+ {
+  "Column1": 9,
+  "Espais, quadratins i quadrats": "6 × 9"
+ },
+ {
+  "Column1": 10,
+  "Column4": "10 × 10",
+  "Column8": "18 × 10"
+ },
+ {
+  "Column1": 12,
+  "Espais, quadratins i quadrats": "6 × 12",
+  "Column3": "8 × 12*",
+  "Column5": "12 × 12"
+ },
+ {
+  "Column1": 14,
+  "Column12": "30 × 14"
+ },
+ {
+  "Column1": 15,
+  "Column4": "10 × 15"
+ },
+ {
+  "Column1": 16,
+  "Column3": "8 × 16",
+  "Column7": "16 × 16"
+ },
+ {
+  "Column1": 18,
+  "Espais, quadratins i quadrats": "6 × 18",
+  "Column5": "12 × 18",
+  "Column8": "18 × 18"
+ },
+ {
+  "Column1": 20,
+  "Column4": "10 × 20",
+  "Column9": "20 × 20"
+ },
+ {
+  "Column1": 24,
+  "Espais, quadratins i quadrats": "6 × 24",
+  "Column3": "8 × 24",
+  "Column5": "12 × 24",
+  "Column7": "16 × 24",
+  "Column8": "18 × 24",
+  "Column10": "24 × 24"
+ },
+ {
+  "Column1": 27,
+  "Column8": "18 × 27"
+ },
+ {
+  "Column1": 28,
+  "Column11": "28 × 28"
+ },
+ {
+  "Column1": 30,
+  "Espais, quadratins i quadrats": "6 × 30",
+  "Column4": "10 × 30",
+  "Column7": "16 × 30",
+  "Column8": "18 × 30",
+  "Column9": "20 × 30"
+ },
+ {
+  "Column1": 32,
+  "Column3": "8 × 32",
+  "Column7": "16 × 32",
+  "Column13": "32 × 32"
+ },
+ {
+  "Column1": 36,
+  "Espais, quadratins i quadrats": "6 × 36",
+  "Column5": "12 × 36",
+  "Column7": "16 × 36",
+  "Column8": "18 × 36",
+  "Column10": "24 × 36",
+  "Column14": "36 × 36"
+ },
+ {
+  "Column1": 40,
+  "Column4": "10 × 40"
+ },
+ {
+  "Column1": 42,
+  "Column11": "28 × 42"
+ },
+ {
+  "Column1": 48,
+  "Espais, quadratins i quadrats": "6 × 48",
+  "Column5": "12 × 48",
+  "Column7": "16 × 48",
+  "Column8": "18 × 48",
+  "Column10": "24 × 48",
+  "Column13": "32 × 48",
+  "Column16": "48 × 48"
+ },
+ {
+  "Column1": 54,
+  "Column8": "18 × 54",
+  "Column14": "36 × 54"
+ },
+ {
+  "Column1": 56,
+  "Column11": "28 × 56"
+ },
+ {
+  "Column1": 64,
+  "Column13": "32 × 64"
+ },
+ {
+  "Column1": 72,
+  "Column14": "36 × 72",
+  "Column16": "48 × 72"
+ },
+ {
+  "Column1": 96,
+  "Column14": "36 × 96",
+  "Column16": "48 × 96"
+ },
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ null,
+ {
+  "Column1": "Llegenda"
+ },
+ {
+  "Espais, quadratins i quadrats": "Quadratí"
+ },
+ {
+  "Espais, quadratins i quadrats": "Hi ha molt poc. Casos comptats"
+ },
+ {
+  "Espais, quadratins i quadrats": "Pastell"
+ }
+],
+"Interlínies i llengots":[
+ {
+  "Interlínies": "1 pt",
+  "Column3": "2 pt",
+  "Column4": "3 pt",
+  "Llengots": "6 pt",
+  "Column7": "12 pt",
+  "Column8": "16 pt",
+  "Column9": "18 pt"
+ },
+ {
+  "Interlínies": "1 pt × 5 c",
+  "Column3": "2 pt × 5 c",
+  "Column4": "3 pt × 5 c",
+  "Llengots": "6 pt × 5 c",
+  "Column7": "12 pt × 5 c",
+  "Column8": "16 pt × 5 c",
+  "Column9": "18 pt × 5 c"
+ },
+ {
+  "Interlínies": "1 pt × 6 c",
+  "Column3": "2 pt × 6 c",
+  "Column4": "3 pt × 6 c",
+  "Llengots": "6 pt × 6 c",
+  "Column7": "12 pt × 6 c",
+  "Column8": "16 pt × 6 c",
+  "Column9": "18 pt × 6 c"
+ },
+ {
+  "Interlínies": "1 pt × 7 c",
+  "Column3": "2 pt × 7 c",
+  "Column4": "3 pt × 7 c",
+  "Llengots": "6 pt × 7 c",
+  "Column7": "12 pt × 7 c",
+  "Column8": "16 pt × 7 c",
+  "Column9": "18 pt × 7 c"
+ },
+ {
+  "Interlínies": "1 pt × 8 c",
+  "Column3": "2 pt × 8 c",
+  "Column4": "3 pt × 8 c",
+  "Llengots": "6 pt × 8 c",
+  "Column7": "1 pt × 8 c",
+  "Column8": "16 pt × 8 c",
+  "Column9": "18 pt × 8 c"
+ },
+ {
+  "Interlínies": "1 pt × 9 c",
+  "Column3": "2 pt × 9 c",
+  "Column4": "3 pt × 9 c",
+  "Llengots": "6 pt × 9 c",
+  "Column7": "12 pt × 9 c",
+  "Column8": "16 pt × 9 c",
+  "Column9": "18 pt × 9 c"
+ },
+ {
+  "Interlínies": "1 pt × 10 c",
+  "Column3": "2 pt × 10 c",
+  "Column4": "3 pt × 10 c",
+  "Llengots": "6 pt × 10 c",
+  "Column7": "12 pt × 10 c",
+  "Column8": "16 pt × 10 c",
+  "Column9": "18 pt × 10 c"
+ },
+ {
+  "Interlínies": "1 pt × 11 c",
+  "Column3": "2 pt × 11 c",
+  "Column4": "3 pt × 11 c",
+  "Llengots": "6 pt × 11 c",
+  "Column7": "12 pt × 11 c",
+  "Column8": "16 pt × 11 c",
+  "Column9": "18 pt × 11 c"
+ },
+ {
+  "Interlínies": "1 pt × 12 c",
+  "Column3": "2 pt × 12 c",
+  "Column4": "3 pt × 12 c",
+  "Llengots": "6 pt × 12 c",
+  "Column7": "12 pt × 12 c",
+  "Column8": "16 pt × 12 c",
+  "Column9": "18 pt × 12 c"
+ },
+ {
+  "Interlínies": "1 pt × 13 c",
+  "Column3": "2 pt × 13 c",
+  "Column4": "3 pt × 13 c",
+  "Llengots": "6 pt × 13 c",
+  "Column7": "12 pt × 13 c",
+  "Column8": "16 pt × 13 c",
+  "Column9": "18 pt × 13 c"
+ },
+ {
+  "Interlínies": "1 pt × 14 c",
+  "Column3": "2 pt × 14 c",
+  "Column4": "3 pt × 14 c",
+  "Llengots": "6 pt × 14 c",
+  "Column7": "12 pt × 14 c",
+  "Column8": "16 pt × 14 c",
+  "Column9": "18 pt × 14 c"
+ },
+ {
+  "Interlínies": "1 pt × 15 c",
+  "Column3": "2 pt × 15 c",
+  "Column4": "3 pt × 15 c",
+  "Llengots": "6 pt × 15 c",
+  "Column7": "12 pt × 15 c",
+  "Column8": "16 pt × 15 c",
+  "Column9": "18 pt × 15 c"
+ },
+ {
+  "Interlínies": "1 pt × 16 c",
+  "Column3": "2 pt × 16 c",
+  "Column4": "3 pt × 16 c",
+  "Llengots": "6 pt × 16 c",
+  "Column7": "12 pt × 16 c",
+  "Column8": "16 pt × 16 c",
+  "Column9": "18 pt × 16 c"
+ },
+ {
+  "Interlínies": "1 pt × 17 c",
+  "Column3": "2 pt × 17 c",
+  "Column4": "3 pt × 17 c",
+  "Llengots": "6 pt × 17 c",
+  "Column7": "12 pt × 17 c",
+  "Column8": "16 pt × 17 c",
+  "Column9": "18 pt × 17 c"
+ },
+ {
+  "Interlínies": "1 pt × 18 c",
+  "Column3": "2 pt × 18 c",
+  "Column4": "3 pt × 18 c",
+  "Llengots": "6 pt × 18 c",
+  "Column7": "12 pt × 18 c",
+  "Column8": "16 pt × 18 c",
+  "Column9": "18 pt × 18 c"
+ },
+ {
+  "Interlínies": "1 pt × 19 c",
+  "Column3": "2 pt × 19 c",
+  "Column4": "3 pt × 19 c",
+  "Llengots": "6 pt × 19 c",
+  "Column7": "12 pt × 19 c",
+  "Column8": "16 pt × 19 c",
+  "Column9": "18 pt × 19 c"
+ },
+ {
+  "Interlínies": "1 pt × 20 c",
+  "Column3": "2 pt × 20 c",
+  "Column4": "3 pt × 20 c",
+  "Llengots": "6 pt × 20 c",
+  "Column7": "12 pt × 20 c",
+  "Column8": "16 pt × 20 c",
+  "Column9": "18 pt × 20 c"
+ },
+ {
+  "Interlínies": "1 pt × 21 c",
+  "Column3": "2 pt × 21 c",
+  "Column4": "3 pt × 21 c",
+  "Llengots": "6 pt × 21 c",
+  "Column7": "12 pt × 21 c",
+  "Column8": "16 pt × 21 c",
+  "Column9": "18 pt × 21 c"
+ },
+ {
+  "Interlínies": "1 pt × 22 c",
+  "Column3": "2 pt × 22 c",
+  "Column4": "3 pt × 22 c",
+  "Llengots": "6 pt × 22 c",
+  "Column7": "12 pt × 22 c",
+  "Column8": "16 pt × 22 c",
+  "Column9": "18 pt × 22 c"
+ },
+ {
+  "Interlínies": "1 pt × 23 c",
+  "Column3": "2 pt × 23 c",
+  "Column4": "3 pt × 23 c",
+  "Llengots": "6 pt × 23 c",
+  "Column7": "12 pt × 23 c",
+  "Column8": "16 pt × 23 c",
+  "Column9": "18 pt × 23 c"
+ },
+ {
+  "Interlínies": "1 pt × 24 c",
+  "Column3": "2 pt × 24 c",
+  "Column4": "3 pt × 24 c",
+  "Llengots": "6 pt × 24 c",
+  "Column7": "12 pt × 24 c",
+  "Column8": "16 pt × 24 c",
+  "Column9": "18 pt × 24 c"
+ },
+ {
+  "Interlínies": "1 pt × 25 c",
+  "Column3": "2 pt × 25 c",
+  "Column4": "3 pt × 25 c",
+  "Llengots": "6 pt × 25 c",
+  "Column7": "12 pt × 25 c",
+  "Column8": "16 pt × 25 c",
+  "Column9": "18 pt × 25 c"
+ },
+ {
+  "Interlínies": "1 pt × 26 c",
+  "Column3": "2 pt × 26 c",
+  "Column4": "3 pt × 26 c",
+  "Llengots": "6 pt × 26 c",
+  "Column7": "12 pt × 26 c",
+  "Column8": "16 pt × 26 c",
+  "Column9": "18 pt × 26 c"
+ },
+ {
+  "Interlínies": "1 pt × 27 c",
+  "Column3": "2 pt × 27 c",
+  "Column4": "3 pt × 27 c",
+  "Llengots": "6 pt × 27 c",
+  "Column7": "12 pt × 27 c",
+  "Column8": "16 pt × 27 c",
+  "Column9": "18 pt × 27 c"
+ },
+ {
+  "Interlínies": "1 pt × 28 c",
+  "Column3": "2 pt × 28 c",
+  "Column4": "3 pt × 28 c",
+  "Llengots": "6 pt × 28 c",
+  "Column7": "12 pt × 28 c",
+  "Column8": "16 pt × 28 c",
+  "Column9": "18 pt × 28 c"
+ },
+ {
+  "Interlínies": "1 pt × 29 c",
+  "Column3": "2 pt × 29 c",
+  "Column4": "3 pt × 29 c",
+  "Llengots": "6 pt × 29 c",
+  "Column7": "12 pt × 29 c",
+  "Column8": "16 pt × 29 c",
+  "Column9": "18 pt × 29 c"
+ },
+ {
+  "Interlínies": "1 pt × 30 c",
+  "Column3": "2 pt × 30 c",
+  "Column4": "3 pt × 30 c",
+  "Llengots": "6 pt × 30 c",
+  "Column7": "12 pt × 30 c",
+  "Column8": "16 pt × 30 c",
+  "Column9": "18 pt × 30 c"
+ },
+ {
+  "Interlínies": "1 pt × 31 c",
+  "Column3": "2 pt × 31 c",
+  "Column4": "3 pt × 31 c",
+  "Llengots": "6 pt × 31 c",
+  "Column7": "12 pt × 31 c",
+  "Column8": "16 pt × 31 c",
+  "Column9": "18 pt × 31 c"
+ },
+ {
+  "Interlínies": "1 pt × 32 c",
+  "Column3": "2 pt × 32 c",
+  "Column4": "3 pt × 32c",
+  "Llengots": "6 pt × 32c",
+  "Column7": "12 pt × 32c",
+  "Column8": "16 pt × 32c",
+  "Column9": "18 pt × 32c"
+ },
+ {
+  "Interlínies": "1 pt × 33 c",
+  "Column3": "2 pt × 33 c",
+  "Column4": "3 pt × 33 c",
+  "Llengots": "6 pt × 33 c",
+  "Column7": "12 pt × 33 c",
+  "Column8": "16 pt × 33 c",
+  "Column9": "18 pt × 33 c"
+ },
+ {
+  "Interlínies": "1 pt × 34 c",
+  "Column3": "2 pt × 34 c",
+  "Column4": "3 pt × 34 c",
+  "Llengots": "6 pt × 34 c",
+  "Column7": "12 pt × 34 c",
+  "Column8": "16 pt × 34 c",
+  "Column9": "18 pt × 34 c"
+ },
+ {
+  "Interlínies": "1 pt × 35 c",
+  "Column3": "2 pt × 35 c",
+  "Column4": "3 pt × 35 c",
+  "Llengots": "6 pt × 35 c",
+  "Column7": "12 pt × 35 c",
+  "Column8": "16 pt × 35 c",
+  "Column9": "18 pt × 35 c"
+ },
+ {
+  "Interlínies": "1 pt × 36 c",
+  "Column3": "2 pt × 36 c",
+  "Column4": "3 pt × 36 c",
+  "Llengots": "6 pt × 36 c",
+  "Column7": "12 pt × 36 c",
+  "Column8": "16 pt × 36 c",
+  "Column9": "18 pt × 36 c"
+ },
+ {
+  "Interlínies": "1 pt × 37 c",
+  "Column3": "2 pt × 37 c",
+  "Column4": "3 pt × 37 c",
+  "Llengots": "6 pt × 37 c",
+  "Column7": "12 pt × 37 c",
+  "Column8": "16 pt × 37 c",
+  "Column9": "18 pt × 37 c"
+ },
+ {
+  "Interlínies": "1 pt × 38  c",
+  "Column3": "2 pt × 38  c",
+  "Column4": "3 pt × 38  c",
+  "Llengots": "6 pt × 38  c",
+  "Column7": "12 pt × 38  c",
+  "Column8": "16 pt × 38  c",
+  "Column9": "18 pt × 38  c"
+ },
+ {
+  "Interlínies": "1 pt × 39 c",
+  "Column3": "2 pt × 39 c",
+  "Column4": "3 pt × 39 c",
+  "Llengots": "6 pt × 39 c",
+  "Column7": "12 pt × 39 c",
+  "Column8": "16 pt × 39 c",
+  "Column9": "18 pt × 39 c"
+ },
+ {
+  "Interlínies": "1 pt × 40 c",
+  "Column3": "2 pt × 40 c",
+  "Column4": "3 pt × 40 c",
+  "Llengots": "6 pt × 40 c",
+  "Column7": "12 pt × 40 c",
+  "Column8": "16 pt × 40 c",
+  "Column9": "18 pt × 40 c"
+ }
+],
+"Imposicions":[
+ {
+  "Imposicions": "2 c",
+  "Column3": "3 c",
+  "Column4": "4 c",
+  "Column5": "6 c",
+  "Column6": "8 c",
+  "Column7": "10 c",
+  "Column8": "12 c"
+ },
+ {
+  "Imposicions": "2 c × 8 c",
+  "Column3": "2 c × 8 c",
+  "Column4": "4 c × 8 c",
+  "Column5": "6 c × 8 c",
+  "Column6": "8 c × 8 c",
+  "Column7": "10 c × 8 c",
+  "Column8": "12 c × 8 c"
+ },
+ {
+  "Imposicions": "2 c × 12 c",
+  "Column3": "3 c × 12 c",
+  "Column4": "4 c × 12 c",
+  "Column5": "6 c × 12 c",
+  "Column6": "8 c × 12 c",
+  "Column7": "10 c × 12 c",
+  "Column8": "12 c × 12 c"
+ },
+ {
+  "Imposicions": "2 c × 16 c",
+  "Column3": "3 c × 16 c",
+  "Column4": "4 c × 16 c",
+  "Column5": "6 c × 16 c",
+  "Column6": "8 c × 16 c",
+  "Column7": "10 c × 16 c",
+  "Column8": "12 c × 16 c"
+ },
+ {
+  "Imposicions": "2 c × 20 c",
+  "Column3": "3 c × 20 c",
+  "Column4": "4 c × 20 c",
+  "Column5": "6 c × 20 c",
+  "Column6": "8 c × 20 c",
+  "Column7": "10 c × 20 c",
+  "Column8": "12 c × 20 c"
+ },
+ {
+  "Imposicions": "2 c × 24 c",
+  "Column3": "3 c × 24 c",
+  "Column4": "4 c × 24 c",
+  "Column5": "6 c × 24 c",
+  "Column6": "8 c × 24 c",
+  "Column7": "10 c × 24 c",
+  "Column8": "12 c × 24 c"
+ },
+ {
+  "Imposicions": "2 c × 28 c",
+  "Column3": "3 c × 28 c",
+  "Column4": "4 c × 28 c",
+  "Column5": "6 c × 28 c",
+  "Column6": "8 c × 28 c",
+  "Column7": "10 c × 28 c",
+  "Column8": "12 c × 28 c"
+ },
+ {
+  "Imposicions": "2 c × 32 c",
+  "Column3": "3 c × 32 c",
+  "Column4": "4 c × 32 c",
+  "Column5": "6 c × 32 c",
+  "Column6": "8 c × 32 c",
+  "Column7": "10 c × 32 c",
+  "Column8": "12 c × 32 c"
+ },
+ {
+  "Imposicions": "2 c × 36 c",
+  "Column3": "3 c × 36 c",
+  "Column4": "4 c × 36 c",
+  "Column5": "6 c × 36 c",
+  "Column6": "8 c × 36 c",
+  "Column7": "10 c × 36 c",
+  "Column8": "12 c × 36 c"
+ },
+ {
+  "Imposicions": "2 c × 40 c",
+  "Column3": "3 c × 40 c",
+  "Column4": "4 c × 40 c",
+  "Column5": "6 c × 40 c",
+  "Column6": "8 c × 40 c",
+  "Column7": "10 c × 40 c",
+  "Column8": "12 c × 40 c"
+ },
+ {
+  "Imposicions": "2 c × 44 c",
+  "Column3": "3 c × 44 c",
+  "Column4": "4 c × 44 c",
+  "Column5": "6 c × 44 c",
+  "Column6": "8 c × 44 c",
+  "Column7": "10 c × 44 c",
+  "Column8": "12 c × 44 c"
+ },
+ {
+  "Imposicions": "2 c × 48 c",
+  "Column3": "3 c × 48 c",
+  "Column4": "4 c × 48 c",
+  "Column5": "6 c × 48 c",
+  "Column6": "8 c × 48 c",
+  "Column7": "10 c × 48 c",
+  "Column8": "12 c × 48 c"
+ },
+ {
+  "Imposicions": "2 c × 52 c",
+  "Column3": "3 c × 52 c",
+  "Column4": "4 c × 52 c",
+  "Column5": "6 c × 52 c",
+  "Column6": "8 c × 52 c",
+  "Column7": "10 c × 52 c",
+  "Column8": "12 c × 52 c"
+ },
+ {
+  "Imposicions": "2 c × 56 c",
+  "Column3": "3 c × 56 c",
+  "Column4": "4 c × 56 c",
+  "Column5": "6 c × 56 c",
+  "Column6": "8 c × 56 c",
+  "Column7": "10 c × 56 c",
+  "Column8": "12 c × 56 c"
+ },
+ {
+  "Imposicions": "2 c × 60 c",
+  "Column3": "3 c × 60 c",
+  "Column4": "4 c × 60 c",
+  "Column5": "6 c × 60 c",
+  "Column6": "8 c × 60 c",
+  "Column7": "10 c × 60 c",
+  "Column8": "12 c × 60 c"
+ }
+]
+}

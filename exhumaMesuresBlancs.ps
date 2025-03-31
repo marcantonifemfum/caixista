@@ -1,0 +1,119 @@
+%!
+%% crides per gestionar les dades exportades a .jsonps del document mesures_blancs.xlsx
+%% https://ubarcelona.sharepoint.com/:f:/r/sites/tallertplom/01_Material%20de%20treball/013_Caixes/0130_Blancs?csf=1&web=1&e=TJVOZv
+%% situat al Taller Virtual de Tipografia en Plom > 01_Material de treball > 013_Caixes > 0130_Blancs
+
+%% com que no caldrà, de moment, llegir de forma automàtica les mesures de blancs i potser dels primers tipus amb els que composarem
+%% entrarem les dades en manual, a banda, i deixarem per més endavant el desenvolupament d'aquest algorisme
+
+
+(/home/femfum/Documents/UB/RIMDAtallerDeTipografia/MesuresBlancs_espais_quadratins_quadrats_interlinies_llengots_imposicions.jsonps)
+
+(r) file cvx exec /dMesuresBlancs exch def
+
+%% el diccionari té tres clau / valor [array de diccionaris] amb totes les dades de cadascun dels tipus de peça de mesures de blancs del taller de tipografia
+
+dMesuresBlancs
+
+(Imposicions)
+%(Interlínies i llengots)
+%(Espais, quadratins i quadrats)
+
+%% emmagatzemarem els valors de cadascuna d'aquestes 3 claus fent una array on:
+%% l'índex ens indicarà la mesura d'alçada (o cos) en les unitats que desarem a l'índex 0 de l'array i el valor que desarem en aquest índex d'alçada serà l''amplada
+
+get
+
+
+/MAXvalors 0 def
+{  %% forall per mesurar la màxima llargada d'una cadena de valors
+ {
+  length dup
+  MAXvalors gt
+  {
+   /MAXvalors exch def
+   pop
+  }
+  {
+   pop pop
+  }ifelse
+ }forall
+}forall
+MAXvalors 1 add /MAXvalors exch def  %% redefinim per tal d'extraure la cadena que farem servir per redefinir el caràcter c del cícero (c\000)
+
+%% a l'índex 0 el literal de les unitats
+%% la resta d'índex indicaran el valor de l'altura de la peça (cos)
+%% els dígits dels valors en aquests índex seran els amples de la peça o  null en cas que no n'hi hagi
+
+%% com reinterpretem les unitats?
+/FEM true def
+/c
+{
+ FEM
+ {
+  currentdict /aImposicions known
+  {
+   dup 1 add
+   dup aImposicions length gt
+   {
+    array dup 0 aImposicions putinterval /aImposicions exch def
+   }
+   {
+    pop
+   }ifelse
+  }
+  {
+   dup 1 add array dup 0 [ (c) ] putinterval
+   /aImposicions exch def %% una array amb la cadena d'unitats a l'índex 0
+  }ifelse
+  /iAlt exch def
+  /FEM false def
+ }
+ {
+	 {
+  aImposicions iAlt 3 -1 roll put  %% desem el valor de l'ample de la peça al seu valor d'alt com a índex
+  /FEM true def
+  }stopped{(||||)pstack quit}if
+ }ifelse
+} def  %% definim les unitats de cícero
+
+dMesuresBlancs (Imposicions) get
+
+{  %% forall per l'array
+
+ {  %% forall per cadascun dels clau/valor del diccionari
+
+  exch pop  %% la clau és irrellevant, doncs o és l'enunciat de la peça o l'enunciat del núm. de columna
+
+  %/Imposicions get
+  %cvx exec
+
+  MAXvalors string dup /PESSA exch def
+  /NullEncode filter /pessa exch def
+
+  {  %% forall per cadascun dels elements de la cadena que només escriurem els que estiguin entre 32 i 127, la resta els convertirem en espais en blanc
+   dup 127 gt
+   {
+    pop
+    pessa 32 write
+   }
+   {
+    dup 32 lt
+    {
+     pop pessa 32 write
+    }
+    {
+     pessa exch write
+    }ifelse
+   }ifelse
+  }forall
+
+  pessa dup flushfile closefile
+  PESSA cvx exec
+
+(-------------------)==
+ }forall
+
+}forall
+
+aImposicions ==

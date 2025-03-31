@@ -1,0 +1,30 @@
+%!
+%% conversions mètriques al punt de cícero Didot
+
+%% mesures canòniques:
+%% 12 punts = 1 cícero (indiferent de si són Pica o Didot)
+%% 1 punt Didot = 0.3759 mm (segons el tipòmetre metàl·lic negre del taller de tipografia de la UB)
+
+%% 1 punt Didot = 1.06554329 punts de Pica PS  %% aquest és el multiplicador mestre que haurem de fer servir pels algorismes del Talles de Tipografia FBBAAUB
+
+%% altres equivalències?
+%% 1 mm = 2.83464575 punts de Pica PS
+%% 72 punts de Pica PS = 1" (polzada)
+%% 1" = 25.4 mm
+%% 1 mm = 0.0393"
+
+%% 1 mm són punts de Pica PS
+72 25.4 div (\n\n1 mm son punts de Pica PS... )print flush 32 string cvs print flush (\n\n)print flush
+
+%% 1 punt de Pica PS són mm
+1 2.83464575 div (\n1 punt de Pica PS son mm... )print flush 32 string cvs print flush (\n\n)print flush
+
+%% 1 punt Didot són punts de Pica PS
+2.83464575 .3759 mul (\n1 punt Didot són punts de Pica PS... )print flush 32 string cvs print flush (\n\n\n)print flush
+
+%% es repecta la precisió decimal?
+2.83464575
+1.06554329
+0.3759
+0.0393
+pstack
