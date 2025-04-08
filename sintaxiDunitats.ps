@@ -1,0 +1,145 @@
+%!
+%% fem que la sintaxi que descriu cadascuna de les peces de mesures de blanc sigui prou flexible
+
+%% llegim caràcter a caràcter provinent de les variables de la URL que ha de compondre la línia
+
+%% el forall llegeix el dígit de l'string i avalua el què cal fer
+%% p i P punts
+%% c i C cíceros
+%% g i G girar 90 graus
+%% / tocarà dividir pel dígit següent
+%% 2 3 4 dígits divisors precedits per /
+%% 1 digit a eliminar quan forma part d'una fracció 1/2 1/3 1/4
+
+%% abans que res tenim les paraules clau dels noms de les peces i la llargada del reng (llengot imposicio espai reng o el que deia l'Oriol)
+%% la primera cosa que cal que vetlli el forall lector és la separació peça a peça, cal blindar les mesures amb [] o {} o ()
+%% el segon que ha de fer la sintaxi, peça a peça, és comprovar si dins les arrays d'unitats de blancs la mesura existeix
+%% si no existeix, cal que quedi reflectit d'alguna manera i llavors decideixi a quina mesura salta (endavant o endarrera?)
+
+%% gatells
+/fraccio false def  %% gatell que activa el divisor del cos per definir el gruix de la peça
+/cos false def  %% gatell que activa el fet que ja haguem definit el cos de la peça
+/gruix false def  %% gatell que activa el fet que ja haguem definit el gruix de la peça
+
+/digit false def  %% gatell per saber si estem construint un dígit de mesura
+/units false def  %% gatell per saber si s'han definit les unitats
+
+%% blidat de la mesura d'1 peça
+%% 91 [ i 93 ]
+%% possible blindat alternatiu de mesures?
+%% 123 { i } 125
+%% 40 ( i 41 )
+%% seria més simple un separador entre peces tipus , ; :
+
+%% cal veure com mantenim, en la informació peça a peça, la notació d'unitats de punt i de cícero que tenen les taules originals de mesures de blancs
+%% mesuresBlancs_espais_quadratins_quadrats_pastells.ps cos i gruix sempre treballa en punts
+%% mesuresBlancs_llengots.ps cos en punts i gruix en cíceros
+%% mesuresBlancs_interlinies.ps cos en punts i gruix en cíceros
+%% mesuresBlancs_imposicions.ps cos i gruix sempre en cíceros 
+
+/hies [] def  %% array per consultar si la peça existeix (ha de ser sense girar!)
+/peçaD [] def  %% array per desar l'alt i gruix definitiu que farà la peça en punts Didot abans de pintar-la (per tant ja ha d'estar girada si duu g o G?)
+
+%% primers exemples d'1 sola peça a llegir
+%% simplificant la sintaxi potser amb només 1 valor ja farem perquè el cos ha de ser idèntic per totes les peces del reng
+(26 54)  %% tot separat sense unitats (llavors són punts)
+(26)  %% una sola mesura
+%(26 54 c)  %% tot separat sense unitats el cos i gruix si (llavors són punts)
+%(26 p 54 P g)  %% tot separat caixes diferents
+%(2 c 2 C G)  %% tot separat caixes diferents
+%(26p54Pg)  %% tot enganxat caixes diferents
+%(26p54G)  %% tot enganxat caixes diferents falta una unitat
+
+%(26 p54G)  %% espaiats diferents
+%(26 p54    G )  %% espaiats diferents
+%(  26p 54g)  %% espaiats diferents
+%(#26 !  p 54kG)  %% espaiats diferents i altres caràcters que NO llegim
+
+%(14 1/2)  %% les tres fraccions divisories del cos que donen l'amplada de la peça
+%(14 1/3)
+%(14 1/4)
+
+
+{  %% forall lector d'1 peça
+
+ %% dígits numèrics
+ %% 48 49 50 51 52 53 54 55 56 57  %% de 0 a 9
+ dup 48 ge 1 index 57 le and  %% és un dígit numèric?
+ {
+  digit
+  {  %% seguim escrivint sobre el buffer
+   fNMRC exch write
+  }
+  {  %% inicialitzem el buffer
+   %% reescrivim en una string el valor numèric de la peça
+   /NMRC 4 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 2 metres!
+   NMRC /NullEncode filter /fNMRC exch def
+   fNMRC exch write  %% comencem a escriure
+
+   /digit true def  %% gatell per saber si estem construint un dígit de mesura
+  }ifelse
+(ES UN DIGIT NUMERIC!)==  %quit
+ }
+ {
+  %% 112 p i 80 P
+  dup 112 eq 1 index 80 eq or  %% és un dígit d'unitat punts?
+  {
+   %% desem el dígit allà on toqui
+   fNMRC dup flushfile closefile NMRC == quit
+   /digit false def  %% gatell per saber si estem construint un dígit de mesura
+
+   %% reescrivim en una string les unitats del valor numèric de la peça
+   /UNTTS 1 string def
+   UNITS /NullEncode filter /fUNTTS exch def
+
+(SON PUNTS)== quit
+  }
+  {
+   %% 99 c i 67 C
+   dup 99 eq 1 index 67 eq or  %% és un dígit d'unitat cíceros?
+   {
+    %% desem el dígit allà on toqui
+    fNMRC dup flushfile closefile NMRC == quit
+    /digit false def  %% gatell per saber si estem construint un dígit de mesura
+
+    %% reescrivim en una string les unitats del valor numèric de la peça
+    /UNTTS 1 string def
+    UNITS /NullEncode filter /fUNTTS exch def
+
+(SON CICEROS)== quit
+   }
+   {
+    %% / 47
+    dup 47 eq  %% és un dígit de fracció?
+    {
+     %% desem el dígit allà on toqui
+     fNMRC dup flushfile closefile NMRC == quit
+     /digit false def  %% gatell per saber si estem construint un dígit de mesura
+
+(FRACCIO)== quit
+    }
+    {
+     %% 103 g i 71 G
+     dup 103 eq 1 index 71 eq or%% és un dígit per girar la peça?
+     {
+      %% desem el dígit allà on toqui
+      fNMRC dup flushfile closefile NMRC == quit
+      /digit false def  %% gatell per saber si estem construint un dígit de mesura
+
+(GIREM)==
+     }
+     {  %% pot ser un espai en blanc separador o qualsevol altre caràcter que no contemplem però que, de moment, podem donar com a equivalent a un separador
+      %% desem el dígit allà on toqui
+      fNMRC dup flushfile closefile NMRC == quit
+      /digit false def  %% gatell per saber si estem construint un dígit de mesura
+
+(UN ESPAI EN BLANC O UN CARACTER DESCONEGUT)== quit
+     }ifelse  %% és un dígit per girar la peça o una altra cosa?
+    }ifelse  %% és un dígit de fració o una altra cosa?
+   }ifelse  %% és la unitat cíceros o una altra cosa?
+  }ifelse  %% és la unitat punts o una altra cosa?
+ }ifelse  %% és un dígit numèric o una altra cosa?
+
+}forall
+
+
