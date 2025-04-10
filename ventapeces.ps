@@ -1,0 +1,39 @@
+%!
+%% ventadora de parells [ … ] dins una string
+%% ens servirà per gestionar la variable $reng de la URL de componedoraRIMDA00.php
+
+%% quina notació és més eficient?
+true
+{
+
+ (/espai (22 45 g) /llengot () /imposicio(3p)/interlinia(1/2g))
+
+ cvx exec (xxxx)pstack
+
+}
+{
+ /peçaApeça [] def
+
+ (  [Australopitecus civellatus]     [Barnasants asteroid]  [zulu ximplet]   )  %% aspecte de la variable a ventar
+
+ {  %% loop aïllador de continguts entre [ i ]
+  ([) search
+  {
+   pop pop
+  }if
+  
+  (]) search
+  {
+   peçaApeça dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval dup 3 -1 roll araVa exch put /peçaApeça exch def
+   pop
+  }
+  {
+   pop exit
+  }ifelse
+
+ }loop
+
+ peçaApeça (zzzz)pstack
+
+}ifelse
+

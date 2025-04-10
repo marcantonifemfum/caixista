@@ -21,8 +21,9 @@
 /cos false def  %% gatell que activa el fet que ja haguem definit el cos de la peça
 /gruix false def  %% gatell que activa el fet que ja haguem definit el gruix de la peça
 
-/digit false def  %% gatell per saber si estem construint un dígit de mesura
+/ivalor 0 def  %% comptem quants valors de mesura hem desat
 /units false def  %% gatell per saber si s'han definit les unitats
+/digit false def  %% gatell per saber si estem construint un dígit de mesura
 
 %% blidat de la mesura d'1 peça
 %% 91 [ i 93 ]
@@ -40,15 +41,19 @@
 /hies [] def  %% array per consultar si la peça existeix (ha de ser sense girar!)
 /peçaD [] def  %% array per desar l'alt i gruix definitiu que farà la peça en punts Didot abans de pintar-la (per tant ja ha d'estar girada si duu g o G?)
 
+%% reescrivim en una string el valor numèric de la peça
+/NMRC 4 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+NMRC /NullEncode filter /fNMRC exch def
+
 %% primers exemples d'1 sola peça a llegir
 %% simplificant la sintaxi potser amb només 1 valor ja farem perquè el cos ha de ser idèntic per totes les peces del reng
-(26 54)  %% tot separat sense unitats (llavors són punts)
-(26)  %% una sola mesura
-%(26 54 c)  %% tot separat sense unitats el cos i gruix si (llavors són punts)
-%(26 p 54 P g)  %% tot separat caixes diferents
-%(2 c 2 C G)  %% tot separat caixes diferents
-%(26p54Pg)  %% tot enganxat caixes diferents
-%(26p54G)  %% tot enganxat caixes diferents falta una unitat
+%(  26  54 )  %% dos enters separats per qualsevol nombre d'espais en blanc, entremig o al davant o al darrere, i sense unitats (llavors són punts)
+%(!!!ttsts 26   @    )  %% un sol enter separat per qualsevol nombre d'espais en blanc o altres caràcters, al davant o al darrere, i sense unitats (llavors són punts)
+(09 58 C)  %% tot separat sense unitats el cos i gruix si (llavors són punts)
+%(26 p 54 P g)  %% tot separat caixes diferents d'unitats i gir
+%(2 c 2 C G)  %% tot separat caixes diferents d'unitats i gir
+%(26p54Pg)  %% tot enganxat caixes diferents d'unitats i gir
+%(26p54G)  %% tot enganxat caixes diferents falta una unitat però amb gir
 
 %(26 p54G)  %% espaiats diferents
 %(26 p54    G )  %% espaiats diferents
@@ -66,19 +71,16 @@
  %% 48 49 50 51 52 53 54 55 56 57  %% de 0 a 9
  dup 48 ge 1 index 57 le and  %% és un dígit numèric?
  {
+(ES UN DIGIT NUMERIC!)==  %quit
   digit
   {  %% seguim escrivint sobre el buffer
    fNMRC exch write
   }
   {  %% inicialitzem el buffer
-   %% reescrivim en una string el valor numèric de la peça
-   /NMRC 4 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 2 metres!
-   NMRC /NullEncode filter /fNMRC exch def
-   fNMRC exch write  %% comencem a escriure
+   fNMRC exch write  %% escriur el valor numèric de la peça,. dígit a dígit
 
    /digit true def  %% gatell per saber si estem construint un dígit de mesura
   }ifelse
-(ES UN DIGIT NUMERIC!)==  %quit
  }
  {
   %% 112 p i 80 P
@@ -98,6 +100,7 @@
    %% 99 c i 67 C
    dup 99 eq 1 index 67 eq or  %% és un dígit d'unitat cíceros?
    {
+(SON CICEROS)== quit
     %% desem el dígit allà on toqui
     fNMRC dup flushfile closefile NMRC == quit
     /digit false def  %% gatell per saber si estem construint un dígit de mesura
@@ -106,7 +109,6 @@
     /UNTTS 1 string def
     UNITS /NullEncode filter /fUNTTS exch def
 
-(SON CICEROS)== quit
    }
    {
     %% / 47
@@ -129,11 +131,28 @@
 (GIREM)==
      }
      {  %% pot ser un espai en blanc separador o qualsevol altre caràcter que no contemplem però que, de moment, podem donar com a equivalent a un separador
-      %% desem el dígit allà on toqui
-      fNMRC dup flushfile closefile NMRC == quit
+(UN ESPAI EN BLANC O UN CARACTER DESCONEGUT)==
+      pop  %% de moment, no l'analitzem
+      digit
+      {  %% sempre que abans haguem llegit el dígit d'un valor (evita l'error quan hi ha 1 o més espais en blanc o caràcters desconeguts)
+
+       ivalor 2 eq not
+       {
+
+        ivalor 1 add /ivalor exch def
+        fNMRC dup flushfile closefile  %% fluxem el fitxer per tancar el valor de la cadena
+        %% desem la mesura a l'array de consulta a les taules de peces en blanc existents
+        hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+        dup araVa NMRC cvx exec put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+        %% inicialitzem la cadena d'escriptura dels valors numèrics
+        /NMRC 4 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+        NMRC /NullEncode filter /fNMRC exch def
+
+       }if
+      }if
+
       /digit false def  %% gatell per saber si estem construint un dígit de mesura
 
-(UN ESPAI EN BLANC O UN CARACTER DESCONEGUT)== quit
      }ifelse  %% és un dígit per girar la peça o una altra cosa?
     }ifelse  %% és un dígit de fració o una altra cosa?
    }ifelse  %% és la unitat cíceros o una altra cosa?
@@ -142,4 +161,22 @@
 
 }forall
 
+%% cal posar un avaluador de quan fem això!
+fNMRC dup flushfile closefile  %% fluxem el fitxer per tancar el valor de la cadena
+
+0 NMRC
+{  %% el buffer és buit?
+ add
+}forall
+
+0 ne
+{
+ %% desem la mesura a l'array de consulta a les taules de peces en blanc existents
+ hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+ dup araVa NMRC cvx exec put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+}if
+
+hies ==
+
+digit ==
 
