@@ -1,0 +1,30 @@
+%!
+%% avalua els blancs que podem llegir a la variable MRCT_reng
+
+<<  %% diccionari d'on tenim desades les taules de blancs
+  /espai (/home/femfum/Documents/UB/RIMDAtallerDeTipografia/mesuresBlancs_espais_quadratins_quadrats_pastells.ps)
+  /llengot (/home/femfum/Documents/UB/RIMDAtallerDeTipografia/mesuresBlancs_llengots.ps)
+  /interlinia (/home/femfum/Documents/UB/RIMDAtallerDeTipografia/mesuresBlancs_interlinies.ps)
+  /imposicio (/home/femfum/Documents/UB/RIMDAtallerDeTipografia/mesuresBlancs_imposicions.ps)
+>> /eBlancs exch def
+
+
+%% per exemple
+[  %% el posem en una array per comptar i llegir els seus elements
+ (/llengot(6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18))
+ cvx exec
+]
+
+dup length 2 mod 0 ne
+{  %% que el nombre d'elements sigui imparell ja és sospitós d'un error
+ (NOMBRE D'ELEMENTS IMPARELLS?) ==
+}
+{  %% seguim...
+ dup length 1 sub 0 exch 2 exch
+ {
+  1 index exch 2 getinterval ==
+ }for
+}ifelse
+
+%==
+

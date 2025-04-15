@@ -1,15 +1,16 @@
 %!
-%% fem que la sintaxi que descriu cadascuna de les peces de mesures de blanc sigui prou flexible
+%% fem que la sintaxi que descriu cadascuna de les peces de mesures de blanc sigui prou flexible i simple
 
 %% llegim caràcter a caràcter provinent de les variables de la URL que ha de compondre la línia
 
-%% el forall llegeix el dígit de l'string i avalua el què cal fer
+%% el forall llegeix els caràcters de l'string i avalua el què cal fer
 %% p i P punts
 %% c i C cíceros
 %% g i G girar 90 graus
 %% / tocarà dividir pel dígit següent
 %% 2 3 4 dígits divisors precedits per /
 %% 1 digit a eliminar quan forma part d'una fracció 1/2 1/3 1/4
+%% l'espai en blanc (32), com a separador, o qualsevol altre caràcter que no sigui els ja citats
 
 %% abans que res tenim les paraules clau dels noms de les peces i la llargada del reng (llengot imposicio espai reng o el que deia l'Oriol)
 %% la primera cosa que cal que vetlli el forall lector és la separació peça a peça, cal blindar les mesures amb [] o {} o ()
@@ -17,15 +18,15 @@
 %% si no existeix, cal que quedi reflectit d'alguna manera i llavors decideixi a quina mesura salta (endavant o endarrera?)
 
 %% gatells
-/fraccio false def  %% gatell que activa el divisor del cos per definir el gruix de la peça
 /cos false def  %% gatell que activa el fet que ja haguem definit el cos de la peça
 /gruix false def  %% gatell que activa el fet que ja haguem definit el gruix de la peça
 
 /ivalor 0 def  %% comptem quants valors de mesura hem desat
 /units false def  %% gatell per saber si s'han definit les unitats
 /digit false def  %% gatell per saber si estem construint un dígit de mesura
+/frcc false def  %% gatell per saber si ens cal escriure el procediment divisor de la fracció
 
-%% blidat de la mesura d'1 peça
+%% blindat de la mesura d'1 peça
 %% 91 [ i 93 ]
 %% possible blindat alternatiu de mesures?
 %% 123 { i } 125
@@ -42,11 +43,11 @@
 /peçaD [] def  %% array per desar l'alt i gruix definitiu que farà la peça en punts Didot abans de pintar-la (per tant ja ha d'estar girada si duu g o G?)
 
 %% reescrivim en una string el valor numèric de la peça
-/NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+/NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts (mai un motlle farà més de 3 metres!) o procediments tipus... {2 div}
 NMRC /NullEncode filter /fNMRC exch def
 
-%% primers exemples d'1 sola peça a llegir
-%% simplificant la sintaxi potser amb només 1 valor ja farem perquè el cos ha de ser idèntic per totes les peces del reng
+%% exemples de sintaxi d'1 sola peça a llegir
+%% podrem simplificant la sintaxi amb només 1 valor (tret d eles que aniran girades) perquè el cos ha de ser idèntic per totes les peces del reng
 %(  26  54 )  %% FUNCIONA dos enters separats per qualsevol nombre d'espais en blanc, entremig o al davant o al darrere, i sense unitats (llavors són punts)
 %(!!tsts 26  @  )  %% FUNCIONA un sol enter separat per qualsevol nombre d'espais en blanc o altres caràcters, al davant o al darrere, i sense unitats (llavors són punts)
 %(09 58 C)  %% FUNCIONA tot separat sense unitats el cos i gruix si (llavors són punts)
@@ -62,24 +63,31 @@ NMRC /NullEncode filter /fNMRC exch def
 %(26p54Pg)  %% tot enganxat caixes diferents d'unitats i gir
 %(26 54G)  %% tot enganxat caixes diferents falta una unitat però amb gir
 %(#26 !  p 54kG)  %% espaiats diferents i altres caràcters que NO llegim
-
-(14 1/2)  %% les tres fraccions divisores del cos que donen l'amplada de la peça
-%(1/2)  %% potser ja hauríem d'evitar d'escriure l'1 i llavors el divisor expressar-lo amb {2 div}
-
+%(14 1/2g)  %% les tres fraccions divisores del cos que donen l'amplada de la peça
+%(1/2)  %% a /hies evitem d'escriure l'1 i expressem el divisor amb {2 div}
 %(14 1/3)
 %(14 1/4)
+(8p1/2P180g)  %% aquesta sintaxi ja serviria per peces que no fossin blancs
 
 
 {  %% forall lector d'1 peça
 
- %% dígits numèrics
+ %% dígits numèrics de zero a nou
  %% 48 49 50 51 52 53 54 55 56 57  %% de 0 a 9
  dup 48 ge 1 index 57 le and  %% és un dígit numèric?
  {
 (ES UN DIGIT NUMERIC!)==  %quit
   digit
   {  %% seguim escrivint sobre el buffer
-   fNMRC exch write
+   frcc
+   {
+    ({  div}) dup 3 -1 roll 1 exch put
+    fNMRC exch writestring
+    /frcc false def
+   }
+   {
+    fNMRC exch write
+   }ifelse
   }
   {  %% inicialitzem el buffer
    fNMRC exch write  %% escriur el valor numèric de la peça,. dígit a dígit
@@ -159,10 +167,12 @@ NMRC /NullEncode filter /fNMRC exch def
     %% / 47
     dup 47 eq  %% és una barra que precedeix un dígit de fracció?
     {
-(FRACCIO)== quit
-     %% desem el dígit allà on toqui
-     fNMRC dup flushfile closefile NMRC == quit
-     /digit false def  %% gatell per saber si estem construint un dígit de mesura
+     pop
+     %% per eliminar l'1 de la fracció inicialitzem la cadena/fitxer d'escriptura dels valors numèrics
+     /NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+     NMRC /NullEncode filter /fNMRC exch def
+(FRACCIO)==  %quit
+     /digit true def  %% gatell per saber si estem construint un dígit de mesura
      /frcc true def  %% gatell per saber que el proper enter ha de dividir el cos
     }
     {
