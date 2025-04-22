@@ -1,0 +1,1508 @@
+%!
+%% fem un seguit de rectangles mesurables en punts/cíceros Didot i mm
+%% amb dues regles graduades vertical/horitzontal a mm/cm i punts/cíceros Didot
+%%+ dades clau
+
+%% 1 punt Didot = 1.06554329 punts de Pica PS  %% aquest és el multiplicador mestre que haurem de fer servir pels algorismes del Taller de Tipografia de la FBBAAUB
+/pD {1.06554329 mul}bind def
+
+%% 1 mm = 2.83464575 punts de Pica PS=
+/mm {2.83464575 mul}bind def
+
+%%+ dins un A4 horitzontal
+<</PageSize[842 595]>>setpagedevice
+
+%%+ tipus
+(/usr/share/fonts/truetype/ubuntu/Ubuntu-C.ttf)
+findfont
+%% codifiquem pels accents catalans i els possibles glifs alternatius
+dup length dict begin
+{
+ 1 index /FID ne
+ {def}{pop pop}ifelse
+}forall
+%% atenció que aquesta crida només és vàlida a Ghostscript!
+/Encoding systemdict /EncodingDirectory get /WinAnsiEncoding get
+%dup length array copy dup 0
+%/Fhook put
+%/uni0191 put
+%/uni0492 put
+%/Ghestrokecyrillic put
+%/ghestrokecyrillic put
+%/uni024D put
+%/florin put
+%/f put
+%/uni0493 put
+%/f_f put
+def  %% xifrat WinAnsi
+currentdict end /dUbuntu_WAp exch definefont pop
+/dUbuntu_WAp findfont
+/dFont exch def
+
+%% marques de la regla mm/cm
+/Ymm 5 mm def
+/Ymig 7.5 mm def
+/Ycm 10 mm def
+
+%% marques de la regla punts/cíceros Didot
+/YpD 12 pD def
+/YmigpD 24 pD def
+/Yc 36 pD def
+
+true  %% quin mètode de comparació fem servir? (puntsPS vs mm)
+/mtdC exch def
+%%+ llindar en punts de Pica PS per sobre del qual (en valor absolut) desestimarem la coincidència d'unitats
+/llindarIDEM .05 def
+
+%% marquem en vermell les coincidències més acostades entre punts vs mm i mm vs punts
+%% de manera que comprovant aquests valors veiem que en punts de Pica PS (la unitat nadiua del PDF) les coincidències són al primer decimal:
+%% 8 p vs 3 mm | 11 c amb 9 p vs 53 mm | 12 c amb 5 p vs 56 mm | 22 c amb 10 p vs 103 mm | 23 c amb 6 p vs 106 mm | 35 c amb 3 p vs 159 mm | 47 c amb 0 p vs 212 mm
+%% o al segon: 34 c amb 7 p vs 156 mm | 46 c amb 4 p vs 209 mm
+/aCoincidencies <<>> def  %% diccionari amb posicions en mm vs null que indicaran les coincidències amb punts Didot
+
+%%+ regla horitzontal en punts/cíceros Didot
+gsave
+/cmlt 0 def  %% unitats acumulades en punts Didot
+/cmltMM 0 def  %% unitats acumulades en mm
+7 mm 187 mm translate
+0 setlinewidth
+/ic 0 def
+60  %% nombre de cíceros a fer
+{
+ 0 1 11
+ {
+  dup /arac exch def
+  pD dup
+
+mtdC  %% fem servir dos mètodes per detectar la coincidència d'unitats
+{  %% +precís: amb dos comptadors de salts d'unitat convertim els salts de punt Didot a punt de Pica PS i els salts de mm a punt de Pica PS i comparem en base a un llindar
+ cmlt 1.06554329 mul  %% de punt Didot a punt de Pica PS
+ cmltMM 2.83464575 mul  %% de mm a punt de Pica PS
+ 2 copy sub abs llindarIDEM gt
+ {  %% desestimem la coincidència d'unitats
+  %% com fem córrer els comptadors d'unitats?
+  gt  %% els punts Didot han superat els mm?
+  {
+   cmltMM 1 add /cmltMM exch def
+  }if
+  cmlt 1 add /cmlt exch def
+  false
+ }
+ {  %% hi ha coincidència d'unitats!
+  %% llistem: els 2 valors en punts de Pica PS
+  (\n\n >>> coindidència d'unitats: )print flush 32 string cvs print flush ( (pDidot) vs ) print flush 32 string cvs print flush ( (mm)\n)print flush
+  %% llistem els punts Didot que coincideixen amb els mm
+  cmlt 6 string cvs print flush ( punts Didot ...ídem a... )print flush
+  %% llistem els mm que coincideixem amb els punts Didot
+  cmltMM 6 string cvs dup print flush ( mm)print flush
+  aCoincidencies exch null put  %% desem per quan fem els mm
+  %% fem córrer els comptadors d'unitats
+  cmltMM 1 add /cmltMM exch def
+  cmlt 1 add /cmlt exch def
+  true
+ }ifelse
+}
+{  %% -precís: convertim els punts Didot a mm i desem només els que a la part decimal comencen amb 2 zeros
+ cmlt
+ .3759 mul  %% quin valor a mm dóna 2 zeros decimals?
+ 100 mul cvi 32 string cvs dup length dup 1 eq
+ {
+  1 sub 1 getinterval cvx exec 0 eq
+ }
+ {
+  2 sub 2 getinterval cvx exec 0 eq
+ }ifelse
+ cmlt 1 add /cmlt exch def
+}ifelse
+/aVermell exch def  %% marcarem en vermell les coinncidències punts vs mm
+
+  0 pD moveto
+  arac 6 eq
+  {
+   YmigpD
+  }
+  {
+   arac 0 eq
+   {
+    Yc
+    gsave
+    0 0 0 setrgbcolor
+    2 copy moveto dFont 10 scalefont setfont ic 3 string cvs show
+    ic 1 add /ic exch def
+    grestore
+   }
+   {
+    YpD
+   }ifelse
+  }ifelse
+  aVermell
+  {
+   1 0 0 setrgbcolor
+  }
+  {
+   0 0 0 setrgbcolor
+  }ifelse
+  lineto stroke
+  0 0 0 setrgbcolor
+ }for
+ 12 pD 0 translate
+}repeat
+%% la darrera marca en cíceros
+0 0 moveto 0 Yc
+gsave
+0 0 0 setrgbcolor
+2 copy moveto dFont 10 scalefont setfont ic 3 string cvs show ( c\355ceros) show
+grestore
+lineto stroke
+grestore
+
+%%+ regla horitzontal en mm/cm
+gsave
+/cmlt 0 def  %% unitats acumulades en mm
+/cmltPD 0 def  %% unitats acumulades en punts Didot
+7 mm 187 mm translate
+0 setlinewidth
+/icm 0 def
+27  %% nombre de cm a fer
+{
+ 0 1 9
+ {
+  dup /aramm exch def
+  mm dup
+
+mtdC  %% fem servir dos mètodes de comparació
+{  %% +precís: amb dos comptadors de salts d'unitat convertim els salts en mm a punt de Pica PS i els salts en punts Didot a punt de Pica PS i comparem en base al llindar
+
+ aCoincidencies cmlt 6 string cvs known
+ {
+  true
+ }
+ {
+  false
+ }ifelse
+
+ cmlt 1 add /cmlt exch def
+}
+{  %% -precís: convertim els mm a punts Didot i desem només els que a la part decimal comencen amb 2 zeros
+ cmlt 1 .3759 div mul %% quin valor a punts dóna 2 zeros decimals?
+ 100 mul cvi 32 string cvs dup length dup 1 eq
+ {
+  1 sub 1 getinterval cvx exec 0 eq
+ }
+ {
+  2 sub 2 getinterval cvx exec 0 eq
+ }ifelse
+ cmlt 1 add /cmlt exch def
+}ifelse
+/aVermell exch def  %% marcarem en vermell les coinncidències punts vs mm
+
+  0 mm moveto
+  aramm 5 eq
+  {
+   Ymig neg
+  }
+  {
+   aramm 0 eq
+   {
+    Ycm neg
+    gsave
+    0 0 0 setrgbcolor
+    2 copy 10 neg add moveto dFont 10 scalefont setfont icm 3 string cvs show
+    icm 1 add /icm exch def
+    grestore
+   }
+   {
+    Ymm neg
+   }ifelse
+  }ifelse
+  aVermell
+  {
+   1 0 0 setrgbcolor
+  }
+  {
+   0 0 0 setrgbcolor
+  }ifelse
+  lineto stroke
+ }for
+ 10 mm 0 translate
+}repeat
+%% la darrera marca en cm
+0 0 moveto 0 Ycm neg
+gsave
+0 0 0 setrgbcolor
+2 copy 10 neg add moveto dFont 10 scalefont setfont icm 3 string cvs show ( cm) show
+grestore
+lineto stroke
+grestore
+
+
+%%+ regla vertical en mm/cm
+true
+{
+gsave
+ 275 mm 7 mm translate 90 rotate
+/cmlt 0 def  %% unitats acumulades en mm
+/cmltPD 0 def  %% unitats acumulades en punts Didot
+0 setlinewidth
+/icm 0 def
+13  %% nombre de cm a fer
+{
+ 0 1 9
+ {
+  dup /aramm exch def
+  mm dup
+
+mtdC  %% fem servir dos mètodes de comparació
+{  %% +precís: amb dos comptadors de salts d'unitat convertim els salts en mm a punt de Pica PS i els salts en punts Didot a punt de Pica PS i comparem en base al llindar
+
+ aCoincidencies cmlt 6 string cvs known
+ {
+  true
+ }
+ {
+  false
+ }ifelse
+
+ cmlt 1 add /cmlt exch def
+}
+{  %% -precís: convertim els mm a punts Didot i desem només els que a la part decimal comencen amb 2 zeros
+ cmlt 1 .3759 div mul %% quin valor a punts dóna 2 zeros decimals?
+ 100 mul cvi 32 string cvs dup length dup 1 eq
+ {
+  1 sub 1 getinterval cvx exec 0 eq
+ }
+ {
+  2 sub 2 getinterval cvx exec 0 eq
+ }ifelse
+ cmlt 1 add /cmlt exch def
+}ifelse
+/aVermell exch def  %% marcarem en vermell les coinncidències punts vs mm
+
+  0 mm moveto
+  aramm 5 eq
+  {
+   Ymig neg
+  }
+  {
+   aramm 0 eq
+   {
+    Ycm neg
+    gsave
+    0 0 0 setrgbcolor
+    2 copy 10 neg add moveto dFont 10 scalefont setfont icm 3 string cvs show
+    icm 1 add /icm exch def
+    grestore
+   }
+   {
+    Ymm neg
+   }ifelse
+  }ifelse
+  aVermell
+  {
+   1 0 0 setrgbcolor
+  }
+  {
+   0 0 0 setrgbcolor
+  }ifelse
+  lineto stroke
+ }for
+ 10 mm 0 translate
+}repeat
+%% la darrera marca en cm
+0 0 moveto 0 Ycm neg
+gsave
+0 0 0 setrgbcolor
+2 copy 10 neg add moveto dFont 10 scalefont setfont icm 3 string cvs show ( cm) show
+grestore
+lineto stroke
+grestore
+
+}
+{
+ gsave
+ 275 mm 10 mm translate 90 rotate
+ 0 setlinewidth
+ /icm 0 def
+ 15  %% nombre de cm a fer
+ {
+  0 1 9
+  {
+   dup /aramm exch def
+   mm dup 0 mm moveto
+   aramm 5 eq
+   {
+    Ymig neg
+   }
+   {
+    aramm 0 eq
+    {
+     Ycm neg
+     gsave
+     2 copy 10 neg add moveto dFont 10 scalefont setfont icm 3 string cvs show
+     icm 1 add /icm exch def
+     grestore
+    }
+    {
+     Ymm neg
+    }ifelse
+   }ifelse
+   lineto stroke
+  }for
+  10 mm 0 translate
+ }repeat
+ %% la darrera en cm
+ 0 0 moveto 0 Ycm neg
+ gsave 2 copy 10 neg add moveto dFont 10 scalefont setfont icm 3 string cvs show ( cm) show grestore
+ lineto stroke
+ grestore
+}ifelse
+
+
+%%+ regla vertical en punts/cíceros Didot
+gsave
+ 275 mm 7 mm translate 90 rotate
+/cmlt 0 def  %% unitats acumulades en punts Didot
+/cmltMM 0 def  %% unitats acumulades en mm
+0 setlinewidth
+/ic 0 def
+29  %% nombre de cíceros a fer
+{
+ 0 1 11
+ {
+  dup /arac exch def
+  pD dup
+
+mtdC  %% fem servir dos mètodes per detectar la coincidència d'unitats
+{  %% +precís: amb dos comptadors de salts d'unitat convertim els salts de punt Didot a punt de Pica PS i els salts de mm a punt de Pica PS i comparem en base a un llindar
+ cmlt 1.06554329 mul  %% de punt Didot a punt de Pica PS
+ cmltMM 2.83464575 mul  %% de mm a punt de Pica PS
+ 2 copy sub abs llindarIDEM gt
+ {  %% desestimem la coincidència d'unitats
+  %% com fem córrer els comptadors d'unitats?
+  gt  %% els punts Didot han superat els mm?
+  {
+   cmltMM 1 add /cmltMM exch def
+  }if
+  cmlt 1 add /cmlt exch def
+  false
+ }
+ {  %% hi ha coincidència d'unitats!
+pop pop
+  %% llistem: els 2 valors en punts de Pica PS
+%  (\n\n >>> coindidència d'unitats: )print flush 32 string cvs print flush ( (pDidot) vs ) print flush 32 string cvs print flush ( (mm)\n)print flush
+  %% llistem els punts Didot que coincideixen amb els mm
+%  cmlt 6 string cvs print flush ( punts Didot ...ídem a... )print flush
+  %% llistem els mm que coincideixem amb els punts Didot
+%  cmltMM 6 string cvs dup print flush ( mm)print flush
+%  aCoincidencies exch null put  %% desem per quan fem els mm
+  %% fem córrer els comptadors d'unitats
+  cmltMM 1 add /cmltMM exch def
+  cmlt 1 add /cmlt exch def
+  true
+ }ifelse
+}
+{  %% -precís: convertim els punts Didot a mm i desem només els que a la part decimal comencen amb 2 zeros
+ cmlt
+ .3759 mul  %% quin valor a mm dóna 2 zeros decimals?
+ 100 mul cvi 32 string cvs dup length dup 1 eq
+ {
+  1 sub 1 getinterval cvx exec 0 eq
+ }
+ {
+  2 sub 2 getinterval cvx exec 0 eq
+ }ifelse
+ cmlt 1 add /cmlt exch def
+}ifelse
+/aVermell exch def  %% marcarem en vermell les coinncidències punts vs mm
+
+  0 pD moveto
+  arac 6 eq
+  {
+   YmigpD
+  }
+  {
+   arac 0 eq
+   {
+    Yc
+    gsave
+    0 0 0 setrgbcolor
+    2 copy moveto dFont 10 scalefont setfont ic 3 string cvs show
+    ic 1 add /ic exch def
+    grestore
+   }
+   {
+    YpD
+   }ifelse
+  }ifelse
+  aVermell
+  {
+   1 0 0 setrgbcolor
+  }
+  {
+   0 0 0 setrgbcolor
+  }ifelse
+  lineto stroke
+  0 0 0 setrgbcolor
+ }for
+ 12 pD 0 translate
+}repeat
+%% la darrera marca en cíceros
+0 0 moveto 0 Yc
+gsave
+0 0 0 setrgbcolor
+2 copy moveto dFont 10 scalefont setfont ic 3 string cvs show
+%( c.)
+( c\355ceros)
+show
+grestore
+lineto stroke
+grestore
+
+
+%% llegenda
+false{
+gsave
+.5 .5 .5 setrgbcolor
+50 25 40 8 rectfill
+dFont 8 scalefont setfont 50 25 moveto
+1 1 1 setrgbcolor (Didot)show
+.7 .7 .7 setrgbcolor
+95 25 40 8 rectfill
+95 25 moveto
+1 1 1 setrgbcolor (mm)show
+.9 .9 .9 setrgbcolor
+140 25 40 8 rectfill
+140 25 moveto
+1 1 1 setrgbcolor (Pica)show
+grestore
+}if
+
+%%+ PECES DE BLANC
+
+%% MESURA BLANC 2cx60c (Imposicions en gris)
+gsave
+7 mm 160 mm
+2 copy  %% per fer l'array del Bbox
+translate
+.5 .5 .5 setrgbcolor
+0 0 60 12 mul dup /AMp exch def pD 2 12 mul dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Imposici\363 2c x 60c  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox2c60c exch def
+
+%% MESURA BLANC 12cx8c (Imposicions en gris)
+gsave
+7 mm 95 mm
+2 copy  %% per fer l'array del Bbox
+translate
+.5 .5 .5 setrgbcolor
+0 0 8 12 mul dup /AMp exch def pD 12 12 mul dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Imposici\363 12c x 8c  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox12c8c exch def
+
+%% MESURA BLANC 6px5c (Llengots en blau)
+gsave
+7 mm 80 mm
+2 copy  %% per fer l'array del Bbox
+translate
+0 0 1 setrgbcolor
+0 0 5 12 mul dup /AMp exch def pD 6 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Llengot 6p x 5c  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox6p5c exch def
+
+%% MESURA BLANC 18px40c (Llengots en blau)
+gsave
+7 mm 60 mm
+2 copy  %% per fer l'array del Bbox
+translate
+0 0 1 setrgbcolor
+0 0 40 12 mul dup /AMp exch def pD 18 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Llengot 18p x 40c  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox18p40c exch def
+
+%% MESURA BLANC 1px5c (Interlínia en vermell)
+gsave
+7 mm 45 mm
+2 copy  %% per fer l'array del Bbox
+translate
+1 0 0 setrgbcolor
+0 0 5 12 mul dup /AMp exch def pD 1 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Interl\355nia 1p x 5c  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox1p5c exch def
+
+%% MESURA BLANC 3px40c (Interlínia en vermell)
+gsave
+7 mm 30 mm
+2 copy  %% per fer l'array del Bbox
+translate
+1 0 0 setrgbcolor
+0 0 40 12 mul dup /AMp exch def pD 3 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Interl\355nia 3p x 40c  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox3p40c exch def
+
+%% MESURA BLANC 6px6p (Quadratí en negre)
+gsave
+75 mm 95 mm
+2 copy  %% per fer l'array del Bbox
+translate
+0 0 0 setrgbcolor
+0 0 6 dup /AMp exch def pD 6 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Quadrat\355 6p x 6p  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox6p6p exch def
+
+%% MESURA BLANC 48px48p (Quadratí en negre)
+gsave
+75 mm 105 mm
+2 copy  %% per fer l'array del Bbox
+translate
+0 0 0 setrgbcolor
+0 0 48 dup /AMp exch def pD 48 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Quadrat\355 48p x 48p  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox48p48p exch def
+
+%% MESURA BLANC 8px2p (Pastell en verd)
+gsave
+75 mm 135 mm
+2 copy  %% per fer l'array del Bbox
+translate
+0 1 0 setrgbcolor
+0 0 2 dup /AMp exch def pD 8 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Pastell 8p x 2p  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox8p2p exch def
+
+%% MESURA BLANC 18px1/4p (Pastell en verd)
+gsave
+75 mm 145 mm
+2 copy  %% per fer l'array del Bbox
+translate
+0 1 0 setrgbcolor
+0 0 18 4 div dup /AMp exch def pD 18 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Pastell 18p x 1/4p  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox18p1_4p exch def
+
+%% MESURA BLANC 14px1/4p (Espai en cyan)
+gsave
+145 mm 95 mm
+2 copy  %% per fer l'array del Bbox
+translate
+0 1 1 setrgbcolor
+0 0 14 4 div dup /AMp exch def pD 14 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Espai 14p x 1/4p  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox14p1_4p exch def
+
+%% MESURA BLANC 32px64p (Espai en cyan)
+gsave
+145 mm 105 mm
+2 copy  %% per fer l'array del Bbox
+translate
+0 1 1 setrgbcolor
+0 0 64 dup /AMp exch def pD 32 dup /COs exch def pD  %% ample x cos punts Didot
+2 copy 8 1 roll 8 1 roll  %% per fer l'array del Bbox
+rectfill
+0 0 0 setrgbcolor
+dFont 8 scalefont setfont 0 -8 moveto
+(MESURA BLANC Espai 32p x 64p  \()show COs 6 string cvs show (p x )show AMp 6 string cvs show (p\))show
+grestore
+%% muntem el Bbox pel Viewport
+/alVoltant 12 def
+dup 4 -1 roll add alVoltant add 2 index 5 -1 roll add alVoltant add 3 -1 roll alVoltant sub 4 1 roll 3 -1 roll alVoltant sub 4 1 roll exch 4 array astore 
+/araBbox32p64p exch def
+
+
+mark
+{ThisPage}
+<<
+  /UserUnit 1  %% és un multiplicador d'escala inicial (valors entre 1 i 75000), en punts, pel format de pàgina (MediaBox) i continguts!
+
+%% això vol dir que podem transgredir el màxim de 14400 de format de pàgina amb un multiplicador fins a 75000!
+%% o sigui 14400 x 75000 = 1,080,000,000 punts! (més de 380 km!) 
+%% PDFreference 1.7 Apendic C Implementation Limits: UserUnit value of 75000, which gives a maximum page dimension of
+%% 15000000 inches (14400 * 75000 * 1/72). The minimum UserUnit value is 1.0 (the default).
+
+>> /PUT pdfmark
+
+mark
+{ThisPage}
+<<
+%% és una forma molt més elegant de treballar a escala que cal veure si només entén l'AdobeReader o també l'han implementat
+%% altres viewers o els intèrpets PS o PDFDirect de moltes impresores
+/VP [  %% array de finestrals de mesura que funcionen a través de l'eina Measure de l'Acrobat
+     <<  %% MESURA BLANC Imposició 2cx60c
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox2c60c  % [40 40 70 70 ]
+       /Name (Imposició 2c x 60c punts Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%	 /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%	     /D 100000
+%	     /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%	     /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+false{
+%%EP! això no està ben resolt i hem de procurar per més endavant resoldre l'algorisme de la detecció del doble octet correctament
+%%ATENCIÓ: que cal per què la codificació dels caràcters fora de l'ascii s'interpretin correctament dins el PDF?
+%% repicant la cadena a doble octet funciona?
+(mil·límetres)  %% amb aquesta funciona
+%(Âme)  %% aquesta paraula ens demostra que podem controlar bé el doble octet variable? NO!
+dup length 4 mul 6 add string /aDobleOctet exch def  %% la cadena amb el doble on la seva llargada màxima és x4 (format 00##) +2 <> +feff (però pot quedar més curta)
+aDobleOctet /NullEncode filter /faDobleOctet exch def  %% fitxer d'escriptura
+/ctt 2 string def  %% buffer d'1 caràcter a doble octet
+/ioctet false def  %% gatell per saber si ja hem escrit l'inici 00 del doble octet
+faDobleOctet (<feff) writestring  %% la capçalera que indica que la cadena s'escriu sencera a doble octet
+{
+ dup 194 eq  %% és la marca del doble octet? (no és fiable!)
+ {
+  pop
+  ioctet
+  {
+   /ioctet false def  %% gatell per saber si ja hem escrit l'inici 00 del doble octet
+  }
+  {
+   faDobleOctet dup (00) writestring
+   %exch 16 ctt cvrs writestring
+   /ioctet true def  %% gatell per saber si ja hem escrit l'inici 00 del doble octet
+  }ifelse
+ }
+ {  %% és el segon octet
+  faDobleOctet dup (00) writestring
+  exch 16 ctt cvrs writestring
+  /ioctet false def  %% gatell per saber si ja hem escrit l'inici 00 del doble octet
+ }ifelse
+}forall
+
+faDobleOctet dup
+dup (>) writestring
+flushfile closefile
+aDobleOctet
+(<<<<<<)pstack quit
+               /U exch cvx exec  %% surt al menú d'Acrobat als valors Delta!
+}
+{  %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+}ifelse
+             >>
+            ]
+         /D [  %% mesura la distància
+false
+{  %% unitats tot amb punts Didot
+             <<
+               /C 2.66028  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a punts Didot (1 mm són 2.66028 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+}
+{  %% unitats amb cíceros i punts Didot
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+	       %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+}ifelse
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Imposició 12cx8c
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox12c8c
+       /Name (Imposició 12c x 8c Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Llengot 6px5c
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox6p5c
+       /Name (Llengot 6p x 5c Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Llengot 18px40c
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox18p40c
+       /Name (Llengot 18p x 40c Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Interlínia 1px5c
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox1p5c
+       /Name (Interlínia 1p x 5c Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Interlínia 3px40c
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox3p40c
+       /Name (Interlínia 3p x 40c Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Quadratí 6px6p
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox6p6p
+       /Name (Quadratí 6p x 6p Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Quadratí 48px48p
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox48p48p
+       /Name (Quadratí 48p x 48p Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Pastell 8px2p
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox8p2p
+       /Name (Pastell 8p x 2p Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Pastell 18px1/4p
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox18p1_4p
+       /Name (Pastell 18p x 1/4p Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Espai 14px1/4p
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox14p1_4p
+       /Name (Espai 14p x 1/4p Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+     <<  %% MESURA BLANC Espai 32px64p
+       /Type /Viewport
+       %% són sempre coordenades absolutes i cal treballar almenys amb 12 punts de marge al voltant del Bbox on s'aplica l'obertura per mesurar
+       /BBox araBbox32p64p
+       /Name (Espai 32p x 64p Didot)  %% aquest text ens sembla que no és visible dins el menú de l'eina Measure d'Acrobat
+       /Measure
+       <<  %% les 6 entrades que hi han aquí són obligatòries, sinó l'eina Measure d'Adobe Acrobat/Reader no detecta re
+         /Type /Measure
+         /Subtype /RL
+         /R (1 punt Didot = 0.3759 mm = 1.06554329 punts de Pica PS)  %% descriu literàriament la conversió i és visible dins el menú de l'eina Measure d'Acrobat
+
+%%CAL estudiar millor de com introduir la Y per tal NO ens condicioni també la X (/CXY etc. veure PDF Reference)
+%        /Y [  %% si definim Y ens tractarà el cos de la peça només en punts Didot?
+%            /D 100000
+%            /C 0.938488364  %% és el multiplicador d'escala que s'aplica a /UserUnit només pel cos
+%            /U (punts Didot)  %% unitats que surten al menú d'Acrobat acompanyant els valors del cos
+%            ]
+
+         /X [  %% mesura les coordenades x,y (s'omet y si la ràtio és equivalent)
+             <<
+               /D 100000     %% precisió decimal, si no hi és treballa amb 2 decimals de precisió
+               %% aquí li posem el multiplicador que fa la conversió de punts de Pica PS a mm (1 punt de Pica PS = 0.352777 mm)
+               /C 0.352777   %% és un multiplicador d'escala que s'aplica a /UserUnit i surt als valors Delta
+
+	      %% sense moure'ns d'1 octet ens cal fer un repicat de cadenes de text a PDFDocEncoding
+%%UN fet que enganya: caràcters fora de l'ascii que internament es tracten en doble octet
+%% per exemple… (·) …aquesta cadena amb un punt volat que al demanar-li el length ens diu que té 2 octets
+%% en aquest entorn (vi Terminal Tuxedo) la cadena del punt volat es converteix en… (\302\267)
+%% on \302 (caràcter 194 decimal Â Acircumflex a WinAnsi) és la marca del primer octet de doble codificació
+%% llavors, a les cadenes de text que definim amb pdfmark és necessari treballar només: o tot amb 1 octet o tot amb 2
+%% per tant aquests caràcters més enllà del 128 decimal els hem d'escriure en octal per assegurar s'escriuen a 1 sol octet
+ /U (mil\267l\355metres)  %% codificat en octal dels caràcters fora de l'ascii segons el PDFDocEncoding?
+             >>
+
+             <<
+               /C 0.221690163  %% és un multiplicador d'escala que s'aplica a /X per convertir el seu valor resultant, ara en mm, a cíceros Didot
+               %% aquí posem el mutiplicador que fa la conversió de mm a cíceros Didot (1 mm són 0.221690163 cíceros Didot)
+               /U (c\355ceros Didot amb)  %% surt al menú d'Acrobat acompanyant els valors de distància
+             >>
+             <<
+               /C 12  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+               %% aquí posem el mutiplicador que fa la conversió de cíceros a punts Didot (1 cícero Didot són 12 punts Didot)
+               /U (punts Didot)  %% surt al menú d'Acrobat acompanyant els valors de distància
+               %/F /T  %% truncate: el valor en punts no durà decimals
+             >>
+            % <<
+            %   /C 31.9233818  %% és un multiplicador d'escala que enllaça amb diccionari anterior per deduir el valor restant de cíceros Didot a punts Didot
+            %   %% aquí posem el mutiplicador que fa la conversió de mil·límetres a punts Didot (12 punts Didot són 31.9233818 mm)
+            %   /U (mil\267l\355metres)  %% surt al menú d'Acrobat acompanyant els valors de distància
+            % >>
+            ]
+         /A [  %% mesura l'àrea
+             <<
+               /C 1  %% multiplicador del total de l'àrea calculada amb el els valors de /X
+               /U (l'àrea en tipus mòbils és significativa?)  %% surt al menú d'Acrobat acompanyant el valor d'àrea
+             >>
+            ]
+       >>
+     >>
+    ]
+
+>> /PUT pdfmark
+
+false{
+%% en mm
+gsave
+75 50 translate
+.7 .7 .7 setrgbcolor
+0 0 8 0.3759 mul 2.83464575 mul dup  %% en mm
+rectfill
+grestore
+
+%% en punts de Pica PS
+gsave
+100 50 translate
+.9 .9 .9 setrgbcolor
+0 0 8.52434635 dup rectfill
+grestore
+}if
+
+
+%% metadades i DocInfo?
+%% amb 60 cíceros Didot i una tolerància (/llindarIDEM) .05 hi ha 27 mesures coincidents entre punts Didot i mm
+%% amb 60 cíceros Didot i una tolerància (/llindarIDEM) .04 hi ha 22 mesures coincidents entre punts Didot i mm
+%% amb 60 cíceros Didot i una tolerància (/llindarIDEM) .03 hi ha 16 mesures coincidents entre punts Didot i mm
+%% amb 60 cíceros Didot i una tolerància (/llindarIDEM) .02 hi ha 11 mesures coincidents entre punts Didot i mm
+%% amb 60 cíceros Didot i una tolerància (/llindarIDEM) .01 hi ha 6 mesures coincidents entre punts Didot i mm
+(\n\n\n>>> Amb 60 cíceros Didot i amb una tolerància de... )print flush llindarIDEM 6 string cvs print flush ( ...punts de PICA PS hi han... )print flush
+aCoincidencies length 3 string cvs print flush
+( ...mesures coincidents amb punts Didot vs mm\n\n\n)print flush
+
+showpage
+
