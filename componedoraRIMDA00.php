@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
  putenv('reng=');  // M2
  putenv('cos=');  // M3
 
-
+ 
  // capturem les variables de la URL
 
  $mesura=$_GET['mesura'];  // M1
@@ -54,7 +54,7 @@ $baseurlPDF = "http://localhost/www.ub.edu/tallerdetipografia/caixista/pdfs/";  
 $PSapplet = $somaPS . "tallerdetipografia_componedoraRIMDA00.ps";
 
 // i la cridarem després de l'execució
-$pdfnomes = $PDFunic . "_tallerdetipografia_componedoraRIMDA00.pdf";
+$pdfnomes = $PDFunic . "_tallerVirtualDeTipografia_componedoraRIMDA00.pdf";
 $pdfFile = $somaPDF . $pdfnomes;
 
 
@@ -81,9 +81,10 @@ if(false)
  // mètode normal de llistat del prompt
  $LaDarrera = system($command, $ElQtorna);
 
+ echo '<br>' . $ElQtorna . '<br></pre>';
+
  exit("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
 
- echo '</pre>';
 }
 else
 {  // aquest és un mètode per capturar el prompt i presentar-lo embolicat d'html
@@ -102,7 +103,8 @@ else
 // o hi hagi un error al nom o el fitxer .ps a interpretar no tingui prous permisos (oju amb el chmod), també genera un valor de 1!
 // si torna 0 és que el .ps s'ha executat sense errors
 
-// exit("...que ha fet?");
+//@SOM aquí
+//exit($ElQtorna . " ...que ha fet?");
 
 // com avaluem si s'ha generat el pdf correctament?
 if ($ElQtorna == 127)
@@ -157,7 +159,7 @@ echo "</body></html>";
 	  //$pr3mpt = mb_convert_encoding($prompt, "ISO-8859-1", "auto");
 	  //echo mb_internal_encoding($prompt);
 
-// si cancel·lem ens en anem aquí * i si fem OK anem el PDF que s'ha generat amb un nom únic
+// si cancel·lem ens en anem aquí * i si fem OK anem cap al PDF que s'ha generat amb un nom únic
 echo "<script>if (window.confirm('" . $pr0mpt . "')) {window.location.href='$baseurlPDF$pdfnomes';};</script>";
 
 
