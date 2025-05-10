@@ -1,30 +1,102 @@
 %!
 %% cridat per componedoraRIMDA00.php
-%% URLs tipus:
+%% URL tipus:
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13c8p&cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)
 
 %(\n\nB O N   D I A  !\n\n) print flush
 %(B [O] N =  D I A  !\n\n) print flush
 
 %% capturem les variables d'entorn provinents de componedoraRIMDA00.php 
-%(MRCT_cos)
-%(MRCT_mesura)
-(MRCT_reng) getenv
+(MRCT_cos)  getenv  %% la variable d'entorn existeix?
+{  %% existeix perquè l'hem inicialitzat via php i hauria de dur una string amb valors
+  dup length 0 eq
+ {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a cos=
+    %% ara cal gestionar aquest primer nivell d'error de sintaxi
+/HIHAcos false def
+%cosNOEXISTEIXoesBUIDA!
+ }
+ {  %% té dades perquè l'executem via php mètode $_POST o via URL php amb paràmetres mètode $_GET
+  %cvx exec  %% és una string que hem d'avaluar si el que duu és correcte per un segon nivell d'error de sintaxi
+/HIHAcos true def
+%cosAVEUREQUEDUUS?
+ }ifelse
+}
+{  %% NO existeix perquè estem executant l'applet en local via Terminal per línia de comanda
+cosVIAterminal!
+}ifelse
+
+(MRCT_mesura)  getenv  %% la variable d'entorn existeix?
+{  %% existeix perquè l'hem inicialitzat via php i hauria de dur una string amb valors
+ dup length 0 eq
+ {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a mesura=
+    %% ara cal gestionar aquest primer nivell d'error de sintaxi
+/HIHAmesura false def
+%mesuraNOEXISTEIXoesBUIDA!
+ }
+ {  %% té dades perquè l'executem via php mètode $_POST o via URL php amb paràmetres mètode $_GET
+  %cvx exec  %% és una string que hem d'avaluar si el que duu és correcte per un segon nivell d'error de sintaxi
+/HIHAmesura true def
+%mesuraAVEUREQUEDUUS?
+ }ifelse
+}
+{  %% NO existeix perquè estem executant l'applet en local via Terminal per línia de comanda
+mesuraVIAterminal!
+}ifelse
+
+(MRCT_reng) getenv  %% la variable d'entorn existeix?
+{  %% existeix perquè l'hem inicialitzat via php i hauria de dur una string amb valors
+ dup length 0 eq
+ {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a reng=
+    %% ara cal gestionar aquest primer nivell d'error de sintaxi
+/HIHAreng false def
+%rengNOEXISTEIXoesBUIDA!
+ }
+ {  %% té dades perquè l'executem via php mètode $_POST o amb URL php amb paràmetres mètode $_GET
+  %cvx exec  %% és una string que hem d'avaluar si el que duu és correcte per un segon nivell d'error de sintaxi
+/HIHAmesura true def
+%rengAVEUREQUEDUUS?
+ }ifelse
+}
+{  %% NO existeix perquè estem executant l'applet en local via Terminal per línia de comanda
+rengVIAterminal!
+}ifelse
+
+%% buffer de missatges per la finestra del prompt JS
+/tOU 1024 string def  %% una cadena amb capacitat de sobres
+tOU /NullEncode filter /fotli exch def  %% l'string com a fitxer d'escriptura
+
+%% filtrem els errors de sintaxi dels noms i existència de les 3 variables
+HIHAcos HIHAmesura HIHAreng and and
+{  %% hi són totes 3
+}
+{  %% almenys en falla 1
+ fotli (ERROR DE SINTAXI A LES VARIABLES:\\n\\n)writestring
+
+ HIHAcos not
+ {
+  fotli (cos\\n)writestring
+ }if
+
+ HIHAmesura not
+ {
+  fotli (mesura\\n)writestring
+ }if
+
+ HIHAreng not
+ {
+  fotli (reng\\n)writestring
+ }if
+ fotli (\\n\\( o no l\\'hem escrita, o no l\\'hem escrita bé, o no hem escrit el = o no l\\'hem escrit enganxat a la variable, o no hem escrit el &, o la variable no té cap valor associat \\))writestring
+}ifelse
+
+%% filtrem els errors de sintaxi dels noms de les Mesures de Blancs
+
+%% filtrem els errors de sintaxi dels valors de les Mesures de Blancs
+
+%% filtrem els errors de mesura
 
 %% fem que surti l'error al prompt de la web?
-%{
-
-% 200 200 200 200 rectfill
-% showpage
-
-%%+ un error de sintaxi és el millor mètode per provocar que tota l'stack quedi plasmada al prompt html que canalitzem via php
-% AEIOU %% ?
-%}stopped
-%{
-% (EMveus?) pstack
-%}if
-
-pop %% ignorem el seu estatus
+{
 
 %%PODEM llistar una string via funcions JS alert() o window.confirm() o window.prompt()
 %% amb = que ignora els () i amb == que es veuen
@@ -32,16 +104,66 @@ pop %% ignorem el seu estatus
 %% tou de text admès:
 %% fins a 1000 caràcters, prou bé
 %% \\r \\n \\t  són equivalents!
-(0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::100::\\n0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::200::\\n\\n0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::300::\\r0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::400::\\r\\r0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::500\\n\\t0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::600\\n\\n\\t\\t0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::7000123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::800::0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::900::0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::1000)
+%% JS no interpreta ni CSS ni HTML
+%% ens cal formatar un text molt bàsic per informar dels errors comesos
 
-==  %% just el que necessita el JS per fer el prompt
+%(0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::100::\\n0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::200::\\n\\n0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::300::\\r0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::400::\\r\\r0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::500\\n\\t0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::600\\n\\n\\t\\t0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::7000123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::800::0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::900::0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789::1000\000\000)
 
+%(\\000\\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n)
 
+fotli dup flushfile closefile
+tOU
 
+%% just el que necessita el JS per fer el prompt
+=  %% treu tot el contingut de la cadena interpretant els retorns de carro correctament
+%% == %% treu la cadena amb el () sense interpretar el seu interior 
 
 %%Operadors a qui no agrada a les funcions JS alert() o window.confirm()
 %% pstack / stack
 %%EN CANVI:
 %% = i ==
 %% deixa que les funcions de JS ens anotin tot el valor de l'stack via la variable $prompt de componedoraRIMDA00.php
+
+
+%%ERRORS A GESTIONAR per ordre de prioritat
+%% DE SINTAXI DINS LA URL
+  %% a la manca de variables | al nom de les variables | a la sintaxi amb = &
+    %% com es produeix?
+    %% qui ho detecta?
+    %% com ho informem?
+    %% cap a on deriva?
+  %% a la sintaxi del nom de les Mesures de Blancs
+    %% com es produeix
+    %% qui ho detecta?
+    %% com ho informem?
+    %% cap a on deriva?
+  %% a la sintaxi dels valors de les Mesures de Blancs
+    %% com es produeix
+    %% qui ho detecta?
+    %% com ho informem?
+    %% cap a on deriva?
+%% DE MESURES
+  %% la peça de Mesura de Blancs no es troba dins de la taula
+    %% com es produeix 
+    %% qui ho detecta?
+    %% com ho informem?
+    %% cap a on deriva?
+  %% la suma de Mesures de Blanc supera o no arriba al valor exacte (llindar d'1 punt?) de la variable mesura
+    %% com es produeix
+    %% qui ho detecta?
+    %% com ho informem?
+    %% cap a on deriva?
+
+
+ 200 200 200 200 rectfill
+ showpage
+
+
+%%+ un error de sintaxi és el millor mètode per provocar que tota l'stack quedi plasmada al prompt html que canalitzem via php
+% AEIOU %% ?
+
+}stopped
+{
+ (EMveus?) pstack
+}if
 

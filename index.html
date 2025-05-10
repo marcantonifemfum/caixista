@@ -96,7 +96,7 @@ article
 <article>
 
 <h2 style="color: #ff0000">componedoraRIMDA00</h2>
-Primera versió pel Taller Virtual de Tipografia de la componedora d'una sola línia amb només Mesures de Blancs.
+Primera versió pel <i>Taller Virtual de Tipografia en Plom (RIMDA 2024DIG-UB/005)</i> de la componedora d'una sola línia amb només Mesures de Blancs. Tot el codii font que es desenvolupi per aquest projecte el trobareu al repositori…<br><a href="https://github.com/marcantonifemfum/caixista" target="_blank">https://github.com/marcantonifemfum/caixista</a>
 
 <br><br>
 <h3>UNITATS</h3>
@@ -149,11 +149,12 @@ Són 3 les variables (notació en vermell) que, de moment, configuren la composi
 
 <br>
 <h3>SINTAXI</h3>
-Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adreça) que executa el navegador d'Internet, concretant el seu comportament en relació a la seva notació, ordre dins la línia i toleràncies.<br><br>
+Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adreça) que executa el navegador d'Internet, concretant el seu comportament en relació a la seva notació, ordre dins la línia, toleràncies i errors.<br><br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">componedoraRIMDA00.php?</span><br>
 <span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament</span><br>
 <span style="color: #777777"><i>Ordre</i>: s'escriu enganxat a la… / …al final del primer tram de l'adreça…<br>https://www.ub.edu/tallerdetipografia/caixista/</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: no en té</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: podem escriure un o més espais en blanc després de… <span style="color: #ff0000">?</span></span><br>
+<span style="color: #777777"><i>Errors</i>: el servidor pot dir-nos que no troba l'adreça</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;espai en blanc<br>
 <span style="color: #777777"><i>Notació</i>: s'escriu amb la barra espaiadora. Pot mutar cap a la seva notació hexadecimal… %20</span><br>
@@ -167,28 +168,33 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 <br>
 &nbsp;&nbsp;&nbsp;caràcter <span style="color: #ff0000">&</span><br>
 <span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament</span><br>
-<span style="color: #777777"><i>Ordre</i>: precedeix, enganxat, a les variables… mesura, cos, reng …sempre que no vagin al principi de tot després de… componedoraRIMDA00.php?</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: li poden precedir un o més espais en blanc?</span><br>
+<span style="color: #777777"><i>Ordre</i>: precedeix, enganxat o no, a les variables… <span style="color: #ff0000">&</span>mesura <span style="color: #ff0000">&</span>cos <span style="color: #ff0000">&</span>reng</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot ignorar-se al principi de tot després de… <span style="color: #ff0000">componedoraRIMDA00.php?</span> …i pot escriure's amb un o més espais en blanc pel davant o pel darrera</span><br>
+<span style="color: #777777"><i>Errors</i>: si s'ignora pot produir un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;caràcter <span style="color: #ff0000">=</span><br>
 <span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament</span><br>
-<span style="color: #777777"><i>Ordre</i>: segueix, enganxat?, a les variables… mesura, cos, reng</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur, abans o després, espais en blanc?</span><br>
+<span style="color: #777777"><i>Ordre</i>: ha de seguir enganxat a les variables… mesura<span style="color: #ff0000">=</span> cos<span style="color: #ff0000">=</span> reng<span style="color: #ff0000">=</span></span><br>
+<span style="color: #777777"><i>Toleràncies</i>: tot seguit i abans d'escriure els valors pot dur espais en blanc</span><br>
+<span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">mesura</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit d'un… = …i precedit d'un… & …tret que sigui la primera variable que va després del… ?</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit sense espais d'un… <span style="color: #ff0000">=</span> …i precedit d'un… <span style="color: #ff0000">&</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: no en té</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot ignorar el… <span style="color: #ff0000">&</span> que el precedeix si és la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
+<span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">cos</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit d'un… = …i precedit d'un… & …tret que sigui la primera variable que va després del… ?</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit sense espais d'un… <span style="color: #ff0000">=</span> …i precedit d'un… <span style="color: #ff0000">&</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: no en té</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot ignorar el… <span style="color: #ff0000">&</span> que el precedeix si és la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
+<span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">reng</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit d'un… = …i precedit d'un… & …tret que sigui la primera variable que va després del… ?</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit sense espais d'un… <span style="color: #ff0000">=</span> …i precedit d'un… <span style="color: #ff0000">&</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: no en té</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot ignorar el… <span style="color: #ff0000">&</span> que el precedeix si és la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
+<span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;parèntesi i dades a dins <span style="color: #ff0000">()</span><br>
 <span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament i actua com a contenidor de dades d'ample de les Mesures de Blanc. Les dades del seu interior juguen amb valors numèrics, unitats o instruccions de gir</span><br>
@@ -196,23 +202,23 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. La sintaxi del seu interior també permet espais en blanc?</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">/interlinia</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… () …amb el seu valor d'ample</span><br>
-<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… reng …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb el seu valor dins</span><br>
+<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">/llengot</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… () …amb el seu valor d'ample</span><br>
-<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… reng …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb el seu valor dins</span><br>
+<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">/espai</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… () …amb el seu valor d'ample</span><br>
-<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… reng …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb el seu valor dins</span><br>
+<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">/imposicio</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… () …amb el seu valor d'ample</span><br>
-<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… reng …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb el seu valor dins</span><br>
+<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;girar la peça <span style="color: #ff0000">g</span><br>
@@ -235,7 +241,7 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 <h3>REPRESENTACIÓ GRÀFICA DEL RESULTAT</h3>
 
 &nbsp;&nbsp;&nbsp;format de pàgina<br>
-<span style="color: #777777">L'encaix del resultat en PDF de la componedora serà en un format DIN a partir de l'A4, sigui horitzontal o vertical, per facilitar la seva impressió.</span>
+<span style="color: #777777">L'encaix del resultat en PDF de la componedora serà en un format DIN a partir de l'A4, sigui horitzontal o vertical, per facilitar la seva reproducció a mida real i la impressió en paper en impressores estàndard.</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;colors de les Mesures de Blancs<br>
 <span style="color: #777777">El codi de colors per representar les diverses Mesures de Blancs és:<br>
@@ -263,20 +269,28 @@ La componedoraRIMDA00 treballa amb un navegador d'Internet i facilita una mínim
 &nbsp;&nbsp;&nbsp;escala<br>
 <span style="color: #777777">Sempre es treballa a mida real (100%)</span>
 <br><br>
-&nbsp;&nbsp;&nbsp;toleràncies i errors de sintaxi<br>
-<span style="color: #777777">hum hum</span>
+&nbsp;&nbsp;&nbsp;toleràncies, errors de sintaxi i avisos<br>
+<span style="color: #777777">Hi ha dues menes de toleràncies: en relació als amidaments i en relació a la sintaxi. Superar el seus límits generarà errors d'execució i/o avisos que canalitzarem de diveres formes. Intentarem descriure-les a mida que avanci el desenvolupament:<br>
+&nbsp;&nbsp;&nbsp;<i>Toleràncies d'amidament</i><br>
+…<br>
+&nbsp;&nbsp;&nbsp;<i>Toleràncies de sintaxi</i><br>
+…
+</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;amidaments<br>
-<span style="color: #777777">hum hum</span>
+<span style="color: #777777">La precisió de càlcul i mesura en les mètriques aplicades a les peces del taller virtual pot ser tant precisa com es necessiti en la pràctica real del taller de tipografia i ja ha estat descritat en l'apartat UNITATS.<br>
+Els amidaments fets sobre el paper imprès del resultat en PDF …<br>
+Els amidaments fets sobre la pantalla del PDF …<br>
+Els valors d'amidament expressats numèricament …</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;anotacions<br>
-<span style="color: #777777">hum hum</span>
+<span style="color: #777777">Farem servir les anomendes anotacions de PDF per donar informació addicional …</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;capes<br>
-<span style="color: #777777">hum hum</span>
+<span style="color: #777777">Farem servir les capes de PDF per aïllar visualment o a l'hora d'imprimir, determinats elements del resultat gràfic …</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;metadades<br>
-<span style="color: #777777">hum hum</span>
+<span style="color: #777777">Per tal de conservar els paràmetres d'execució i/o determinats resultats que puguin ser útils, facilitant el seu trasllat a una base de dades, podrem fer ús de metadades en diversos formats i estratègies de desat …</span>
 <br>
 
 <br>

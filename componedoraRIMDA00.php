@@ -22,8 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
  putenv('reng=');  // M2
  putenv('cos=');  // M3
 
+ //SNRD inicialitzem la galeta/variable de l'hora del client
+ putenv('MRCT_qhe=');
  
  // capturem les variables de la URL
+ // minimitzem el trànsit de dades a través de variables d'entorn i així ens estalviem d'escriure les dades a disc
+ // de manera que, un cop capturades les variables de la URL, en fem un putenv de cadascuna, per després
+ // llegir-les de dins el .ps a través de l'operador getenv del GS
 
  $mesura=$_GET['mesura'];  // M1
  //echo($mesura.'<br>');
@@ -151,7 +156,7 @@ echo "</body></html>";
 //exit('  <<<< COMPINTA?');
 
 	 // exit("QUEFA? ".$pr0mpt);
-	  $pr1mpt = ltrim($pr0mpt);
+	 // $pr1mpt = ltrim($pr0mpt);  // ltrim sembla que no li cal
  // exit($prompt);
  // echo "<script>alert('" . "$pr0mpt" . "');</script>";
 
@@ -163,12 +168,6 @@ echo "</body></html>";
 echo "<script>if (window.confirm('" . $pr0mpt . "')) {window.location.href='$baseurlPDF$pdfnomes';};</script>";
 
 
-//@RIMDAUB * aquí és on ens en anem si cancel·lem
-// si pot ser útil fer una captura de la URL aquí tenim el mètode, però:
-$url =  "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-// tenint en compte de si s'afegeixen dues barres // al principi de l'adreça (en localhost passa) que cal eliminar si volem que la URL sigui útil
-// tenint en compte també que la notació d'aquesta string segueix la pauta de p.e. esciure els espais en blanc com a %20 (el seu valor hexa)
-echo($url);
 
 // aquí potser caldria fer un breu resum de la sintaxi, en comptes de posar cap enllaç a enlloc
 
@@ -202,15 +201,22 @@ echo($url);
  }
  else
  { // podem provocar errors executant sense interfície amb només comandes via URL (captura GET)
-
+  // aquí també hi arriben els errors de sintax PostScript
 //@RIMDAUB en el cas que manqui o hi hagi un error al nom del directori de sortida /pdfs o el fitxer .ps a interpretar no tingui prous permisos, genera un valor de 1!
 
+
+//@RIMDAUB * aquí és on ens en anem si cancel·lem
+// si pot ser útil fer una captura de la URL aquí tenim el mètode, però:
+$url =  "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+// tenint en compte de si s'afegeixen dues barres // al principi de l'adreça (en localhost passa) que cal eliminar si volem que la URL sigui útil
+// tenint en compte també que la notació d'aquesta string segueix la pauta de p.e. esciure els espais en blanc com a %20 (el seu valor hexa)
+$urlplana = urldecode($url);  // aplanem la URL per tal que p.e. els espais en blanc no surtin com a %20
 
   // aquí llistem l'ERROR del prompt i demanem que s'enviï
   echo "<center><span style='color:#ff0000;font-family:monospace;font-size:24px'><br><br>&gt;&gt;&gt; ERROR d'execuci&oacute; de l'algorisme &lt;&lt;&lt;</span>";
   echo "<br><br><span style='color:#999999;font-family:monospace;font-size:24px'>".$prompt." + ".$ElQtorna."<br></span>";
 //@RIMDAUB localhost
-  exit("<br><p><br><p><span style='color:#ff0000;font-family:monospace;font-size:24px'><a style='color:#ff0000;font-family:monospace;font-size:24px' href='mailto:marcantoni.malagarriga.picas@ub.edu'>podeu documentar-nos l'error via email? (copieu i enganxeu el text en gris) gr&agrave;cies!</a><br><br><a style='color:#ff0000;font-family:monospace;font-size:18px' href='$baseURL'>Torneu a executar</a></span></center>");
+  exit("<br><p><br><p><span style='color:#ff0000;font-family:monospace;font-size:24px'><a style='color:#ff0000;font-family:monospace;font-size:24px' href='mailto:marcantoni.malagarriga.picas@ub.edu'>podeu documentar-nos l'error via email? (copieu i enganxeu el text en gris) gr&agrave;cies!</a><br><br><a style='color:#0000ff;font-family:monospace;font-size:18px' href='$baseURL'>Podeu tornar a la pàgina d'inici o esmenar l'error de la URL corregint la línia que heu executat...</a></span><br><pre style='color:#ff0000;font-family:monospace;font-size:14px'>http:$urlplana</pre></center>");
  }
 
  echo "</body></html>";
