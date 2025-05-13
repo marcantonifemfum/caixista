@@ -12,17 +12,20 @@
   dup length 0 eq
  {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a cos=
     %% ara cal gestionar aquest primer nivell d'error de sintaxi
-/HIHAcos false def
+  pop /HIHAcos false def
 %cosNOEXISTEIXoesBUIDA!
  }
  {  %% té dades perquè l'executem via php mètode $_POST o via URL php amb paràmetres mètode $_GET
   %cvx exec  %% és una string que hem d'avaluar si el que duu és correcte per un segon nivell d'error de sintaxi
-/HIHAcos true def
+  /cosVAL exch def
+  /HIHAcos true def
 %cosAVEUREQUEDUUS?
  }ifelse
 }
 {  %% NO existeix perquè estem executant l'applet en local via Terminal per línia de comanda
-cosVIAterminal!
+%cosVIAterminal!
+ 8 /cosVAL exch def
+ /HIHAcos true def
 }ifelse
 
 (MRCT_mesura)  getenv  %% la variable d'entorn existeix?
@@ -30,17 +33,20 @@ cosVIAterminal!
  dup length 0 eq
  {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a mesura=
     %% ara cal gestionar aquest primer nivell d'error de sintaxi
-/HIHAmesura false def
+  pop /HIHAmesura false def
 %mesuraNOEXISTEIXoesBUIDA!
  }
  {  %% té dades perquè l'executem via php mètode $_POST o via URL php amb paràmetres mètode $_GET
   %cvx exec  %% és una string que hem d'avaluar si el que duu és correcte per un segon nivell d'error de sintaxi
-/HIHAmesura true def
+  /mesuraVAL exch def
+  /HIHAmesura true def
 %mesuraAVEUREQUEDUUS?
  }ifelse
 }
 {  %% NO existeix perquè estem executant l'applet en local via Terminal per línia de comanda
-mesuraVIAterminal!
+%mesuraVIAterminal!
+ 100 /mesuraVAL exch def
+ /HIHAmesura true def
 }ifelse
 
 (MRCT_reng) getenv  %% la variable d'entorn existeix?
@@ -48,55 +54,498 @@ mesuraVIAterminal!
  dup length 0 eq
  {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a reng=
     %% ara cal gestionar aquest primer nivell d'error de sintaxi
-/HIHAreng false def
+  pop /HIHAreng false def
 %rengNOEXISTEIXoesBUIDA!
  }
  {  %% té dades perquè l'executem via php mètode $_POST o amb URL php amb paràmetres mètode $_GET
   %cvx exec  %% és una string que hem d'avaluar si el que duu és correcte per un segon nivell d'error de sintaxi
-/HIHAmesura true def
+  /rengVAL exch def
+  /HIHAreng true def
 %rengAVEUREQUEDUUS?
  }ifelse
 }
 {  %% NO existeix perquè estem executant l'applet en local via Terminal per línia de comanda
-rengVIAterminal!
+%rengVIAterminal!
+ (/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5C) /espai(18))
+ /rengVAL exch def
+ /HIHAreng true def
 }ifelse
 
 %% buffer de missatges per la finestra del prompt JS
 /tOU 1024 string def  %% una cadena amb capacitat de sobres
 tOU /NullEncode filter /fotli exch def  %% l'string com a fitxer d'escriptura
 
+/hihaERROR false def  %% gatell per saber si hem de generar o no el PDF gràfic amb el reng
+
 %% filtrem els errors de sintaxi dels noms i existència de les 3 variables
 HIHAcos HIHAmesura HIHAreng and and
 {  %% hi són totes 3
 }
 {  %% almenys en falla 1
- fotli (ERROR DE SINTAXI A LES VARIABLES:\\n\\n)writestring
+ /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+
+ fotli (ERROR DE SINTAXI AL NOM DE LES VARIABLES:\\n\\n)writestring
 
  HIHAcos not
  {
-  fotli (cos\\n)writestring
+  fotli (>> cos\\n)writestring
  }if
 
  HIHAmesura not
  {
-  fotli (mesura\\n)writestring
+  fotli (>> mesura\\n)writestring
  }if
 
  HIHAreng not
  {
-  fotli (reng\\n)writestring
+  fotli (>> reng\\n)writestring
  }if
- fotli (\\n\\( o no l\\'hem escrita, o no l\\'hem escrita bé, o no hem escrit el = o no l\\'hem escrit enganxat a la variable, o no hem escrit el &, o la variable no té cap valor associat \\))writestring
+ fotli (\\n<< o no l\\'hem escrita, o no l\\'hem escrita bé, o no hem escrit el… = …o no l\\'hem escrit enganxat a la variable, o no hem escrit el… & …o la variable no té cap valor associat >>)writestring
 }ifelse
 
-%% filtrem els errors de sintaxi dels noms de les Mesures de Blancs
+%% filtrem els errors de sintaxi del valor de cos
+HIHAcos
+{  %% si hi ha cos
+ {  %% stopped
+  mark
+  cosVAL cvx exec
+  counttomark 1 eq
+  {  %% només cal comprovar que sigui un enter
+   type /integertype ne
+   {  %% no és un enter
+    %% només cal comprovar que no dugui cap valor decimal diferent de zero
+    cosVAL (.) search
+    {
+     pop pop cvx exec 0 ne
+     {  %% duu un valor decimal diferent de zero, condició NO contemplada ara mateix per un valor del cos
+      fotli (\\n\\nERROR DE SINTAXI AL VALOR DE LA VARIABLE cos:\\n\\n)writestring
+      fotli (>> hi heu introduït un valor decimal diferent de zero)writestring
+      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+     }if
+    }if
+   }if
+  }
+  {  %% si hi ha més d'1 element numèric cal veure què fem
+   fotli (\\n\\nERROR DE SINTAXI AL VALOR DE LA VARIABLE cos:\\n\\n)writestring
+   fotli (>> hi heu introduït més d\\'una xifra)writestring
+   /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+  }ifelse
+  cleartomark
+ }stopped
+ {  %% no és cap numèric o duu algun element estrany afegit
+  fotli (\\n\\nERROR DE SINTAXI AL VALOR DE LA VARIABLE cos:\\n\\n)writestring
+  fotli (>> hi heu introduït algun caràcter no numèric)writestring
+  cleartomark
+  /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+ }if
+}if
 
-%% filtrem els errors de sintaxi dels valors de les Mesures de Blancs
+%% filtrem els errors de sintaxi del valor de mesura
+HIHAmesura
+{  %% si hi ha mesura
+ {  %% stopped
+  mark
+  mesuraVAL cvx exec
+  counttomark 1 eq
+  {  %% només cal comprovar que sigui un enter
+   type /integertype ne
+   {  %% no és un enter
+    %% només cal comprovar que no dugui cap valor decimal diferent de zero
+    mesuraVAL (.) search
+    {
+     pop pop cvx exec 0 ne
+     {  %% duu un valor decimal diferent de zero, condició NO contemplada ara mateix per un valor del cos
+      fotli (\\n\\nERROR DE SINTAXI AL VALOR DE LA VARIABLE mesura:\\n\\n)writestring
+      fotli (>> hi heu introduït un valor decimal diferent de zero)writestring
+      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+     }if
+    }if
+   }if
+  }
+  {  %% si hi ha més d'1 element numèric cal veure què fem
+   fotli (\\n\\nERROR DE SINTAXI AL VALOR DE LA VARIABLE mesura:\\n\\n)writestring
+   fotli (>> hi heu introduït més d\\'una xifra)writestring
+   /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+  }ifelse
+  cleartomark
+ }stopped
+ {  %% no és cap numèric o duu algun element estrany afegit
+  fotli (\\n\\nERROR DE SINTAXI AL VALOR DE LA VARIABLE mesura:\\n\\n)writestring
+  fotli (>> hi heu introduït algun caràcter no numèric)writestring
+  /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+  cleartomark
+ }if
+}if
 
-%% filtrem els errors de mesura
+HIHAcos HIHAmesura and
+{  %% només té sentit si cos i mesura existeixen
 
-%% fem que surti l'error al prompt de la web?
+HIHAreng
+{  %% si hi ha reng
+ <<  %% diccionari per comprovar cap error en el nom de les peces de Mesures de Blancs
+   /interlinia null
+   /llengot null
+   /espai null
+   /imposicio null
+ >> /nBlancs exch def
+
+ %% com que són petites ens podem permetre de regenerar les arrays de les taules de Mesures de Blancs, sempre bevent d'una mateixa font de dades
+ <<  %% diccionari d'on tenim desades les taules de blancs
+   /espai (mesuresBlancs_espais_quadratins_quadrats_pastells.ps) (r) file cvx exec
+   /llengot (mesuresBlancs_llengots.ps) (r) file cvx exec
+   /interlinia (mesuresBlancs_interlinies.ps) (r) file cvx exec
+   /imposicio (mesuresBlancs_imposicions.ps) (r) file cvx exec
+ >> /tBlancs exch def
+
+
+ mark
+% {  %% stopped
+  %% filtrem errors de sintaxi de claus sense el / o valors fora de ()
+  rengVAL cvx exec
+
+  %% filtrem errors de sintaxi d'aparellament de valors
+  counttomark 2 mod 0 eq
+  {  %% les dades de reng van aparellades
+%%NO podem desar les dades del reng en un dict perquè es cavalcaran els noms de les claus!!!!
+   ] /Areng exch def  %% desem les dades del reng en una array pel seu anàlisi
+   [  %% array dels valors de la variable reng amb els elements de Mesures de Blancs aparellats en arrays de 2 /nomDelBlanc (valor)
+    Areng dup length 1 sub 0 exch 2 exch
+    {
+     1 index exch 2 getinterval exch
+    }for
+    pop
+   ]
+
+   {  %% forall per cadascuna de les arrays amb els parells /nomDelBlanc (valor) 
+    %% filtrem els errors de sintaxi dels noms de les Mesures de Blancs
+    dup 0 get nBlancs exch known
+    {  %% el nom està ben escrit
+     %% no caldrà filtrar els errors de sintaxi dels valors de les Mesures de Blancs perquè l'algorisme sintaxiDunitats.ps només considera els valors útils per compondre
+     %% ignorant tota la resta de caràcters sobrers, llavors només cadrà filtrar si els valors de la peça existeixen dins les taules de Mesures de Blancs
+     %% i si no exiteix cal decidir què fem: saltar al valor més proper o no generar el PDF amb el reng
+
+%%Algorisme sintaxiDunitats.ps
+     /AparellMB exch def  %% desem l'array del parell /nomDelBlanc (valor)
+
+%% fem que la sintaxi que descriu cadascuna de les peces de mesures de blanc sigui prou flexible i simple
+%% llegim caràcter a caràcter provinent de les variables de la URL que ha de compondre la línia
+%% el forall llegeix els caràcters de l'string i avalua el què cal fer
+%% p i P punts
+%% c i C cíceros
+%% g i G girar 90 graus
+%% / tocarà dividir pel dígit següent
+%% 2 3 4 dígits divisors precedits per /
+%% 1 digit a eliminar quan forma part d'una fracció 1/2 1/3 1/4
+%% l'espai en blanc (32), com a separador, o qualsevol altre caràcter que no sigui els ja citats
+
+%% gatells
+/cos false def  %% gatell que activa el fet que ja haguem definit el cos de la peça
+/gruix false def  %% gatell que activa el fet que ja haguem definit el gruix de la peça
+
+/ivalor 0 def  %% comptem quants valors de mesura hem desat
+/units false def  %% gatell per saber si s'han definit les unitats
+/digit false def  %% gatell per saber si estem construint un dígit de mesura
+/frcc false def  %% gatell per saber si ens cal escriure el procediment divisor de la fracció
+
+/hies [] def  %% array per consultar si la peça existeix (ha de ser sense girar!)
+/peçaD [] def  %% array per desar l'alt i gruix definitiu que farà la peça en punts Didot abans de pintar-la (per tant ja ha d'estar girada si duu g o G?)
+
+%% reescrivim en una string el valor numèric de la peça
+/NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts (mai un motlle farà més de 3 metres!) o procediments tipus... {2 div}
+NMRC /NullEncode filter /fNMRC exch def
+
+%% exemples de sintaxi d'1 sola peça a llegir
+%% podrem simplificant la sintaxi amb només 1 valor (tret de les que aniran girades) perquè el cos ha de ser idèntic per totes les peces del reng
+%(  26  54 )  %% FUNCIONA dos enters separats per qualsevol nombre d'espais en blanc, entremig o al davant o al darrere, i sense unitats (llavors són punts)
+%(!!tsts 26  @  )  %% FUNCIONA un sol enter separat per qualsevol nombre d'espais en blanc o altres caràcters, al davant o al darrere, i sense unitats (llavors són punts)
+%(09 58 C)  %% FUNCIONA tot separat sense unitats el cos i gruix si (llavors són punts)
+%(09 58C)  %% FUNCIONA
+%( 09 c 58 c )  %% FUNCIONA
+%(09 c 58 c)  %% FUNCIONA
+%(0009c 58c)  %% FUNCIONA posem el buffer a 8 dígits
+%(98p51P )  %% FUNCIONA tota mena de combinació d'espai i caixes
+%(66c77 p)  %% FUNCIONA tota mena de combinació d'espai i caixes
+%% FUNCIONA tota mena de combinació d'espai i caixes
+%(26p54Pg)  %% tot junt caixes diferents d'unitats i gir
+%(2 c 2 C G)  %% tot separat caixes diferents d'unitats i gir
+%(26p54Pg)  %% tot enganxat caixes diferents d'unitats i gir
+%(26 54G)  %% tot enganxat caixes diferents falta una unitat però amb gir
+%(#26 !  p 54kG)  %% espaiats diferents i altres caràcters que NO llegim
+%(14 1/2g)  %% les tres fraccions divisores del cos que donen l'amplada de la peça
+%(1/2)  %% a /hies evitem d'escriure l'1 i expressem el divisor amb {2 div}
+%(14 1/3)
+%(14 1/4)
+%(8p1/2P180g)  %% aquesta sintaxi ja serviria per peces que no fossin blancs
+     AparellMB 1 get  %% l'string amb el valor
+
+{  %% forall lector del valor d'ample d'1 peça
+
+ %% dígits numèrics de zero a nou
+ %% 48 49 50 51 52 53 54 55 56 57  %% de 0 a 9
+ dup 48 ge 1 index 57 le and  %% és un dígit numèric?
+ {
+%(ES UN DIGIT NUMERIC!)==  %quit
+  digit
+  {  %% seguim escrivint sobre el buffer
+   frcc
+   {
+    ({  div}) dup 3 -1 roll 1 exch put
+    fNMRC exch writestring
+    /frcc false def
+   }
+   {
+    fNMRC exch write
+   }ifelse
+  }
+  {  %% inicialitzem el buffer
+   fNMRC exch write  %% escriur el valor numèric de la peça,. dígit a dígit
+
+   /digit true def  %% gatell per saber si estem construint un dígit de mesura
+   /units false def
+   /sp false def
+  }ifelse
+ }
+ {
+  %% 112 p i 80 P
+  dup 112 eq 1 index 80 eq or  %% és un dígit d'unitat punts?
+  {
+%(SON PUNTS)==  %quit
+
+   %% desem el dígit allà on toqui
+   %fNMRC dup flushfile closefile NMRC == quit
+
+   %% reescrivim en una string les unitats del valor numèric de la peça
+   %/UNTTS 1 string def
+   %UNITS /NullEncode filter /fUNTTS exch def
+
+   digit
+   {
+    ivalor 1 add /ivalor exch def
+    fNMRC dup flushfile closefile  %% fluxem el fitxer per tancar el valor de la cadena
+    %% desem la mesura a l'array de consulta a les taules de peces en blanc existents
+    hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+    dup araVa NMRC cvx exec put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+    %% inicialitzem la cadena d'escriptura dels valors numèrics
+    /NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+    NMRC /NullEncode filter /fNMRC exch def
+   }if
+
+   /digit false def  %% gatell per saber si estem construint un dígit de mesura
+   /units true def
+   /sp false def
+
+   hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+   dup araVa /p put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+  }
+  {
+   %% 99 c i 67 C
+   dup 99 eq 1 index 67 eq or  %% és un dígit d'unitat cíceros?
+   {
+%hies ==
+%ivalor ==
+%(SON CICEROS)== %quit
+%    %% desem el dígit allà on toqui
+%    fNMRC dup flushfile  %closefile
+%NMRC == quit
+
+    digit
+    {
+     ivalor 1 add /ivalor exch def
+     fNMRC dup flushfile closefile  %% fluxem el fitxer per tancar el valor de la cadena
+     %% desem la mesura a l'array de consulta a les taules de peces en blanc existents
+     hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+     dup araVa NMRC cvx exec put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+     %% inicialitzem la cadena d'escriptura dels valors numèrics
+     /NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+     NMRC /NullEncode filter /fNMRC exch def
+    }if
+
+    /digit false def  %% gatell per saber si estem construint un dígit de mesura
+    /units true def
+    /sp false def
+
+    %% reescrivim en una string les unitats del valor numèric de la peça
+%    /UNITS 1 string def
+%    UNITS /NullEncode filter /fUNTTS exch def
+
+    hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+    dup araVa /c put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+   }
+   {
+    %% / 47
+    dup 47 eq  %% és una barra que precedeix un dígit de fracció?
+    {
+     pop
+     %% per eliminar l'1 de la fracció inicialitzem la cadena/fitxer d'escriptura dels valors numèrics
+     /NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+     NMRC /NullEncode filter /fNMRC exch def
+%(FRACCIO)==  %quit
+     /digit true def  %% gatell per saber si estem construint un dígit de mesura
+     /frcc true def  %% gatell per saber que el proper enter ha de dividir el cos
+    }
+    {
+     %% 103 g i 71 G
+     dup 103 eq 1 index 71 eq or  %% és un dígit per girar la peça?
+     {
+%(GIREM)==  %quit
+      %% desem el dígit allà on toqui
+      %fNMRC dup flushfile closefile NMRC == quit
+
+      digit
+      {
+       ivalor 1 add /ivalor exch def
+       fNMRC dup flushfile closefile  %% fluxem el fitxer per tancar el valor de la cadena
+       %% desem la mesura a l'array de consulta a les taules de peces en blanc existents
+       hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+       dup araVa NMRC cvx exec put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+       %% inicialitzem la cadena d'escriptura dels valors numèrics
+       /NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+       NMRC /NullEncode filter /fNMRC exch def
+      }if
+
+      /digit false def  %% gatell per saber si estem construint un dígit de mesura
+      /units true def
+      /sp false def
+
+      hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+      dup araVa /g put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+     }
+     {  %% pot ser un espai en blanc separador o qualsevol altre caràcter que no contemplem però que, de moment, podem donar com a equivalent a un separador
+%(UN ESPAI EN BLANC O UN CARACTER DESCONEGUT)==
+      pop  %% de moment, no l'analitzem
+      digit
+      {  %% sempre que abans haguem llegit el dígit d'un valor (evita l'error quan hi ha 1 o més espais en blanc o caràcters desconeguts)
+
+       ivalor 2 eq not
+       {
+
+        ivalor 1 add /ivalor exch def
+        fNMRC dup flushfile closefile  %% fluxem el fitxer per tancar el valor de la cadena
+        %% desem la mesura a l'array de consulta a les taules de peces en blanc existents
+        hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+        dup araVa NMRC cvx exec put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+        %% inicialitzem la cadena d'escriptura dels valors numèrics
+        /NMRC 8 string def  %% aquesta string, com a molt poc, contindrà punts i mai un motlle farà més de 3 metres!
+        NMRC /NullEncode filter /fNMRC exch def
+
+       }if
+      }if
+
+      /digit false def  %% gatell per saber si estem construint un dígit de mesura
+      /sp true def
+
+     }ifelse  %% és un dígit per girar la peça o una altra cosa?
+    }ifelse  %% és un dígit de fració o una altra cosa?
+   }ifelse  %% és la unitat cíceros o una altra cosa?
+  }ifelse  %% és la unitat punts o una altra cosa?
+ }ifelse  %% és un dígit numèric o una altra cosa?
+
+}forall  %% forall lector del valor d'ample d'1 peça
+
+%% cal posar un avaluador de quan fem això!
+fNMRC dup flushfile closefile  %% fluxem el fitxer per tancar el valor de la cadena
+
+0 NMRC
+{  %% el buffer és buit?
+ add
+}forall
+
+0 ne
 {
+ %% desem la mesura a l'array de consulta a les taules de peces en blanc existents
+ hies dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem l'array
+ dup araVa NMRC cvx exec put /hies exch def  %% hi incrustem el nou valor numèric desat dins la cadena i el tornem a desar
+}if
+
+%hies  %% aquest és el resultat de l'algorisme sintaxiDunitats.ps
+%% l'string del valor de la peça de la variable reng es converteix en una array amb aquestes possibles sintaxis:
+%% un element:
+%% () es converteix en []
+%% dos elements:
+%% () es converteix en []
+%% tres elements:
+%% () es converteix en []
+%% quatre elements:
+%% () es converteix en []
+%% cinc elements:
+%% () es converteix en []
+
+%% fora d'aquest repertori hem de donar error de sintaxi? …com el detectem?
+%% hi ha la casuística del gir que fa evident que només un ample que valgui el mateix que el cos pot ser admisible de girar (en realitat un quadratí)
+
+%%La peça existeix dins les taules de Mesures de Blancs?
+%% si no exiteix cal decidir què fem: saltar al valor més proper o no generar el PDF amb el reng
+
+tBlancs AparellMB 0 get get  %% aquí la taula de peces de blanc a cercar
+dup length  %% ens assegurem que no cridarem més enllà de l'índex permès
+cosVAL cvx exec cvi dup /icos exch def  %% ens assegurem que sigui un enter
+le
+{  %% el cos va més enllà de l'índex permès, llavors no existeix
+ (NO EXISTEIX DONCS ES FORA D'INDEX)
+}
+{  %% potser pot existir
+ icos get dup null eq
+ {  %% no existeix
+  pop (AQUEST COS NO EXISTEIX)
+ }
+ {  %% comprovem si l'ample existeix
+  /pecesDELcos exch def  %% desem la línia d'amples de peces del cos existents en aquesta mesura de blancs
+%% però abans ens cal saber si les unitats coincideixen
+
+  hies length 1 eq
+  {  %% si només duu 1 sol element vol dir que no duu unitats, llavors són punts
+(DUU UN SOL ELEMENT)
+   pecesDELcos 0 get /p eq  %% quina és la unitat dels amples d'aquest cos?
+   {
+    (L'AMPLE TAMBE SON PUNTS)
+   }
+   {
+(L'AMPLE SON CICEROS)
+   }ifelse
+  }
+  {  %% si duu més d'1 element
+(DUU MES D'1 ELEMENT)
+  }ifelse
+
+ }ifelse
+}ifelse
+
+(- - - - - - - - -)hies {{}forall}forall TOPALL
+
+     %% fi de l'algorisme sintaxiDunitats.ps
+    }
+    {  %% el nom està mal escrit
+%% aturem la feina o acabem de filtrar-ho tot?
+     fotli (\\n\\nERROR DE SINTAXI EN EL NOM D'UNA PEÇA A LA VARIABLE reng:\\n\\n)writestring
+     0 get 128 string cvs fotli exch writestring
+     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+    }ifelse
+
+   }forall  %% per cadascuna de les arrays amb els parells /nomDelBlanc (valor)
+
+  }
+  {  %% les dades de reng van desaparellades
+   fotli (\\n\\nERROR DE SINTAXI EN ALGUN DELS VALORS DE LA VARIABLE reng:\\n\\n)writestring
+   fotli (>> hi ha alguna peça de Mesures de Blancs desaparellada: nom sense el seu valor o viceversa)writestring
+   cleartomark
+   /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+  }ifelse
+% }stopped
+% {
+%  fotli (\\n\\nERROR DE SINTAXI EN ALGUN DELS VALORS DE LA VARIABLE reng:\\n\\n)writestring
+%  fotli (>> hi ha algun nom d\\'alguna peça de Mesures de Blancs sense el… / …o algun dels seus valors no duu parèntesi)writestring
+%  cleartomark
+%  /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+% }if
+}if  %% si hi ha reng
+
+}if  %% només té sentit si cos i mesura existeixen
+
+%% filtrem els errors de mesura en la composició
+
+
+
+{  %% stopped
 
 %%PODEM llistar una string via funcions JS alert() o window.confirm() o window.prompt()
 %% amb = que ignora els () i amb == que es veuen
@@ -111,6 +560,7 @@ HIHAcos HIHAmesura HIHAreng and and
 
 %(\\000\\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n\000\000\000\000\000\000\000\000\\n)
 
+%% fem que surti l'error al prompt de la web?
 fotli dup flushfile closefile
 tOU
 

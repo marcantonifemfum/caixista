@@ -1,6 +1,5 @@
 %!
 %% fem que la sintaxi que descriu cadascuna de les peces de mesures de blanc sigui prou flexible i simple
-
 %% llegim caràcter a caràcter provinent de les variables de la URL que ha de compondre la línia
 
 %% el forall llegeix els caràcters de l'string i avalua el què cal fer
@@ -47,7 +46,7 @@
 NMRC /NullEncode filter /fNMRC exch def
 
 %% exemples de sintaxi d'1 sola peça a llegir
-%% podrem simplificant la sintaxi amb només 1 valor (tret d eles que aniran girades) perquè el cos ha de ser idèntic per totes les peces del reng
+%% podrem simplificant la sintaxi amb només 1 valor (tret de les que aniran girades) perquè el cos ha de ser idèntic per totes les peces del reng
 %(  26  54 )  %% FUNCIONA dos enters separats per qualsevol nombre d'espais en blanc, entremig o al davant o al darrere, i sense unitats (llavors són punts)
 %(!!tsts 26  @  )  %% FUNCIONA un sol enter separat per qualsevol nombre d'espais en blanc o altres caràcters, al davant o al darrere, i sense unitats (llavors són punts)
 %(09 58 C)  %% FUNCIONA tot separat sense unitats el cos i gruix si (llavors són punts)
@@ -58,7 +57,7 @@ NMRC /NullEncode filter /fNMRC exch def
 %(98p51P )  %% FUNCIONA tota mena de combinació d'espai i caixes
 %(66c77 p)  %% FUNCIONA tota mena de combinació d'espai i caixes
 %% FUNCIONA tota mena de combinació d'espai i caixes
-%(26p54Pg)  %% tot separat caixes diferents d'unitats i gir
+%(26p54Pg)  %% tot junt caixes diferents d'unitats i gir
 %(2 c 2 C G)  %% tot separat caixes diferents d'unitats i gir
 %(26p54Pg)  %% tot enganxat caixes diferents d'unitats i gir
 %(26 54G)  %% tot enganxat caixes diferents falta una unitat però amb gir
