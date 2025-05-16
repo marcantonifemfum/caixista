@@ -138,10 +138,10 @@ Cadascuna de les peces de Mesures de Blancs té un nom propi (notació en vermel
 Són 3 les variables (notació en vermell) que, de moment, configuren la composició de Mesures de Blancs en una sola línia. A l'apartat de SINTAXI se'n concreta el comportament. Aquí es descriuen breument:<br><br>
 
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">mesura</span><br>
-<span style="color: #777777">És el valor únic de la llargada de línia que es vol compondre, segons les unitats que haguem triat. És un valor absolut que hauria de coincidir amb la suma de valors de la variable <i>reng</i>.</span>
+<span style="color: #777777">És el valor únic de la llargada de línia que es vol compondre, segons les unitats que haguem triat. És un valor absolut que hauria de coincidir amb la suma de valors d'ample de cadascuna de les peces crites a la variable <i>reng</i>.</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">cos</span><br>
-<span style="color: #777777">És un valor únic del cos de totes les peces que configuren el <i>reng</i> a compondre.</span>
+<span style="color: #777777">És un valor únic del cos per totes les peces que configuren el <i>reng</i> a compondre.</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">reng</span><br>
 <span style="color: #777777">Diversos valors descriuen les peces de Mesures de Blancs que formen la línia a compondre. La suma de valors d'ample de cadascuna de les peces hauria de coincidir amb el valor de la variable <i>mesura</i>.</span>
@@ -179,63 +179,68 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 <span style="color: #777777"><i>Toleràncies</i>: tot seguit i abans d'escriure els valors pot dur espais en blanc</span><br>
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
-&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">mesura</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit sense espais d'un… <span style="color: #ff0000">=</span> …i precedit d'un… <span style="color: #ff0000">&</span></span><br>
+&nbsp;&nbsp;&nbsp;variable <span style="color: #ff0000">mesura</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguit, sense espais, d'un… <span style="color: #ff0000">=</span> …amb un valor numèric, seguit o no d'unitats, que determinarà l'espai disponible de les peces a compondre dins la línia</span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot ignorar el… <span style="color: #ff0000">&</span> que el precedeix si és la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
+<span style="color: #777777"><i>Toleràncies</i>: es pot ignorar el… <span style="color: #ff0000">&</span> …que el precedeix, sempre que sigui la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
-&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">cos</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit sense espais d'un… <span style="color: #ff0000">=</span> …i precedit d'un… <span style="color: #ff0000">&</span></span><br>
+&nbsp;&nbsp;&nbsp;variable <span style="color: #ff0000">cos</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguit, sense espais, d'un… <span style="color: #ff0000">=</span> …amb un valor numèric, seguit o no d'unitats, que determinarà el cos de les peces a composar en tota la línia</span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot ignorar el… <span style="color: #ff0000">&</span> que el precedeix si és la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
+<span style="color: #777777"><i>Toleràncies</i>: es pot ignorar el… <span style="color: #ff0000">&</span> …que el precedeix, sempre que sigui la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
-&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">reng</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament, seguit sense espais d'un… <span style="color: #ff0000">=</span> …i precedit d'un… <span style="color: #ff0000">&</span></span><br>
+&nbsp;&nbsp;&nbsp;variable <span style="color: #ff0000">reng</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguit, sense espais, d'un… <span style="color: #ff0000">=</span> …amb la descripció de valors aparellats /nomDeLaPeça () de les peces que compondran la línia</span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot ignorar el… <span style="color: #ff0000">&</span> que el precedeix si és la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
+<span style="color: #777777"><i>Toleràncies</i>: es pot ignorar el… <span style="color: #ff0000">&</span> …que el precedeix, sempre que sigui la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/interlinia</span><br>
+<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb els seus valors a dins</span><br>
+<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/llengot</span><br>
+<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb els seus valors a dins</span><br>
+<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/espai</span><br>
+<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb els seus valors a dins</span><br>
+<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/imposicio</span><br>
+<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb els seus valors a dins</span><br>
+<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;parèntesi i dades a dins <span style="color: #ff0000">()</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament i actua com a contenidor de dades d'ample de les Mesures de Blanc. Les dades del seu interior juguen amb valors numèrics, unitats o instruccions de gir</span><br>
+<span style="color: #777777"><i>Notació</i>: els parèntesi actuen com a contenidor de dades del cos i l'ample de cada peça de Mesures de Blanc. Al seu interior hi juguen valors numèrics amb unitats i ordres de rotació de la peça. Uns exemples significatius:<br>
+&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">(8 24)</span> …la peça és a cos 8 (ha de coincidir amb el valor de &cos=) i el seu ample és de 24. Les unitats, com que no s'esmeten, són punts<br>
+&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">(24 p)</span> …expressant l'ample de la peça, 24, n'hi ha prou. Doncs el cos ja ve determinat per la variable &cos= i les unitats (en aquest cas punts) poden seguir al valor numèric, enganxades o no<br>
+&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">(24p 5c g)</span> …aquí és obligatori posar el cos i l'ample de la peça, doncs li segueix una instrucció de gir. Al rotar la peça voldrà dir que, un cop composada, l'ample 5c passarà a ser el cos i el cos 24p passarà a ser l'ample. Llavors 5c haurà de coincidir amb el valor de la variable &cos= que, si es vol, podrà expressar-se en punts, o sigui 60p<br>
+&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">(1/2)</span> …per establir l'ample de la peça divideix per dos el valor de la variable &cos= i si el seu valor fos 48 equivaldria a la notació del segon exemple (24p)
+</span><br>
 <span style="color: #777777"><i>Ordre</i>: segueix sempre a un nom de les Mesures de Blancs</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. La sintaxi del seu interior també permet espais en blanc?</span><br>
-<br>
-&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">/interlinia</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb el seu valor dins</span><br>
-<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
-<br>
-&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">/llengot</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb el seu valor dins</span><br>
-<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
-<br>
-&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">/espai</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb el seu valor dins</span><br>
-<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
-<br>
-&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">/imposicio</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb el seu valor dins</span><br>
-<span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
-<br>
-&nbsp;&nbsp;&nbsp;girar la peça <span style="color: #ff0000">g</span><br>
-<span style="color: #777777"><i>Notació</i>: capgira els valors, de manera que el cos passa a ser l'ample i viceversa. És obligatori que precedeixi els dos valors de cos i ample (sense invertir). No duu cap valor de gir perquè sempre fa una rotació de 90 graus que és irrellevant per l'aspecte d'una peça de blanc</span><br>
-<span style="color: #777777"><i>Ordre</i>: sempre va a la cua dels valors de cos i ample (sense invertir), just abans de tancar el parèntesi… )</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… G</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur o no, un o més espais en blanc abans o després de <span style="color: #ff0000">()</span>. La sintaxi del seu interior també permet espais en blanc i canvis de caixa de <span style="color: #ff0000">c</span> i <span style="color: #ff0000">C</span>, <span style="color: #ff0000">p</span> i <span style="color: #ff0000">P</span>, <span style="color: #ff0000">g</span> i <span style="color: #ff0000">G</span></span><br>
 <br>
 &nbsp;&nbsp;&nbsp;unitat cícero <span style="color: #ff0000">c</span><br>
 <span style="color: #777777"><i>Notació</i>: pot determinar un valor d'ample, però també un cos</span><br>
 <span style="color: #777777"><i>Ordre</i>: segueix al valor numèric que representa, que mai no durà decimals</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… C</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">C</span></span><br>
 <br>
 &nbsp;&nbsp;&nbsp;unitat punt <span style="color: #ff0000">p</span><br>
 <span style="color: #777777"><i>Notació</i>: pot determinar un valor de cos, però també un ample</span><br>
 <span style="color: #777777"><i>Ordre</i>: segueix al valor numèric que representa, que mai no durà decimals</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot ignorar-se i llavors el valor numèric sempre s'entendrà que treballa en punts. Pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… P</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot ignorar-se i llavors el valor numèric sempre s'entendrà que treballa en punts. Pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">P</span></span><br>
+<br>
+&nbsp;&nbsp;&nbsp;girar la peça <span style="color: #ff0000">g</span><br>
+<span style="color: #777777"><i>Notació</i>: capgira els valors, de manera que el cos passa a ser l'ample i viceversa. És obligatori que precedeixi els dos valors de cos i ample (sense invertir). No duu cap valor de gir perquè sempre fa una rotació de 90 graus on, per ser un blanc, el sentit és irrellevant</span><br>
+<span style="color: #777777"><i>Ordre</i>: sempre va a la cua dels valors de cos i ample (sense invertir), just abans de tancar el parèntesi… <span style="color: #ff0000">)</span></span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">G</span></span><br>
 <br>
 
 <br>
@@ -291,7 +296,7 @@ Els valors d'amidament expressats numèricament …</span>
 <span style="color: #777777">Farem servir les capes de PDF per aïllar visualment o a l'hora d'imprimir, determinats elements del resultat gràfic …</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;metadades<br>
-<span style="color: #777777">Per tal de conservar els paràmetres d'execució i/o determinats resultats que puguin ser útils, facilitant el seu trasllat a una base de dades, podrem fer ús de metadades en diversos formats i estratègies de desat …</span>
+<span style="color: #777777">Per tal de conservar els paràmetres d'execució i/o determinats resultats que puguin ser útils dins del PDF, facilitant el seu trasllat a una base de dades, podrem fer ús de metadades en diversos formats i estratègies de desat …</span>
 <br>
 
 <br>

@@ -103,6 +103,7 @@ HIHAcos HIHAmesura HIHAreng and and
  fotli (\\n<< o no l\\'hem escrita, o no l\\'hem escrita bé, o no hem escrit el… = …o no l\\'hem escrit enganxat a la variable, o no hem escrit el… & …o la variable no té cap valor associat >>)writestring
 }ifelse
 
+%%TANT cos COM mesura HAURIEN DE FILTRAR-SE AMB L'ALGORISME QUE DÓNA COM A RESULTAT hies DONCS PODEN DUR UNITATS I CARÀCTERS ERRONIS I MÉS ENDAVANT D'ALTRES VALORS
 %% filtrem els errors de sintaxi del valor de cos
 HIHAcos
 {  %% si hi ha cos
@@ -140,6 +141,7 @@ HIHAcos
  }if
 }if
 
+%%TANT cos COM mesura HAURIEN DE FILTRAR-SE AMB L'ALGORISME QUE DÓNA COM A RESULTAT hies DONCS PODEN DUR UNITATS I CARÀCTERS ERRONIS I MÉS ENDAVANT D'ALTRES VALORS
 %% filtrem els errors de sintaxi del valor de mesura
 HIHAmesura
 {  %% si hi ha mesura
@@ -179,6 +181,9 @@ HIHAmesura
 
 HIHAcos HIHAmesura and
 {  %% només té sentit si cos i mesura existeixen
+
+
+
 
 HIHAreng
 {  %% si hi ha reng
@@ -458,6 +463,19 @@ fNMRC dup flushfile closefile  %% fluxem el fitxer per tancar el valor de la cad
 }if
 
 %hies  %% aquest és el resultat de l'algorisme sintaxiDunitats.ps
+%% hi ha un parell d'exemples possibles per implicar almenys 1 element de cadascuna de les 4 taules de blancs:
+%% &cos=72&mesura=151p&reng=/espai(36 72 g)/interlinia(1p6C g)/llengot(18P6Cg)/imposicio (8c)
+%% &cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(18 6cG)/llengot(6p 6Cg)/imposicio(60c)
+
+%% coses a tenir en compte en la interpretació, peça a peça, del que es compondrà al reng:
+%% primer ens cal saber si la peça descrita exiteix dins la taula corresponent
+%% per saber-ho necessitem normalitzar les dades tal i com estan descrites a la taula, això és: el cos actuarà d'índex dins l'array de la taula
+%% i l'ample s'haurà de trobar dins d'aquest array localitzat per l'índex (si localitza un null voldrà dir que l'array d'amples per aquest cos no existeix)
+%% ens cal doncs tenir aquestes dues dades, cos i ample, amb les mateixes unitats que s'expressen a la taula (descrites a l'índex 0 de cadascuna)
+%% això pot significar que s'hagi descrit les peces del reng cos/mesura en unitats diferents al que haurem de consultar a la taula i caldrà normalitzar-ho
+%% un cop comprovat que la peça existeix a la taula, cal fer les conversions pertinents a punts de Pica PS i aplicar les intruccions de gir si existeixen
+%% per tal es pugui executar un resultat gràfic en PDF
+
 %% l'string del valor de la peça de la variable reng es converteix en una array amb aquestes possibles sintaxis:
 %% un element:
 %% () es converteix en []
@@ -510,7 +528,7 @@ le
  }ifelse
 }ifelse
 
-(- - - - - - - - -)hies {{}forall}forall TOPALL
+(- - - - - - - - -) hies == TOOOOOOPALL
 
      %% fi de l'algorisme sintaxiDunitats.ps
     }
