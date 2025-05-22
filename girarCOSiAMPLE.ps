@@ -1,0 +1,62 @@
+%!
+%% redefinir /g per tal de girar el cos i l'ample, amb unitats o sense, d'una array de dades de les peces de Mesures de Blanc en tots els casos
+%% desant a /uAmple el literal de les unitats d'ample i a /vAmple el valor d'ample en aquestes mateixes unitats
+
+%% hi ha 6 comportaments diferenciats per si hi ha 1, 2, 3 o 4 elements dins l'array, amb unitats o sense:
+
+[
+ 24
+
+%[
+% 24
+% 100
+
+%[
+% 24
+% /p
+
+%[
+% 24
+% /p
+% 100
+
+%[
+% 24
+% 100
+% /p
+
+%[
+% 24
+% /c
+% 100
+% /p
+
+ %% capgira els elements fent que el cos sigui l'ample i viceversa, amb unitats o sense
+     %% hi ha 6 comportaments diferenciats per si hi ha 1, 2, 3 o 4 elements dins l'array, amb unitats o sense:
+     counttomark 3 eq
+     {
+      dup type /nametype eq
+      {
+       3 1 roll 3 1 roll
+      }
+      {
+       3 1 roll
+      }ifelse
+     }
+     {
+      counttomark 4 eq
+      {
+       4 1 roll 4 1 roll
+      }
+      {  %% és de 2 o 1
+       counttomark 2 eq
+       {
+        dup type /nametype ne
+        {
+         exch
+        }if
+       }if
+      }ifelse
+     }ifelse
+
+pstack

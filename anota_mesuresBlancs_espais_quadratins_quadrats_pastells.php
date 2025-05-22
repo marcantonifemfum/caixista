@@ -10,7 +10,7 @@
 
   // si posem </pre> ens llistarà els missatges respectant la sintaxi que ve del PS
   // anotem el contingut de la taula d'interlínies en format PS
-  echo "<center><span style='color:#ff0000;font-family:monospace;font-size:24px'><br><br>&gt;&gt;&gt; Taula de Mesures Blancs Espais, Quadratins, Quadrats i Pastells &lt;&lt;&lt;</span></center>";
+  echo "<center><span style='color:#ff0000;font-family:monospace;font-size:24px'><br><br>&gt;&gt;&gt; Taula de Mesures Blancs d'Espais, Quadratins, Quadrats i Pastells &lt;&lt;&lt;</span></center>";
   //echo "<br><br><span style='color:#999999;font-family:monospace;font-size:24px'>".$prompt." + ".$ElQtorna."<br></span></center>";
 
    echo "<pre style='color:#999999;font-family:monospace;font-size:24px;padding-left: 2em'>";

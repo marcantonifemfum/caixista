@@ -1,0 +1,63 @@
+%!
+%% de cara a normalitzar el format pel fet que permetem a la URL que no cal posar les unitats /p quan treballem amb punts
+
+mark  %% per tornar a tancar l'array normalitzada
+
+%% casuística
+%[
+% 24
+%]
+
+%[
+% 24
+% 100
+%]
+
+%[
+% 24
+% /p
+%]
+
+%[
+% 24
+% /p
+% 100
+%]
+
+%[
+% 24
+% 100
+% /c
+%]
+
+[
+ 24
+ /c
+ 100
+ /p
+]
+
+/esVAL false def  %% gatell per saber si hem ventat un valor, quan sigui a true i haguem llegit de nou un altre numèric /integertype voldrà dir que li manquen les unitats /p
+{  %% forall que explora una array amb els valors de cos i ample d'una peça i detecta si a cap dels valors li falten les unitats /p afegint-les
+ dup type /integertype eq
+ {
+  esVAL
+  {
+   /p exch
+  }if
+  /esVAL true def  %% gatell per saber si hem fet un valor
+ }
+ {
+  /esVAL false def  %% gatell per saber si hem fet un valor
+ }ifelse
+}forall
+
+esVAL
+{
+ /p
+}if
+
+]  %% tanquem l'array de nou
+
+pstack
+

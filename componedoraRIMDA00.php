@@ -216,7 +216,7 @@ $urlplana = urldecode($url);  // aplanem la URL per tal que p.e. els espais en b
   echo "<center><span style='color:#ff0000;font-family:monospace;font-size:24px'><br><br>&gt;&gt;&gt; ERROR d'execuci&oacute; de l'algorisme &lt;&lt;&lt;</span>";
   echo "<br><br><span style='color:#999999;font-family:monospace;font-size:24px'>".$prompt." + ".$ElQtorna."<br></span>";
 //@RIMDAUB localhost
-  exit("<br><p><br><p><span style='color:#ff0000;font-family:monospace;font-size:24px'><a style='color:#ff0000;font-family:monospace;font-size:24px' href='mailto:marcantoni.malagarriga.picas@ub.edu'>podeu documentar-nos l'error via email? (copieu i enganxeu el text en gris) gr&agrave;cies!</a><br><br><a style='color:#0000ff;font-family:monospace;font-size:18px' href='$baseURL'>Podeu tornar a la pàgina d'inici o esmenar l'error de la URL corregint la línia que heu executat...</a></span><br><pre style='color:#ff0000;font-family:monospace;font-size:14px'>http:$urlplana</pre></center>");
+  exit("<br><p><br><p><span style='color:#ff0000;font-family:monospace;font-size:24px'><a style='color:#ff0000;font-family:monospace;font-size:24px' href='mailto:marcantoni.malagarriga.picas@ub.edu'>podeu documentar-nos l'error via email? (copieu i enganxeu el text en gris) gr&agrave;cies!</a><br><br><a style='color:#0000ff;font-family:monospace;font-size:18px' href='$baseURL'>Podeu tornar a la pàgina d'inici o esmenar l'error de la URL corregint la línia que heu executat...</a></span><br><pre style='color:#ff0000;font-family:monospace;font-size:16px'>http:$urlplana</pre></center>");
  }
 
  echo "</body></html>";

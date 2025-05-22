@@ -96,7 +96,7 @@ article
 <article>
 
 <h2 style="color: #ff0000">componedoraRIMDA00</h2>
-Primera versió pel <i>Taller Virtual de Tipografia en Plom (RIMDA 2024DIG-UB/005)</i> de la componedora d'una sola línia amb només Mesures de Blancs. Tot el codii font que es desenvolupi per aquest projecte el trobareu al repositori…<br><a href="https://github.com/marcantonifemfum/caixista" target="_blank">https://github.com/marcantonifemfum/caixista</a>
+Primera versió pel <i>Taller Virtual de Tipografia en Plom (RIMDA 2024DIG-UB/005)</i> de la componedora d'una sola línia amb només Mesures de Blancs. Tot el codi font que s'escrigui per aquest projecte el trobareu al repositori…<br><a href="https://github.com/marcantonifemfum/caixista" target="_blank">https://github.com/marcantonifemfum/caixista</a>
 
 <br><br>
 <h3>UNITATS</h3>
@@ -152,20 +152,19 @@ Són 3 les variables (notació en vermell) que, de moment, configuren la composi
 Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adreça) que executa el navegador d'Internet, concretant el seu comportament en relació a la seva notació, ordre dins la línia, toleràncies i errors.<br><br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">componedoraRIMDA00.php?</span><br>
 <span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament</span><br>
-<span style="color: #777777"><i>Ordre</i>: s'escriu enganxat a la… / …al final del primer tram de l'adreça…<br>https://www.ub.edu/tallerdetipografia/caixista/</span><br>
+<span style="color: #777777"><i>Ordre</i>: s'escriu enganxat a la… <span style="color: #ff0000">/</span> …al final del primer tram de l'adreça…<br><span style="color: #ff0000">https://www.ub.edu/tallerdetipografia/caixista/</span></span><br>
 <span style="color: #777777"><i>Toleràncies</i>: podem escriure un o més espais en blanc després de… <span style="color: #ff0000">?</span></span><br>
 <span style="color: #777777"><i>Errors</i>: el servidor pot dir-nos que no troba l'adreça</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;espai en blanc<br>
-<span style="color: #777777"><i>Notació</i>: s'escriu amb la barra espaiadora. Pot mutar cap a la seva notació hexadecimal… %20</span><br>
+<span style="color: #777777"><i>Notació</i>: s'escriu amb la barra espaiadora. Pot mutar cap a la seva notació hexadecimal… <span style="color: #ff0000">%20</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: es descriu en cadascun dels elements on es pot usar</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: se'n pot escriure més d'un de seguit allà on és tolerat</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;valors numèrics<br>
-<span style="color: #777777"><i>Notació</i>: decimal, del 0 al 9, sempre enters</span><br>
+<span style="color: #777777"><i>Notació</i>: decimal, del <span style="color: #ff0000">0</span> al <span style="color: #ff0000">9</span>, sempre enters</span><br>
 <span style="color: #777777"><i>Ordre</i>: es descriuen en cadascun dels elements on es poden usar</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: enters amb notació decimal de punt i zero, com… 9.0 …són permesos</span><br>
-<span style="color: #777777"><i>Errors</i>: no es permeten valors decimals diferents de zero</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: malgrat es pot fer servir la notació decimal, amb un… <span style="color: #ff0000">.</span> …com a separador, treballant amb punts i cíceros Didot mai es tindran en compte els decimals, de manera que, per exemple… <span style="color: #ff0000">9.9</span> …passarà a ser… <span style="color: #ff0000">9</span></span><br>
 <br>
 &nbsp;&nbsp;&nbsp;caràcter <span style="color: #ff0000">&</span><br>
 <span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament</span><br>
@@ -180,65 +179,66 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;variable <span style="color: #ff0000">mesura</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguit, sense espais, d'un… <span style="color: #ff0000">=</span> …amb un valor numèric, seguit o no d'unitats, que determinarà l'espai disponible de les peces a compondre dins la línia</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguida, sense espais, d'un… <span style="color: #ff0000">=</span> …amb un valor numèric, seguit o no d'unitats, que determinarà l'espai disponible de les peces a compondre dins la línia</span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: es pot ignorar el… <span style="color: #ff0000">&</span> …que el precedeix, sempre que sigui la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;variable <span style="color: #ff0000">cos</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguit, sense espais, d'un… <span style="color: #ff0000">=</span> …amb un valor numèric, seguit o no d'unitats, que determinarà el cos de les peces a composar en tota la línia</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguida, sense espais, d'un… <span style="color: #ff0000">=</span> …amb un valor numèric, seguit o no d'unitats, que determinarà el cos de les peces a composar en tota la línia</span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: es pot ignorar el… <span style="color: #ff0000">&</span> …que el precedeix, sempre que sigui la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;variable <span style="color: #ff0000">reng</span><br>
-<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguit, sense espais, d'un… <span style="color: #ff0000">=</span> …amb la descripció de valors aparellats /nomDeLaPeça () de les peces que compondran la línia</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguida, sense espais, d'un… <span style="color: #ff0000">=</span> …amb la descripció de valors aparellats /nomDeLaPeça () de les peces que compondran la línia</span><br>
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: es pot ignorar el… <span style="color: #ff0000">&</span> …que el precedeix, sempre que sigui la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/interlinia</span><br>
-<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb els seus valors a dins</span><br>
+<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/llengot</span><br>
-<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb els seus valors a dins</span><br>
+<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/espai</span><br>
-<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb els seus valors a dins</span><br>
+<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/imposicio</span><br>
-<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint… <span style="color: #ff0000">()</span> …amb els seus valors a dins</span><br>
+<span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
 <br>
-&nbsp;&nbsp;&nbsp;parèntesi i dades a dins <span style="color: #ff0000">()</span><br>
-<span style="color: #777777"><i>Notació</i>: els parèntesi actuen com a contenidor de dades del cos i l'ample de cada peça de Mesures de Blanc. Al seu interior hi juguen valors numèrics amb unitats i ordres de rotació de la peça. Uns exemples significatius:<br>
+&nbsp;&nbsp;&nbsp;parèntesi i valors a dins <span style="color: #ff0000">()</span><br>
+<span style="color: #777777"><i>Notació</i>: els parèntesi actuen com a contenidor de dades del cos i/o l'ample de cada peça de Mesures de Blanc. Al seu interior hi juguen valors numèrics amb unitats i ordres de rotació de la peça. Uns exemples significatius:<br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">(8 24)</span> …la peça és a cos 8 (ha de coincidir amb el valor de &cos=) i el seu ample és de 24. Les unitats, com que no s'esmeten, són punts<br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">(24 p)</span> …expressant l'ample de la peça, 24, n'hi ha prou. Doncs el cos ja ve determinat per la variable &cos= i les unitats (en aquest cas punts) poden seguir al valor numèric, enganxades o no<br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">(24p 5c g)</span> …aquí és obligatori posar el cos i l'ample de la peça, doncs li segueix una instrucció de gir. Al rotar la peça voldrà dir que, un cop composada, l'ample 5c passarà a ser el cos i el cos 24p passarà a ser l'ample. Llavors 5c haurà de coincidir amb el valor de la variable &cos= que, si es vol, podrà expressar-se en punts, o sigui 60p<br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">(1/2)</span> …per establir l'ample de la peça divideix per dos el valor de la variable &cos= i si el seu valor fos 48 equivaldria a la notació del segon exemple (24p)
 </span><br>
 <span style="color: #777777"><i>Ordre</i>: segueix sempre a un nom de les Mesures de Blancs</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur o no, un o més espais en blanc abans o després de <span style="color: #ff0000">()</span>. La sintaxi del seu interior també permet espais en blanc i canvis de caixa de <span style="color: #ff0000">c</span> i <span style="color: #ff0000">C</span>, <span style="color: #ff0000">p</span> i <span style="color: #ff0000">P</span>, <span style="color: #ff0000">g</span> i <span style="color: #ff0000">G</span></span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur o no, un o més espais en blanc abans o després de <span style="color: #ff0000">()</span>. La sintaxi del seu interior també permet espais en blanc i canvis de caixa de <span style="color: #ff0000">c</span> i <span style="color: #ff0000">C</span>, <span style="color: #ff0000">p</span> i <span style="color: #ff0000">P</span>, <span style="color: #ff0000">g</span> i <span style="color: #ff0000">G</span>. Qualsevol altre caràcter diferent als esmentats serà ingnorat</span><br>
+<span style="color: #777777"><i>Errors</i>: es comprovarà l'existència de cada peça a través dels seus valors de cos i ample. Els errors de sintaxi només poden ser provocats per un excés de valors de cos i/o ample</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;unitat cícero <span style="color: #ff0000">c</span><br>
-<span style="color: #777777"><i>Notació</i>: pot determinar un valor d'ample, però també un cos</span><br>
+<span style="color: #777777"><i>Notació</i>: pot determinar un valor d'ample, però també un cos o una mesura</span><br>
 <span style="color: #777777"><i>Ordre</i>: segueix al valor numèric que representa, que mai no durà decimals</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">C</span></span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">C</span> …pot també transformar-se en el seu equivalent en punts… <span style="color: #ff0000">1 c</span> …igual a… <span style="color: #ff0000">12 p</span> …i si s'usen decimals s'ignoraran</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;unitat punt <span style="color: #ff0000">p</span><br>
-<span style="color: #777777"><i>Notació</i>: pot determinar un valor de cos, però també un ample</span><br>
+<span style="color: #777777"><i>Notació</i>: pot determinar un valor de cos, però també un ample o una mesura</span><br>
 <span style="color: #777777"><i>Ordre</i>: segueix al valor numèric que representa, que mai no durà decimals</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot ignorar-se i llavors el valor numèric sempre s'entendrà que treballa en punts. Pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">P</span></span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot ignorar-se i llavors el valor numèric sempre s'entendrà que treballa en punts. Pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">P</span> …i si s'usen decimals s'ignoraran</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;girar la peça <span style="color: #ff0000">g</span><br>
-<span style="color: #777777"><i>Notació</i>: capgira els valors, de manera que el cos passa a ser l'ample i viceversa. És obligatori que precedeixi els dos valors de cos i ample (sense invertir). No duu cap valor de gir perquè sempre fa una rotació de 90 graus on, per ser un blanc, el sentit és irrellevant</span><br>
+<span style="color: #777777"><i>Notació</i>: capgira els valors, de manera que el cos passa a ser l'ample i viceversa. És obligatori que precedeixi els dos valors de cos i ample (sense invertir, tal i com descriuen la peça a la taula de Mesures de Blancs). No duu cap valor de gir perquè sempre fa una rotació de 90 graus on, per ser un blanc, el sentit és irrellevant</span><br>
 <span style="color: #777777"><i>Ordre</i>: sempre va a la cua dels valors de cos i ample (sense invertir), just abans de tancar el parèntesi… <span style="color: #ff0000">)</span></span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">G</span></span><br>
 <br>
@@ -261,16 +261,16 @@ Interlínies en vermell <span style="background-color: #ff0000">&nbsp;&nbsp;&nbs
 </span>
 <br>
 &nbsp;&nbsp;&nbsp;línia de composició<br>
-<span style="color: #777777">L'àrea rectangular de la componedora (cos x ample) on hi haurien d'encaixar perfectament les diverses Mesures de Blancs que es componguin, anirà acolorida en groc <span style="background-color: #ffff00">&nbsp;&nbsp;&nbsp;&nbsp;</span> S'hi ajustarà per dalt una regla de mesura en cíceros/punts Didot i per baix una regla de mesura en cm/mm.</span>
+<span style="color: #777777">L'àrea rectangular de la componedora <span style="color: #ff0000">&cos=</span> x <span style="color: #ff0000">&mesura=</span> on hi haurien d'encaixar perfectament les diverses peces del <span style="color: #ff0000">&reng=</span> de Mesures de Blancs que es componguin, anirà acolorida en or vell <span style="background-color: #efb34a">&nbsp;&nbsp;&nbsp;&nbsp;</span> S'hi ajustarà per dalt una regla en cíceros/punts Didot i per baix una regla en cm/mm.</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;regles<br>
-<span style="color: #777777">Dinàmicament es generaran unes regles (en cíceros/punts Didot i cm/mm) ajustades a l'ample de composició que s'hagi establert a la variable <i>mesura</i>.</span>
+<span style="color: #777777">Dinàmicament es generaran unes regles (en cíceros/punts Didot i cm/mm) ajustades a l'ample de composició que s'hagi establert a la variable <span style="color: #ff0000">&mesura=</span></span>
 <br>
 
 <br>
 <h3>COMPORTAMENT</h3>
 
-La componedoraRIMDA00 treballa amb un navegador d'Internet i facilita una mínima interfície d'usuari (via intèrpret PHP) dins la mateixa adreça URL, executant uns algorismes componedors escrits en PostScript (via intèrpret Ghostscript), per acabar generant un PDF com a resultat gràfic i/o altres tipus de missatges informatius, com d'errors o comportaments. 
+La componedoraRIMDA00 treballa amb un navegador d'Internet i facilita una mínima interfície d'usuari (via intèrpret PHP) dins la mateixa adreça URL i alguns missatges per pantalla, executant uns algorismes componedors escrits en PostScript (via intèrpret Ghostscript), per acabar generant un PDF com a resultat gràfic i/o altres tipus de missatges informatius, com d'errors o comportaments. 
 <br><br>
 &nbsp;&nbsp;&nbsp;escala<br>
 <span style="color: #777777">Sempre es treballa a mida real (100%)</span>
@@ -278,47 +278,47 @@ La componedoraRIMDA00 treballa amb un navegador d'Internet i facilita una mínim
 &nbsp;&nbsp;&nbsp;toleràncies, errors de sintaxi i avisos<br>
 <span style="color: #777777">Hi ha dues menes de toleràncies: en relació als amidaments i en relació a la sintaxi. Superar el seus límits generarà errors d'execució i/o avisos que canalitzarem de diveres formes. Intentarem descriure-les a mida que avanci el desenvolupament:<br>
 &nbsp;&nbsp;&nbsp;<i>Toleràncies d'amidament</i><br>
-…<br>
+(…per completar…)<br>
 &nbsp;&nbsp;&nbsp;<i>Toleràncies de sintaxi</i><br>
-…
+(…per completar…)
 </span>
 <br><br>
 &nbsp;&nbsp;&nbsp;amidaments<br>
 <span style="color: #777777">La precisió de càlcul i mesura en les mètriques aplicades a les peces del taller virtual pot ser tant precisa com es necessiti en la pràctica real del taller de tipografia i ja ha estat descritat en l'apartat UNITATS.<br>
-Els amidaments fets sobre el paper imprès del resultat en PDF …<br>
-Els amidaments fets sobre la pantalla del PDF …<br>
-Els valors d'amidament expressats numèricament …</span>
+Els amidaments fets sobre el paper imprès del resultat en PDF (…per completar…)<br>
+Els amidaments fets sobre la pantalla del PDF (…per completar…)<br>
+Els valors d'amidament expressats numèricament (…per completar…)</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;anotacions<br>
-<span style="color: #777777">Farem servir les anomendes anotacions de PDF per donar informació addicional …</span>
+<span style="color: #777777">Farem servir les anomendes anotacions de PDF per donar informació addicional (…per completar…)</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;capes<br>
-<span style="color: #777777">Farem servir les capes de PDF per aïllar visualment o a l'hora d'imprimir, determinats elements del resultat gràfic …</span>
+<span style="color: #777777">Farem servir les capes de PDF per aïllar visualment o a l'hora d'imprimir, determinats elements del resultat gràfic (…per completar…)</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;metadades<br>
-<span style="color: #777777">Per tal de conservar els paràmetres d'execució i/o determinats resultats que puguin ser útils dins del PDF, facilitant el seu trasllat a una base de dades, podrem fer ús de metadades en diversos formats i estratègies de desat …</span>
+<span style="color: #777777">Per tal de conservar els paràmetres d'execució i/o determinats resultats que puguin ser útils dins del PDF, facilitant el seu trasllat a una base de dades, podrem fer ús de metadades en diversos formats i estratègies de desat (…per completar…)</span>
 <br>
 
 <br>
 <h3>EXEMPLES</h3>
 
-&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA, amb tot el repertori de toleràncies permeses en la notació de variables i valors (espais, majúscules, absència d'unitats)<br>
-<a href="http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5C) /espai(18)&mesura=13c8P" target="_blank">http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5C) /espai(18)&mesura=13c8P</a>
+&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA, amb tot el repertori de toleràncies permeses en la notació de variables i valors (espais, majúscules, absència d'unitats, caràcters estranys a ignorar)<br>
+<a href="" target="_blank">(…per completar…)</a>
 <br><br>
 &nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA, ídem a l'anterior, optimitzant al màxim espais i notació<br>
-<a href="http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot(6c)/espai(1/4)/espai(1/4)/espai(1/3)/espai(1/2)/espai(12 1/2g)/llengot(5c)/espai(18)&mesura=13c8" target="_blank">http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot(6c)/espai(1/4)/espai(1/4)/espai(1/3)/espai(1/2)/espai(12 1/2g)/llengot(5c)/espai(18)&mesura=13c8</a>
+<a href="" target="_blank">(…per completar…)</a>
 <br><br>
 &nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però IMPRECISA, per superar a<br>
-<a href="http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot(6c)/espai(1/4)/espai(1/4)/espai(1/3)/espai(1/2)/espai(12 1/2g)/llengot(5c)/espai(18)&mesura=13c8" target="_blank">http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot(6c)/espai(1/4)/espai(1/4)/espai(1/3)/espai(1/2)/espai(12 1/2g)/llengot(5c)/espai(18)&mesura=13c8</a>
+<a href="" target="_blank">(…per completar…)</a>
 <br><br>
 &nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però IMPRECISA, per quedar-se curta la<br>
-<a href="http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot(6c)/espai(1/4)/espai(1/4)/espai(1/3)/espai(1/2)/espai(12 1/2g)/llengot(5c)/espai(18)&mesura=13c8" target="_blank">http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot(6c)/espai(1/4)/espai(1/4)/espai(1/3)/espai(1/2)/espai(12 1/2g)/llengot(5c)/espai(18)&mesura=13c8</a>
+<a href="" target="_blank">(…per completar…)</a>
 <br><br>
 &nbsp;&nbsp;&nbsp;Adreça URL ERRÒNIA, per errors de sintaxi a<br>
-<a href="http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)&mesura=13c8p" target="_blank">http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)&mesura=13c8p</a>
+<a href="" target="_blank">(…per completar…)</a>
 <br><br>
 &nbsp;&nbsp;&nbsp;Adreça URL ERRÒNIA, per errors de sintaxi a<br>
-<a href="http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)&mesura=13c8p" target="_blank">http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)&mesura=13c8p</a>
+<a href="" target="_blank">(…per completar…)</a>
 <br><br>
 </article>
 </body>
