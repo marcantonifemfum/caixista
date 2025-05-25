@@ -219,6 +219,7 @@ HIHAcos HIHAmesura HIHAreng and and
    fotli (\\n\\n[#01] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
    fotli (>> no hi ha cap valor vàlid)writestring
    /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(1)pstack  %% marquem on activem els gatells d'error per pentinar
   }
   {
    3 ge
@@ -227,6 +228,7 @@ HIHAcos HIHAmesura HIHAreng and and
     fotli (\\n\\n[#02] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
     fotli (>> hi heu introduït massa valors)writestring
     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(2)pstack  %% marquem on activem els gatells d'error per pentinar
    }
    {
     %% que el primer element no sigui un enter o un real?
@@ -248,6 +250,7 @@ HIHAcos HIHAmesura HIHAreng and and
        fotli (\\n\\n[#03] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
        fotli (>> el segon valor no és cap unitat)writestring
        /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(3)pstack  %% marquem on activem els gatells d'error per pentinar
       }ifelse
      }
      {  %% tot correcte i treballa en punts!
@@ -264,6 +267,7 @@ HIHAcos HIHAmesura HIHAreng and and
      fotli (\\n\\n[#04] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
      fotli (>> el primer valor no és cap numèric)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(4)pstack  %% marquem on activem els gatells d'error per pentinar
     }ifelse
    }ifelse
   }ifelse
@@ -276,7 +280,7 @@ HIHAcos HIHAmesura HIHAreng and and
 
   mesuraVAL  %% l'string amb els valors que, un cop analitzats, es convertiran en l'array hies
 
-  (llegeixValorsDvariables.ps) (r) file cvx exec  %% isembla que és més eficient executar-ho com a fitxer extern
+  (llegeixValorsDvariables.ps) (r) file cvx exec  %% sembla que és més eficient executar-ho com a fitxer extern
 
   cleartomark
 
@@ -289,6 +293,7 @@ HIHAcos HIHAmesura HIHAreng and and
    fotli (\\n\\n[#05] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
    fotli (>> no hi ha cap valor vàlid)writestring
    /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(5)pstack  %% marquem on activem els gatells d'error per pentinar
   }
   {
    3 ge
@@ -298,6 +303,7 @@ HIHAcos HIHAmesura HIHAreng and and
     fotli (\\n\\n[#06] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
     fotli (>> hi heu introduït massa valors)writestring
     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(6)pstack  %% marquem on activem els gatells d'error per pentinar
    }
    {
     %% que el primer element no sigui un enter o un real?
@@ -320,6 +326,7 @@ HIHAcos HIHAmesura HIHAreng and and
        fotli (\\n\\n[#07] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
        fotli (>> el segon valor no és cap unitat)writestring
        /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(7)pstack  %% marquem on activem els gatells d'error per pentinar
       }ifelse
      }
      {  %% tot correcte i treballa en punts!
@@ -337,6 +344,7 @@ HIHAcos HIHAmesura HIHAreng and and
      fotli (\\n\\n[#08] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
      fotli (>> el primer valor no és cap numèric)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(8)pstack  %% marquem on activem els gatells d'error per pentinar
     }ifelse
    }ifelse
   }ifelse
@@ -348,13 +356,6 @@ HIHAcos HIHAmesura HIHAreng and and
 
   HIHAreng
   {  %% si hi ha &reng=
-   <<  %% diccionari per comprovar cap error en el nom literal de les peces de Mesures de Blancs
-     /interlinia null
-     /llengot null
-     /espai null
-     /imposicio null
-   >> /nBlancs exch def
-
    %% com que són petites ens podem permetre de regenerar les arrays de les taules de Mesures de Blancs, sempre bevent d'una mateixa font de dades
    <<  %% diccionari d'on tenim desades les taules de blancs amb els valors de cos i ample de cada peça
      /espai (mesuresBlancs_espais_quadratins_quadrats_pastells.ps) (r) file cvx exec
@@ -388,9 +389,11 @@ HIHAcos HIHAmesura HIHAreng and and
     {
      pop
 %%S'ESDEVÉ si només hi han espais en blanc
+%%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&reng=%20%20%20%20%20%20%20&cos=6c&mesura=300
      fotli (\\n\\n[#09] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &reng=\\n\\n)writestring
      fotli (>> és buida de valors, amb només espais en blanc de teclat o amb notació hexa %20)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(9)pstack  %% marquem on activem els gatells d'error per pentinar
     }
     {
      cleartomark
@@ -414,7 +417,7 @@ HIHAcos HIHAmesura HIHAreng and and
 
       {  %% forall per cadascuna de les arrays de cada peça amb els parells [ /nomDelBlanc (valor) ]
 %%+ filtrem els errors de sintaxi dels noms de les Mesures de Blancs
-       dup 0 get nBlancs exch known
+       dup 0 get tBlancs exch known
        {  %% el nom està ben escrit
         %% no caldrà filtrar els errors de sintaxi dels valors de les Mesures de Blancs perquè llegeixValorsDvariables.ps només considera els valors útils per compondre
         %% ignorant tota la resta de caràcters sobrers, llavors només cadrà filtrar si els valors de la peça existeixen dins les taules de Mesures de Blancs
@@ -436,12 +439,13 @@ HIHAcos HIHAmesura HIHAreng and and
 
 %%+ el valor de la variable &cos= i el cos de la peça (unificant les unitats a punts) coincideixen?
         mark hies  %% aquest és el resultat de l'algorisme llegeixValorsDvariables.ps
-        /girem false def  %% gatell lligat a CONTEXTerrors per saber si hem aplicat g capgirant els valors a l'stack: que el cos passi al lloc de l'ample i viceversa
+        userdict /girem false put  %% gatell lligat a CONTEXTerrors per saber si hem aplicat g capgirant els valors a l'stack: el cos passa al lloc de l'ample i viceversa
         CONTEXTerrors begin {cvx exec}forall end  %% executant els valors hi quedarà el cos i/o l'ample de la peça, sempre en punts
         counttomark 2 eq
         {  %% si té dos elements
-	 girem
+	 userdict /girem get
 	 {  %% si s'ha girat la peça
+          pop hies 0 get  %% ens assegurem que no ha mutat d'unitats, tornant a pescar el valor original del cos de la peça (que actua d'índex) i que ara serà l'ample
           /icosGirat exch def  %% aquest serà el nou ample de la peça però a la taula és el cos que haurem d'anar a buscar per saber si existeix
 	 }
 	 {
@@ -453,8 +457,10 @@ HIHAcos HIHAmesura HIHAreng and and
          exch pop
         }
         {  %% si només n'hi ha un
-         girem
+         userdict /girem get
          {  %% si hi ha una instrucció de gir i la peça només té 1 sol element
+%%S'ESDEVÉ si es compleix el que diu el comentari, sempre que existeixin aquests valors a la taula, tal i com podem veure a l'exemple
+%%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&reng=/imposicio%20(8c%20g)%20&cos=6c&mesura=300
           fotli (\\n\\n[#10] ERROR EN EL GIR D\\'UNA PEÇA DE LA VARIABLE &reng=\\n\\n)writestring
           fotli (>> la peça… )writestring
           fotli (/)writestring fotli AparellMB 0 get 32 string cvs writestring
@@ -467,7 +473,8 @@ HIHAcos HIHAmesura HIHAreng and and
           fotli (])writestring
           fotli ( …només duu el valor d\\'ample i li manca el valor del cos per tal que la instrucció de gir… g …pugui aplicar-se)writestring
           /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-	  /girem false def  %% i desactivarem el gatell
+(10)pstack  %% marquem on activem els gatells d'error per pentinar
+	  userdict /girem false put  %% i desactivarem el gatell
 	 }if
          pop pop true  %% coincideix segur perquè és &cos= qui mana
         }ifelse
@@ -480,21 +487,24 @@ HIHAcos HIHAmesura HIHAreng and and
          dup 0 get  %% literal de les unitats amb què ens cal localitzar el cos
          URLnorm 0 get  %% array del cos i unitats que determina la variable &cos= per totes les peces de la línia
          dup 1 get 3 -1 roll eq
-
          {  %% si les unitats de la variable &cos= i les unitats dels cossos de la taula coincideixen el seu valor ja serveix com a índex per cercar els amples a la taula
           0 get  %% extraiem el valor de &cos=
          }
          {  %% si les unitats de la variable &cos= i les unitats dels cossos de la taula NO coincideixen
           CONTEXTindex begin {cvx exec}forall end  %% llavors el valor de la variable &cos= s'ha de convertir a les unitats dels cossos de la taula
          }ifelse
-         girem
+         userdict /girem get
          {  %% si hem aplicat g serà el cos original (el nou ample) que ha de treballar com a índex
-	  pop icosGirat
+	  pop
+	  icosGirat
          }if
          /icos exch def  %% treballarà com a índex
-         dup length icos lt  %% primer assegurem que no som més enllà de l'índex permès
+         dup length icos
+
+	 le  %% primer assegurem que no som més enllà de l'índex permès
          {  %% la peça d'aquest cos va més enllà de l'índex permès, llavors no existeix
-%%S'ESDEVÉ si ????
+%%S'ESDEVÉ si es compleix el que pòsa el comentari o tal com pot veure's a l'exemple
+%%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&reng=/imposicio%20(61c%20)%20&cos=61c&mesura=300
           fotli (\\n\\n[#11] ERROR EN EL VALOR DEL COS D\\'UNA PEÇA DE LA VARIABLE &reng=\\n\\n)writestring
           fotli (>> el cos… )writestring
           fotli icos 32 string cvs writestring
@@ -509,7 +519,9 @@ HIHAcos HIHAmesura HIHAreng and and
           fotli (])writestring
           fotli ( …no existeix perquè excedeix la taula… )writestring
           fotli tBlancsLiteraris ARAtaula get writestring
+          pop
           /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(11)pstack  %% marquem on activem els gatells d'error per pentinar
          }
          {  %% potser pot existir
           icos get dup null eq 1 index type /nametype eq or
@@ -532,12 +544,13 @@ HIHAcos HIHAmesura HIHAreng and and
            fotli ( …no existeix a la taula… )writestring
            fotli tBlancsLiteraris ARAtaula get writestring
            /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(12)pstack  %% marquem on activem els gatells d'error per pentinar
           }
           {  %% el cos existeix i ara comprovem si l'ample existeix
            dup /pecesDELcos exch def  %% desem l'array d'amples de peces del cos existents en aquesta mesura de blancs
            0 get /uAmples exch def  %% amb quines unitats treballa l'array d'amples?
            %% cerquem quin és el valor /vPample i la unitat /uPample té l'ample de la peça
-           /girem false def  %% gatell lligat a CONTEXTindexAMPLE per saber si hem aplicat g i hem girat els valors cos/ample dins l'array
+           userdict /girem false put  %% gatell lligat a CONTEXTindexAMPLE per saber si hem aplicat g i hem girat els valors cos/ample dins l'array
            [  %% primer apliquem /g, si existeix, de manera que invertim l'ordre dels valors, fent que el cos sigui l'ample i viceversa amb unitats incloses
             CONTEXTindexAMPLE begin hies {cvx exec}forall
            ]  %% un cop aplicat aquest context les unitats queden intactes
@@ -554,7 +567,7 @@ HIHAcos HIHAmesura HIHAreng and and
 	      dup 1 get /uPample exch def
              }
              {  %% són dos valors enters de cos i ample
-              girem
+              userdict /girem get
 	      {  %% si ja hem aplicat el gir el primer valor és l'ample a cercar
 	       dup 0 get /vPample exch def
 	      }
@@ -569,7 +582,7 @@ HIHAcos HIHAmesura HIHAreng and and
              {  %% cos o ample duu unitats
               dup 2 get type /nametype eq  %% l'array ja pot venir girada!
 	      {  %% l'ample duu unitats
-	       girem
+	       userdict /girem get
 	       {  %% si ja hem aplicat el gir el primer valor és l'ample a cercar
 	        dup 0 get /vPample exch def
 	        /uPample /p def  %% no duu unitats doncs treballa en punts
@@ -580,7 +593,7 @@ HIHAcos HIHAmesura HIHAreng and and
 	       }ifelse
 	      }
               {  %% el cos duu unitats
-	       girem
+	       userdict /girem get
 	       {  %% si ja hem aplicat el gir el primer valor és l'ample a cercar
 	        dup 0 get /vPample exch def
 	        dup 1 get /uPample exch def
@@ -592,7 +605,7 @@ HIHAcos HIHAmesura HIHAreng and and
               }ifelse
 	     }
              {  %% 4 valors, cos amb unitats i ample amb unitats
-              girem
+              userdict /girem get
               {  %% si ja hem aplicat el gir el primer valor és l'ample a cercar
 	       dup 0 get /vPample exch def
 	       dup 1 get /uPample exch def
@@ -612,7 +625,6 @@ HIHAcos HIHAmesura HIHAreng and and
            }if
            /pMesura exch def  %% array amb el valor cos ample i unitats (amb la rotació g aplicada, si hi és) a punt per desar a /URLnorm i /LINPSnorm
            /iample 0 def  %% aquest índex després en serveix per anar a pescar el color de la peça (i més endavant la seva imatge)
-%icos vPample pstack AMPLESdeQUINCOS
            pecesDELcos
            {  %% forall per comprovar que l'ample hi és, llavors la peça existeix
             vPample eq
@@ -655,13 +667,15 @@ HIHAcos HIHAmesura HIHAreng and and
               }if
              ]  %% tanquem l'array de nou
              {cvx exec}forall end
-            ]
-            LINPSnorm  %% a l'índex 2 hi va, peça a peça per ordre de composició, una array amb:
-            %% {} el color RGB (tret d'una taula paral·lela) amb que cal pintar la peça (quan hi hagi la imatge digitalitzada hi podria anar el path al fitxer)
+            ]  %% en aquesta array hi ha cos i ample (per aquest ordre!) en punts de Pica PS de la peça que es compon al reng
+            %% a l'índex 2 hi ha el paquet, peça a peça per ordre de composició, dins una array amb:
+            LINPSnorm dup 2 get dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval dup  %% array ampliada a punt de rebre la peça següent
+            4 -1 roll  %% les instruccions rectfill (alt x ample!) amb punts de Pica PS (quan hi hagi la imatge digitalitzada hi podrien anar els paràmetres image)
+            %% el color RGB amb que cal pintar la peça (quan hi hagi la imatge digitalitzada hi podria anar el path al fitxer)
             %% el pesquem cridant la taula de colors que toca amb els mateixos índex de cos i ample amb els que hem localitzat la peça
             tBlancsColor ARAtaula get icos get iample get
-            %% {} les instruccions rectfill (alt x ample!) amb punts de Pica PS (quan hi hagi la imatge digitalitzada hi podrien anar els paràmetres per executar image)
-	    3 -1 roll 2 array astore 2 exch put
+	    exch 2 array astore  %% empaquetem color i mides y/x de la peça
+	    araVa exch put 2 exch put  %% ho desem a l'array ampliada i aquesta dins LINPSnorm
 	   }
 	   {
 %%S'ESDEVÉ com descriu el missatge d'error i la URL d'exemple
@@ -680,15 +694,14 @@ HIHAcos HIHAmesura HIHAreng and and
 	    fotli ( …no existeix a la taula d\\'amples del cos… )writestring
             fotli cosVAL writestring
             /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(13)pstack  %% marquem on activem els gatells d'error per pentinar
            }ifelse  %% l'ample hi és per aquest cos?
           }ifelse  %% però el cos existeix?
          }ifelse  %% el cos no supera el rang de la taula
         }
         {  %% si no coincideix
-%hihaERROR
-%LINPSnorm pstack ESMORZEM?
-%(- - - - - - - - -) pstack TUUUPALL
-%%S'ESDEVÉ com descriu el missatge d'error
+%%S'ESDEVÉ com descriu el missatge d'error i la URL d'exemple
+%%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/imposicio(36c%2072)
          fotli (\\n\\n[#14] ERROR EN EL VALOR D\\'UNA PEÇA A LA VARIABLE &reng=\\n\\n)writestring
          fotli (>> el valor de la variable &cos= )writestring
          fotli cosVAL writestring
@@ -703,12 +716,18 @@ HIHAcos HIHAmesura HIHAreng and and
          fotli (])writestring
          fotli ( …de la variable &reng=)writestring
          /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(14)pstack  %% marquem on activem els gatells d'error per pentinar
         }ifelse
        }
        {  %% el nom està mal escrit
+%%S'ESDEVÉ com descriu el missatge d'error i la URL d'exemple
+%%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/iMposicio(36%2072)
         fotli (\\n\\n[#15] ERROR DE SINTAXI EN EL NOM D\\'UNA PEÇA A LA VARIABLE &reng=\\n\\n)writestring
+	fotli (>> el nom de la peça… /)writestring
         0 get 128 string cvs fotli exch writestring
+	fotli ( …està mal escrit)writestring
         /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(15)pstack  %% marquem on activem els gatells d'error per pentinar
        }ifelse
        iX 1 add /iX exch def  %% índex de peces dins la línia de composició
       }forall  %% per cadascuna de les arrays amb els parells /nomDelBlanc (valor)
@@ -720,6 +739,7 @@ HIHAcos HIHAmesura HIHAreng and and
       fotli (>> hi ha alguna peça de Mesures de Blancs desaparellada: valor fora del parèntesi, nom sense el seu valor o viceversa)writestring
       cleartomark
       /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(16)pstack  %% marquem on activem els gatells d'error per pentinar
      }ifelse
     }ifelse  %% si &reng= és buit de dades?
 %   }stopped
@@ -734,13 +754,15 @@ HIHAcos HIHAmesura HIHAreng and and
  }if  %% només té sentit si &cos= i &mesura= existeixen sense errors
 
 
-%% filtrem els errors de mesura en la composició
-%% la línia de peces compostes a la variable &reng= sumen el valor exacte de la variable &mesura= ?
+ %% i per acabar filtrem els errors de mesura en la composició, això és:
+ %% la línia de peces compostes a la variable &reng= sumen el valor exacte de la variable &mesura= ?
+% URLnorm 2 get length
+% LINPSnorm %2 get length
 
-%%%CUAAAAAAAAA
 }
 {  %% almenys en falla 1
  /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+(18)pstack  %% marquem on activem els gatells d'error per pentinar
 %%S'ESDEVÉ si passa alguna de les coses que es descriuen al missatge
  fotli ([#00] ERROR DE SINTAXI AL NOM DE LES VARIABLES:\\n\\n)writestring
 
@@ -763,6 +785,10 @@ HIHAcos HIHAmesura HIHAreng and and
 
 
 hihaERROR
+%%ENCARA s'activa un gatell d'error (11) potser que ens falti explorar llengots i interlinies
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(18%206cG)/llengot(6p%206Cg)/imposicio(60c)
+fotli dup flushfile closefile
+LINPSnorm pstack CUAAAAAAAAA
 {
  % pstack SIhihaERRORcomseguim?
  fotli (\\n\\n________________________T E N I U   E R R O R S________________________\\n\\nSi prems…  [ Cancel·la ]  …et mantindràs en aquesta mateixa pàgina en blanc\\n\\nSi prems…  [ D\\'acord ]  …s\\'obrirà un PDF amb els errors transcrits en una nova pestanya del navegador)writestring
