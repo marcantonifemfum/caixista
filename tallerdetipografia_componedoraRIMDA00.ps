@@ -5,7 +5,7 @@
 
 %% hi ha un parell d'exemples possibles per implicar almenys 1 element de cadascuna de les 4 taules de blancs:
 %% &cos=72&mesura=151p&reng=/espai(36 72 g)/interlinia(1p6C g)/llengot(18P6Cg)/imposicio (8c)
-%% &cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(18 6cG)/llengot(6p 6Cg)/imposicio(60c)
+%% &cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(1 6cG)/llengot(6p 6Cg)/imposicio(60c)
 
 
 %(\n\nB O N   D I A  !\n\n) print flush
@@ -219,7 +219,7 @@ HIHAcos HIHAmesura HIHAreng and and
    fotli (\\n\\n[#01] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
    fotli (>> no hi ha cap valor vàlid)writestring
    /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(1)pstack  %% marquem on activem els gatells d'error per pentinar
+(1)==  %% marquem on activem els gatells d'error per pentinar
   }
   {
    3 ge
@@ -228,7 +228,7 @@ HIHAcos HIHAmesura HIHAreng and and
     fotli (\\n\\n[#02] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
     fotli (>> hi heu introduït massa valors)writestring
     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(2)pstack  %% marquem on activem els gatells d'error per pentinar
+(2)==  %% marquem on activem els gatells d'error per pentinar
    }
    {
     %% que el primer element no sigui un enter o un real?
@@ -250,7 +250,7 @@ HIHAcos HIHAmesura HIHAreng and and
        fotli (\\n\\n[#03] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
        fotli (>> el segon valor no és cap unitat)writestring
        /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(3)pstack  %% marquem on activem els gatells d'error per pentinar
+(3)==  %% marquem on activem els gatells d'error per pentinar
       }ifelse
      }
      {  %% tot correcte i treballa en punts!
@@ -267,7 +267,7 @@ HIHAcos HIHAmesura HIHAreng and and
      fotli (\\n\\n[#04] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
      fotli (>> el primer valor no és cap numèric)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(4)pstack  %% marquem on activem els gatells d'error per pentinar
+(4)==  %% marquem on activem els gatells d'error per pentinar
     }ifelse
    }ifelse
   }ifelse
@@ -293,7 +293,7 @@ HIHAcos HIHAmesura HIHAreng and and
    fotli (\\n\\n[#05] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
    fotli (>> no hi ha cap valor vàlid)writestring
    /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(5)pstack  %% marquem on activem els gatells d'error per pentinar
+(5)==  %% marquem on activem els gatells d'error per pentinar
   }
   {
    3 ge
@@ -303,7 +303,7 @@ HIHAcos HIHAmesura HIHAreng and and
     fotli (\\n\\n[#06] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
     fotli (>> hi heu introduït massa valors)writestring
     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(6)pstack  %% marquem on activem els gatells d'error per pentinar
+(6)==  %% marquem on activem els gatells d'error per pentinar
    }
    {
     %% que el primer element no sigui un enter o un real?
@@ -326,7 +326,7 @@ HIHAcos HIHAmesura HIHAreng and and
        fotli (\\n\\n[#07] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
        fotli (>> el segon valor no és cap unitat)writestring
        /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(7)pstack  %% marquem on activem els gatells d'error per pentinar
+(7)==  %% marquem on activem els gatells d'error per pentinar
       }ifelse
      }
      {  %% tot correcte i treballa en punts!
@@ -344,7 +344,7 @@ HIHAcos HIHAmesura HIHAreng and and
      fotli (\\n\\n[#08] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
      fotli (>> el primer valor no és cap numèric)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(8)pstack  %% marquem on activem els gatells d'error per pentinar
+(8)==  %% marquem on activem els gatells d'error per pentinar
     }ifelse
    }ifelse
   }ifelse
@@ -393,7 +393,7 @@ HIHAcos HIHAmesura HIHAreng and and
      fotli (\\n\\n[#09] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &reng=\\n\\n)writestring
      fotli (>> és buida de valors, amb només espais en blanc de teclat o amb notació hexa %20)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(9)pstack  %% marquem on activem els gatells d'error per pentinar
+(9)==  %% marquem on activem els gatells d'error per pentinar
     }
     {
      cleartomark
@@ -473,7 +473,7 @@ HIHAcos HIHAmesura HIHAreng and and
           fotli (])writestring
           fotli ( …només duu el valor d\\'ample i li manca el valor del cos per tal que la instrucció de gir… g …pugui aplicar-se)writestring
           /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(10)pstack  %% marquem on activem els gatells d'error per pentinar
+(10)==  %% marquem on activem els gatells d'error per pentinar
 	  userdict /girem false put  %% i desactivarem el gatell
 	 }if
          pop pop true  %% coincideix segur perquè és &cos= qui mana
@@ -508,20 +508,19 @@ HIHAcos HIHAmesura HIHAreng and and
           fotli (\\n\\n[#11] ERROR EN EL VALOR DEL COS D\\'UNA PEÇA DE LA VARIABLE &reng=\\n\\n)writestring
           fotli (>> el cos… )writestring
           fotli icos 32 string cvs writestring
-          fotli ( …de la peça… )writestring
-          fotli (/)writestring fotli ARAtaula 32 string cvs writestring
+          fotli ( …de la peça… /)writestring
+          fotli ARAtaula 32 string cvs writestring
           fotli ( [ )writestring
           hies
           {
            32 string cvs fotli exch writestring
            fotli ( ) writestring
           }forall
-          fotli (])writestring
-          fotli ( …no existeix perquè excedeix la taula… )writestring
+          fotli (] …no existeix perquè excedeix la taula… )writestring
           fotli tBlancsLiteraris ARAtaula get writestring
           pop
           /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(11)pstack  %% marquem on activem els gatells d'error per pentinar
+(11)==  %% marquem on activem els gatells d'error per pentinar
          }
          {  %% potser pot existir
           icos get dup null eq 1 index type /nametype eq or
@@ -544,7 +543,7 @@ HIHAcos HIHAmesura HIHAreng and and
            fotli ( …no existeix a la taula… )writestring
            fotli tBlancsLiteraris ARAtaula get writestring
            /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(12)pstack  %% marquem on activem els gatells d'error per pentinar
+(12)==  %% marquem on activem els gatells d'error per pentinar
           }
           {  %% el cos existeix i ara comprovem si l'ample existeix
            dup /pecesDELcos exch def  %% desem l'array d'amples de peces del cos existents en aquesta mesura de blancs
@@ -694,7 +693,7 @@ HIHAcos HIHAmesura HIHAreng and and
 	    fotli ( …no existeix a la taula d\\'amples del cos… )writestring
             fotli cosVAL writestring
             /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(13)pstack  %% marquem on activem els gatells d'error per pentinar
+(13)==  %% marquem on activem els gatells d'error per pentinar
            }ifelse  %% l'ample hi és per aquest cos?
           }ifelse  %% però el cos existeix?
          }ifelse  %% el cos no supera el rang de la taula
@@ -716,7 +715,7 @@ HIHAcos HIHAmesura HIHAreng and and
          fotli (])writestring
          fotli ( …de la variable &reng=)writestring
          /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(14)pstack  %% marquem on activem els gatells d'error per pentinar
+(14)==  %% marquem on activem els gatells d'error per pentinar
         }ifelse
        }
        {  %% el nom està mal escrit
@@ -727,7 +726,7 @@ HIHAcos HIHAmesura HIHAreng and and
         0 get 128 string cvs fotli exch writestring
 	fotli ( …està mal escrit)writestring
         /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(15)pstack  %% marquem on activem els gatells d'error per pentinar
+(15)==  %% marquem on activem els gatells d'error per pentinar
        }ifelse
        iX 1 add /iX exch def  %% índex de peces dins la línia de composició
       }forall  %% per cadascuna de les arrays amb els parells /nomDelBlanc (valor)
@@ -739,7 +738,7 @@ HIHAcos HIHAmesura HIHAreng and and
       fotli (>> hi ha alguna peça de Mesures de Blancs desaparellada: valor fora del parèntesi, nom sense el seu valor o viceversa)writestring
       cleartomark
       /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(16)pstack  %% marquem on activem els gatells d'error per pentinar
+(16)==  %% marquem on activem els gatells d'error per pentinar
      }ifelse
     }ifelse  %% si &reng= és buit de dades?
 %   }stopped
@@ -753,7 +752,7 @@ HIHAcos HIHAmesura HIHAreng and and
   }if  %% si hi ha &reng=
  }if  %% només té sentit si &cos= i &mesura= existeixen sense errors
 
-
+%%PENDENT !
  %% i per acabar filtrem els errors de mesura en la composició, això és:
  %% la línia de peces compostes a la variable &reng= sumen el valor exacte de la variable &mesura= ?
 % URLnorm 2 get length
@@ -762,7 +761,7 @@ HIHAcos HIHAmesura HIHAreng and and
 }
 {  %% almenys en falla 1
  /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(18)pstack  %% marquem on activem els gatells d'error per pentinar
+(18)==  %% marquem on activem els gatells d'error per pentinar
 %%S'ESDEVÉ si passa alguna de les coses que es descriuen al missatge
  fotli ([#00] ERROR DE SINTAXI AL NOM DE LES VARIABLES:\\n\\n)writestring
 
@@ -785,10 +784,11 @@ HIHAcos HIHAmesura HIHAreng and and
 
 
 hihaERROR
-%%ENCARA s'activa un gatell d'error (11) potser que ens falti explorar llengots i interlinies
-%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(18%206cG)/llengot(6p%206Cg)/imposicio(60c)
-fotli dup flushfile closefile
-LINPSnorm pstack CUAAAAAAAAA
+%%ENCARA que hi hagi alguna bruixa que no ens activi els missatges JS hauríem de poder generar el PDF (d'errors o gràfic) directament (en una nova pestanya o no)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
+%fotli dup flushfile closefile
+%0 64 1024 {tOU exch 64 getinterval ==}for
+%LINPSnorm pstack CUAAAAAAAAA
 {
  % pstack SIhihaERRORcomseguim?
  fotli (\\n\\n________________________T E N I U   E R R O R S________________________\\n\\nSi prems…  [ Cancel·la ]  …et mantindràs en aquesta mateixa pàgina en blanc\\n\\nSi prems…  [ D\\'acord ]  …s\\'obrirà un PDF amb els errors transcrits en una nova pestanya del navegador)writestring
