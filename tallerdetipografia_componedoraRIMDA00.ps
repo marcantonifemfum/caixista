@@ -4,8 +4,8 @@
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13c8p&cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)
 
 %% hi ha un parell d'exemples possibles per implicar almenys 1 element de cadascuna de les 4 taules de blancs:
-%% &cos=72&mesura=151p&reng=/espai(36 72 g)/interlinia(1p6C g)/llengot(18P6Cg)/imposicio (8c)
-%% &cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(1 6cG)/llengot(6p 6Cg)/imposicio(60c)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=72&mesura=151p&reng=/espai(36 72 g)/interlinia(1p6C g)/llengot(18P6Cg)/imposicio (8c)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(1 6cG)/llengot(6p 6Cg)/imposicio(60c)
 
 
 %(\n\nB O N   D I A  !\n\n) print flush
@@ -752,11 +752,143 @@ HIHAcos HIHAmesura HIHAreng and and
   }if  %% si hi ha &reng=
  }if  %% només té sentit si &cos= i &mesura= existeixen sense errors
 
-%%PENDENT !
- %% i per acabar filtrem els errors de mesura en la composició, això és:
+
+%%Filtrem els errors de mesura en la composició, això és:
  %% la línia de peces compostes a la variable &reng= sumen el valor exacte de la variable &mesura= ?
-% URLnorm 2 get length
-% LINPSnorm %2 get length
+ <<
+   /p
+   {
+    fotli ( punts Didot \()writestring
+    %% transformem els punts a cíceros i la resta a punts si no dóna exacte
+    aValua dup 12 idiv dup fotli exch 32 string cvs writestring
+    fotli ( cíceros) writestring
+    12 mul sub dup 0 eq
+    {
+     pop fotli (\)\\n\\n)writestring 
+    }
+    {
+     fotli ( amb )writestring
+     32 string cvs fotli exch writestring
+     fotli ( punts\)\\n\\n)writestring
+    }ifelse
+   }
+   /c
+   {
+    fotli ( cíceros Didot \()writestring
+    aValua 12 mul 32 string cvs fotli exch writestring  %% transformem els cíceros a punts
+    fotli ( punts\)\\n\\n)writestring
+   }
+ >> /unitatsLiteraries exch def
+ /desviacioPermesa 1 def  %% aquest és el llindar per valorar si acceptem generar el PDF gràfic (ara en punts de Pica PS)
+ /sumemAmpleReng 0 def
+ LINPSnorm dup 1 get exch 2 get
+%%ATENCIÓ perquè la peça /imposicio al final de dins de LINPSnorm NO té 2 valors hi els hauria de tenir!!!
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=72&mesura=151&reng=/espai(36 72g)/interlinia(1p6Cg)/llengot(18P6Cg)/imposicio(8c)
+pstack ONconyPETA?
+ {  %% ara fem les mesures en punts PS
+  1 get
+  1 get sumemAmpleReng add /sumemAmpleReng exch def
+ }forall
+ sumemAmpleReng exch cvx exec
+ 2 copy 2 array astore /gAlga exch def
+ sub dup 0 eq
+ {  %% fa la mida exacta en punts PS
+  pop
+gAlga
+pstack EXACTE!
+ }
+ {  %% té una desviació!
+  0 lt
+  {  %% la suma d'amples de les peces del reng és més petita que la mesura de línia
+   %% supera el llindar de la desviació permesa?
+   gAlga cvx exec sub abs  %% valor absolut amb tots els decimals del valor de desviació
+%%S'ESDEVÉ segons el que descriu el missatge i la URL d'exemple
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=22P&reng=/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)
+   fotli ([#18] LA COMPOSICIÓ DE LES PECES DEL &reng= NO ARRIBA A L\\'AMPLE DE LA VARIABLE &mesura=\\n\\n)writestring
+
+   fotli (La línia de composició &mesura= )writestring  %% en punts/cíceros Didot
+   URLnorm 1 get
+   {  %% forall
+    dup type /integertype eq
+    {  %% és el valor de &mesura=
+     dup /araMesura exch def
+     32 string cvs fotli exch writestring
+    }
+    {  %% són les unitats (que aquí sempre hi són malgrat no hi siguin a la URL) que s'han fet servir a la URL expressades de manera més entenedora
+     araMesura /aValua exch def
+     unitatsLiteraries exch get cvx exec  %% les convertim, entre parèntesi, si a la URL van en cíceros les passem a punts i viceversa
+    }ifelse
+   }forall
+   fotli (L\\'ample de les peces del &reng= )writestring  %% en punts/cíceros Didot
+   /AMPLEreng 0 def
+   URLnorm 2 get
+   {  %% forall per sumar tots els amples amb les unitats de la URL
+    1 get dup dup length 1 sub dup /vaFins exch def get type /nametype eq
+    {  %% duu unitats
+     vaFins 1 sub 2 getinterval
+     <</p {} /c{12 mul}>> begin
+     {
+      cvx exec
+     }forall
+     end
+     AMPLEreng add /AMPLEreng exch def  %% sumem els punts Didot
+    }
+    {  %% és l'ample de la peça i són punts
+     vaFins get AMPLEreng add /AMPLEreng exch def  %% sumem els punts Didot
+    }ifelse
+   }forall
+
+   fotli AMPLEreng 32 string cvs writestring
+   AMPLEreng /aValua exch def
+   unitatsLiteraries /p get cvx exec
+
+false{
+pstack COMsumemPECES?
+%% això pels totals del reng
+   {  %% forall
+    dup type /integertype eq
+    {  %% és el valor de &mesura=
+     dup /araMesura exch def
+     32 string cvs fotli exch writestring
+    }
+    {  %% són les unitats (oju perquè aquí sí que poden faltar i llavors són punts) que s'han fet servir a la URL expressades de manera més entenedora
+     unitatsLiteraries exch get cvx exec  %% les convertim, entre parèntesi, si a la URL van en cíceros les passem a punts i viceversa
+    }ifelse
+   }forall
+}if
+
+%%SI supera o no el valor de desviació fem?
+   fotli (>> supera el llindar permès, en:\\n)writestring
+
+   dup 100000 mul truncate 100000 div  %% considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   dup 1.06554  %% del valor d'equivalència d'1 punt Didot a punt de Pica considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   div  %% en punts Didot
+   fotli (\\n    )writestring
+   32 string cvs fotli exch writestring fotli ( punts Didot\\n)writestring
+%pstack SUPERAelLLINDARiNOarriba
+%% per fer l'amidament directament en punts Didot hem d'adaptar l'algorisme
+%   /sumemAmpleReng 0 def
+%   URLnorm dup 1 get exch 2 get
+%   {  %% ara fem les mesures en punts Didot
+%    1 get 1 get sumemAmpleReng add /sumemAmpleReng exch def
+%   }forall
+%   sumemAmpleReng exch cvx exec sub 
+%% en mm
+%% en punts de Pica PS
+%%Ara hi mancaria el valor de la desviació (amb 3 unitats?): el valor absolut de la resta dels dos valors de la gAlga el restem del valor de la /desviacioPermesa
+   /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+  }
+  {  %% la suma d'amples de les peces del reng és més gran que la mesura de línia
+   %% supera el llindar de la desviació permesa?
+   gAlga cvx exec sub abs 32 string cvs
+%%S'ESDEVÉ si passa alguna de les coses que es descriuen al missatge
+   fotli ([#19] LA COMPOSICIÓ DE PECES DEL &reng= SUPERA L\\'AMPLE DE LA VARIABLE &mesura=\\n\\n)writestring
+pstack SUPERAelLLINDARiSOBREPASSA
+%%SI supera o no el valor de /desviacioPermesa què fem?
+   /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+  }ifelse
+ }ifelse
+% pstack araQUADRA?
 
 }
 {  %% almenys en falla 1

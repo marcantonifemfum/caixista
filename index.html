@@ -100,11 +100,10 @@ Primera versió pel <i>Taller Virtual de Tipografia en Plom (RIMDA 2024DIG-UB/00
 
 <br><br>
 <h3>UNITATS</h3>
-
+Indistintament, qualsevol valor de <i>cos</i>, <i>mesura</i> o peça del <i>reng</i>, pot expressar-se tant en cíceros com en punts.<br>
 &nbsp;&nbsp;&nbsp;cícero Didot<br>
 <span style="color: #777777">1 cícero = 12 punts</span><br>
 <span style="color: #777777">1 cícero = 4,5108 mm</span><br>
-<br>
 &nbsp;&nbsp;&nbsp;punt Didot<br>
 <span style="color: #777777">1 punt = 0,3759 mm</span><br>
 <span style="color: #777777">1 punt = 1,06554329 punts de Pica (unitat de treball de l'intèrpret PostScript)</span><br>
@@ -241,7 +240,6 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 <span style="color: #777777"><i>Notació</i>: capgira els valors, de manera que el cos passa a ser l'ample i viceversa. És obligatori que precedeixi els dos valors de cos i ample (sense invertir, tal i com descriuen la peça a la taula de Mesures de Blancs). No duu cap valor de gir perquè sempre fa una rotació de 90 graus on, per ser un blanc, el sentit és irrellevant</span><br>
 <span style="color: #777777"><i>Ordre</i>: sempre va a la cua dels valors de cos i ample (sense invertir), just abans de tancar el parèntesi… <span style="color: #ff0000">)</span></span><br>
 <span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. Pot escriure's en caixa alta… <span style="color: #ff0000">G</span></span><br>
-<br>
 
 <br>
 <h3>REPRESENTACIÓ GRÀFICA DEL RESULTAT</h3>
@@ -270,7 +268,7 @@ Interlínies en vermell <span style="background-color: #ff0000">&nbsp;&nbsp;&nbs
 <br>
 <h3>COMPORTAMENT</h3>
 
-La componedoraRIMDA00 treballa amb un navegador d'Internet i facilita una mínima interfície d'usuari (via intèrpret PHP) dins la mateixa adreça URL i alguns missatges per pantalla, executant uns algorismes componedors escrits en PostScript (via intèrpret Ghostscript), per acabar generant un PDF com a resultat gràfic i/o altres tipus de missatges informatius, com d'errors o comportaments. 
+La componedoraRIMDA00 treballa amb un navegador d'Internet i facilita una mínima interfície d'usuari (via intèrpret HTML/PHP/JS) dins la mateixa adreça URL i alguns missatges per pantalla, executant uns algorismes componedors escrits en PostScript (via intèrpret Ghostscript), per acabar generant un PDF com a resultat gràfic i/o altres tipus de missatges informatius, com d'errors o comportaments. 
 <br><br>
 &nbsp;&nbsp;&nbsp;escala<br>
 <span style="color: #777777">Sempre es treballa a mida real (100%)</span>
@@ -283,12 +281,17 @@ La componedoraRIMDA00 treballa amb un navegador d'Internet i facilita una mínim
 (…per completar…)
 </span>
 <br><br>
-&nbsp;&nbsp;&nbsp;missatges per pantalla<br>
-<span style="color: #777777">A l'executar la URL el navegador generarà sempre un missatge amb un seguit d'anotacions (prompt) interpretant el resultat de la línia de la comanda escrita.<br>
+&nbsp;&nbsp;&nbsp;missatges per pantalla i errors<br>
+<span style="color: #777777">En condicions normals, a l'executar la URL el navegador generarà sempre un missatge amb un seguit d'anotacions (prompt) interpretant el resultat de la línia de la comanda escrita.<br>
 Al cap de diverses execucions és possible que el navegador, dins el mateix missatge, ens previngui dient una cosa semblant a… <i>No permetis que ub.edu/tallerdetipografia m'ho torni a demanar</i> …podem continuar sense clicar l'opció de fer-li cas.<br>
-Si no hi han hagut errors, ens ho dirà i podrem accedir (o no) al resultat en PDF. Si hi han hagut errors, ens els detallarà i podrem accedir (o no) a la seva transcripció en PDF.<br>
-El cor de l'aplicació pot generar un altre tipus d'errors, més severs, que seran derivats a una pàgina html encapçalada pel missatge<br>
-<span style="color: #ff0000"> >>> ERROR d'execució de l'algorisme <<< </span>
+Si no hi han hagut errors (els propis de la feina de compondre tipus) ens ho dirà i podrem accedir (o no) al resultat en PDF. Si hi han hagut errors, ens els detallarà i podrem accedir (o no) a la seva transcripció en PDF.<br>
+Els errors aliens al fet de compondre la línia de Mesures de Blancs, poden ser:<br>
+&nbsp;&nbsp;&nbsp;<i>Errors de PostScript</i><br>
+El cor de l'aplicació, escrita en llenguatge PostScript, pot generar un altre tipus d'errors, més severs, que seran derivats a una pàgina html encapçalada pel missatge <span style="color: #ff0000"> >>> ERROR d'execució de l'algorisme <<< </span><br>
+&nbsp;&nbsp;&nbsp;<i>Errors de JavaScript</i><br>
+Hi ha una capa d'aquesta eina escrita en llenguatge JavaScript que gestiona els missatges del <i>prompt</i> de pantalla. Sempre hi ha la remota possibilitat que tinguem desactivat l'intèrpret de JavaScript del navegador, cosa que faria que no veiessim els missatges. Però en el cas que es generessin errors en la creació d'aquests missatges, passaria el mateix: no veuríem els missatges. No suposa un problema greu perquè en paral·lel també es deriven a PDF.<br>
+&nbsp;&nbsp;&nbsp;<i>Errors del servidor ub.edu</i><br>
+Tret de problemes concrets que puguin tenir puntualment les infraestructures dels servidors de la Universitat de Barcelona o més enllà a la WWW, qualsevol errada en la sintaxi de la primera part de l'adreça URL… <span style="color: #ff0000">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php</span> …ens derivarà a una pàgina de la mateixa universitat amb l' «Error 404 Pàgina no trobada».
 </span>
 <br><br>
 &nbsp;&nbsp;&nbsp;amidaments<br>
