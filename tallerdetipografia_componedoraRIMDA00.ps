@@ -779,25 +779,33 @@ HIHAcos HIHAmesura HIHAreng and and
     fotli ( punts\)\\n\\n)writestring
    }
  >> /unitatsLiteraries exch def
- /desviacioPermesa 1 def  %% aquest és el llindar per valorar si acceptem generar el PDF gràfic (ara en punts de Pica PS)
+ /desviacioPermesa 1 def  %% aquest és el llindar per valorar de si acceptem generar el PDF gràfic (ara en punts de Pica PS)
  /sumemAmpleReng 0 def
- LINPSnorm dup 1 get exch 2 get
-%%ATENCIÓ perquè la peça /imposicio al final de dins de LINPSnorm NO té 2 valors hi els hauria de tenir!!!
+ LINPSnorm 2 get
+%%Les peces del &reng= com /imposicio(8c) dins a LINPSnorm duen només el valor de l'ample (ja convertit a punts PS) però podrien dur els 2 (cos/mesura) ja girats
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=72&mesura=151&reng=/espai(36 72g)/interlinia(1p6Cg)/llengot(18P6Cg)/imposicio(8c)
-pstack ONconyPETA?
- {  %% ara fem les mesures en punts PS
-  1 get
-  1 get sumemAmpleReng add /sumemAmpleReng exch def
+ {  %% forall sumador del total d'amples de cadascuna de les peces del &reg=
+  1 get  %% array amb 1 o 2 valors (el darrer valor sempre serà l'ample)
+  dup length 1 eq
+  {
+   0 get
+  }
+  {
+   1 get
+  }ifelse
+  sumemAmpleReng add /sumemAmpleReng exch def
  }forall
- sumemAmpleReng exch cvx exec
- 2 copy 2 array astore /gAlga exch def
- sub dup 0 eq
- {  %% fa la mida exacta en punts PS
-  pop
-gAlga
-pstack EXACTE!
+ %% i comprovem si quadra amb el valor de &mesura= (sempre en punts PS!)
+ sumemAmpleReng LINPSnorm 1 get cvx exec
+ 2 copy 2 array astore /gAlga exch def  %% per si cal
+ sub dup /llindaR exch def  %% valor del llindar de diferència respectant el signe
+ abs dup 0 eq exch desviacioPermesa le or
+ {  %% la suma d'amples de &reng= vs &mesura= fa la mida exacta en punts PS o NO supera la /desviacioPermesa?
+llindaR pstack elLLINDAResZEROoMAXIMd1punt!
+
  }
- {  %% té una desviació!
+ {  %% té un valor més enllà de la /desviacioPermesa!
+llindaR pstack LLINDARdeMESd1PUNT!
   0 lt
   {  %% la suma d'amples de les peces del reng és més petita que la mesura de línia
    %% supera el llindar de la desviació permesa?
