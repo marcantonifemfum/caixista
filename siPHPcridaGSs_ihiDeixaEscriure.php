@@ -34,8 +34,10 @@ else
     echo "<br><br><pre><font face='Monaco, Courier New' size=3 color='#5f696b'> . . . h i    p o d e m    e s c r i u r e ?</font></pre><br><br>";
 
 //+ + + + + + + + + + + + + + + +  GS 9.55    
-$pdfFile = "siPHPcridaGS9.55_ihiDeixaEscriure.pdf";
-$PSapplet = "siPHPcridaGS9.55_ihiDeixaEscriure.ps";
+$pdfFile = "siPHPcridaGS9.55_ihiDeixaEscriureB.pdf";
+
+//$PSapplet = "siPHPcridaGS9.55_ihiDeixaEscriure.ps";
+$PSapplet = "mesuresBlancs_interlinies_prompt.ps";
 
 $command = "/usr/local/bin/gs -q -dNOSAFER -o pdfs/'" . $pdfFile . "' -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -dAutoRotatePages=/None -f '" . $PSapplet . "'";
 
@@ -134,7 +136,7 @@ if ($ElQtorna == 127)
  //      if (file_exists($pdfFile))
  if ($ElQtorna == 0)
  {
-	 echo "<br><br><span style='color:#ff0000;font-family:monospace;font-size:24px'> AQUÍ HAURÍEM DE XUTAR EL PDF ".$pdfFile."</span><br><br>";
+	 echo "<br><br><span style='color:#ff0000;font-family:monospace;font-size:24px'> AQUÍ HAURÍEM DE XUTAR EL PDF ".$pdfFile2."</span><br><br>";
  }
  else
  { // podem provocar errors executant sense interfície amb només comandes via URL (captura GET)

@@ -764,19 +764,25 @@ HIHAcos HIHAmesura HIHAreng and and
     fotli ( cíceros) writestring
     12 mul sub dup 0 eq
     {
-     pop fotli (\)\\n\\n)writestring 
+     pop fotli (\)\\n)writestring 
     }
     {
      fotli ( amb )writestring
      32 string cvs fotli exch writestring
-     fotli ( punts\)\\n\\n)writestring
+     fotli ( punts\)\\n)writestring
     }ifelse
+    %% transformem els punts a mm
+    aValua .3759 mul 32 string cvs fotli exch writestring
+    fotli ( mm\\n) writestring
    }
    /c
    {
     fotli ( cíceros Didot \()writestring
     aValua 12 mul 32 string cvs fotli exch writestring  %% transformem els cíceros a punts
-    fotli ( punts\)\\n\\n)writestring
+    fotli ( punts\)\\n)writestring
+    %% transformem els cíceros a mm
+    aValua 12 mul .3759 mul 32 string cvs fotli exch writestring
+    fotli ( mm\\n) writestring
    }
  >> /unitatsLiteraries exch def
  /desviacioPermesa 1 def  %% aquest és el llindar per valorar de si acceptem generar el PDF gràfic (ara en punts de Pica PS)
@@ -801,22 +807,30 @@ HIHAcos HIHAmesura HIHAreng and and
  sub dup /llindaR exch def  %% valor del llindar de diferència respectant el signe
  abs dup 0 eq exch desviacioPermesa le or
  {  %% la suma d'amples de &reng= vs &mesura= fa la mida exacta en punts PS o NO supera la /desviacioPermesa?
-llindaR pstack elLLINDAResZEROoMAXIMd1punt!
-
+%%S'ESDEVÉ segons el que descriu el missatge i la URL d'exemple
+%% aquesta URL treballa amb totes les peces de Mesures de Blancs
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=775P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=72P&reng=/imposicio(6c96pG)
+  fotli (Sou dins el llindar de la desviació permesa... )writestring
+  fotli llindaR 32 string cvs writestring
+  fotli ( ...punts de Pica PS\\n\\n)writestring
+ % gAlga llindaR pstack elLLINDAResZEROoMAXIMd1puntDpicaPS!
  }
  {  %% té un valor més enllà de la /desviacioPermesa!
-llindaR pstack LLINDARdeMESd1PUNT!
-  0 lt
-  {  %% la suma d'amples de les peces del reng és més petita que la mesura de línia
-   %% supera el llindar de la desviació permesa?
-   gAlga cvx exec sub abs  %% valor absolut amb tots els decimals del valor de desviació
+%gAlga llindaR pstack LLINDARdeMESd1PUNT!
+  llindaR 0 lt
+  {  %% la suma d'amples de les peces del &reng= és més petita que la &mesura= de línia
 %%S'ESDEVÉ segons el que descriu el missatge i la URL d'exemple
+%% aquesta URL treballa amb totes les peces de Mesures de Blancs
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=22P&reng=/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=73P&reng=/imposicio(6c96pG)
+
    fotli ([#18] LA COMPOSICIÓ DE LES PECES DEL &reng= NO ARRIBA A L\\'AMPLE DE LA VARIABLE &mesura=\\n\\n)writestring
 
-   fotli (La línia de composició &mesura= )writestring  %% en punts/cíceros Didot
+   fotli (>> la línia de composició &mesura=\\n)writestring  %% en punts/cíceros Didot
    URLnorm 1 get
-   {  %% forall
+   {  %% forall pel valor i el literal de les unitats originals cíceros/punts Didot
     dup type /integertype eq
     {  %% és el valor de &mesura=
      dup /araMesura exch def
@@ -827,72 +841,222 @@ llindaR pstack LLINDARdeMESd1PUNT!
      unitatsLiteraries exch get cvx exec  %% les convertim, entre parèntesi, si a la URL van en cíceros les passem a punts i viceversa
     }ifelse
    }forall
-   fotli (L\\'ample de les peces del &reng= )writestring  %% en punts/cíceros Didot
-   /AMPLEreng 0 def
-   URLnorm 2 get
-   {  %% forall per sumar tots els amples amb les unitats de la URL
-    1 get dup dup length 1 sub dup /vaFins exch def get type /nametype eq
-    {  %% duu unitats
-     vaFins 1 sub 2 getinterval
-     <</p {} /c{12 mul}>> begin
-     {
-      cvx exec
+   %% valor de &mesura= en punts de Pica PS
+   gAlga 1 get  %% a l'índex 1 hi ha el valor de &mesura= en punts de Pica PS
+   32 string cvs fotli exch writestring fotli ( punts de Pica PS\\n)writestring
+
+   %% sumades les mesures de totes les peces del &reng=
+   fotli (\\n>> sumades les mesures de totes les peces del &reng=\\n)writestring  %% en punts/cíceros Didot
+   gAlga 0 get  %% a l'índex 0 hi ha la suma d'amples de les peces del &reng= en punts de Pica PS
+   dup 100000 mul truncate 100000 div  %% considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   dup 1.06554  %% del valor d'equivalència d'1 punt Didot a punt de Pica considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   div cvi dup dup /rpDidot exch def  %% en punts Didot exactes
+   32 string cvs fotli exch writestring fotli ( punts Didot \()writestring
+   %% transformem els punts a cíceros i la resta a punts si no dóna exacte
+   dup 12 idiv dup fotli exch 32 string cvs writestring
+   fotli ( cíceros) writestring
+   12 mul sub dup 0 eq
+   {
+    pop fotli (\)\\n)writestring 
+   }
+   {
+    fotli ( amb )writestring
+    32 string cvs fotli exch writestring
+    fotli ( punts\)\\n)writestring
+   }ifelse
+   %% transformem els cíceros a mm
+   fotli rpDidot .3759 mul 32 string cvs writestring
+   fotli ( mm\\n) writestring
+   gAlga 0 get  %% a l'índex 0 hi ha la suma d'amples de les peces del &reng= en punts de Pica PS
+   32 string cvs fotli exch writestring fotli ( punts de Pica PS\\n)writestring
+
+   %% el valor absolut de la resta dels dos valors de la gAlga en 3 unitats
+   fotli (\\n>> hi manca encara:\\n)writestring
+   gAlga 1 get  %% a l'índex 1 hi ha el valor de &mesura= en punts de Pica PS
+   gAlga 0 get  %% a l'índex 0 hi ha la suma d'amples de les peces del &reng= en punts de Pica PS
+   sub dup /dpPica exch def
+   dup 100000 mul truncate 100000 div  %% considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   dup 1.06554  %% del valor d'equivalència d'1 punt Didot a punt de Pica considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   div %cvi
+   dup dup /rpDidot exch def  %% en punts Didot exactes
+   32 string cvs fotli exch writestring fotli ( punts Didot \()writestring
+   %% transformem els punts a cíceros i la resta a punts si no dóna exacte
+   dup
+   cvi 12 idiv dup fotli exch 32 string cvs writestring
+   fotli ( cíceros) writestring
+   12 mul sub dup 0 eq
+   {
+    pop fotli (\)\\n)writestring 
+   }
+   {
+    fotli ( amb )writestring
+    32 string cvs fotli exch writestring
+    fotli ( punts\)\\n)writestring
+   }ifelse
+   %% transformem els cíceros a mm
+   fotli rpDidot .3759 mul 32 string cvs writestring
+   fotli ( mm\\n) writestring
+   dpPica 32 string cvs fotli exch writestring fotli ( punts de Pica PS\\n)writestring
+
+   %% el valor de la desviació en 3 unitats
+   fotli (\\n>> el màxim llindar d\\'error permès, és de:\\n)writestring
+   desviacioPermesa dup /dpPica exch def
+   dup 100000 mul truncate 100000 div  %% considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   dup 1.06554  %% del valor d'equivalència d'1 punt Didot a punt de Pica considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   div dup dup /rpDidot exch def  %% en punts Didot exactes
+   32 string cvs fotli exch writestring fotli ( punts Didot \()writestring
+   %% transformem els punts a cíceros i la resta a punts si no dóna exacte
+   dup 12 div dup fotli exch 32 string cvs writestring
+   fotli ( cíceros) writestring
+   12 mul sub dup 0 eq
+   {
+    pop fotli (\)\\n)writestring
+   }
+   {
+    fotli ( amb )writestring
+    32 string cvs fotli exch writestring
+    fotli ( punts\)\\n)writestring
+   }ifelse
+   %% transformem els cíceros a mm
+   fotli rpDidot .3759 mul 32 string cvs writestring
+   fotli ( mm\\n) writestring
+   dpPica 32 string cvs fotli exch writestring fotli ( punts de Pica PS\\n)writestring
+
+
+    false
+    {  %% potser ens caldrà?
+     /AMPLEreng 0 def
+     URLnorm 2 get
+     {  %% forall per sumar tots els amples amb les unitats de la URL
+      1 get dup dup length 1 sub dup /vaFins exch def get type /nametype eq
+      {  %% duu unitats
+       vaFins 1 sub 2 getinterval
+       <</p {} /c{12 mul}>> begin
+       {
+        cvx exec
+       }forall
+       end
+       AMPLEreng add /AMPLEreng exch def  %% sumem els punts Didot
+      }
+      {  %% és l'ample de la peça i són punts
+       vaFins get AMPLEreng add /AMPLEreng exch def  %% sumem els punts Didot
+      }ifelse
      }forall
-     end
-     AMPLEreng add /AMPLEreng exch def  %% sumem els punts Didot
-    }
-    {  %% és l'ample de la peça i són punts
-     vaFins get AMPLEreng add /AMPLEreng exch def  %% sumem els punts Didot
-    }ifelse
-   }forall
 
-   fotli AMPLEreng 32 string cvs writestring
-   AMPLEreng /aValua exch def
-   unitatsLiteraries /p get cvx exec
+     fotli AMPLEreng 32 string cvs writestring
+     AMPLEreng /aValua exch def
+     unitatsLiteraries /p get cvx exec
+     pstack AQUIelsVALORSumatsDE&reng=
+    }if
 
-false{
-pstack COMsumemPECES?
-%% això pels totals del reng
-   {  %% forall
+   /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+  }
+  {  %% la suma d'amples de les peces del &reng= és més gran que la &mesura= de línia
+%pstack SUPERAelLLINDARiSOBREPASSA
+%%S'ESDEVÉ si passa alguna de les coses que es descriuen al missatge
+%% aquesta URL treballa amb totes les peces de Mesures de Blancs
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=774P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=1c&reng=/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=69P&reng=/imposicio(6c96pG)
+
+   fotli ([#19] LA COMPOSICIÓ DE PECES DEL &reng= SUPERA L\\'AMPLE DE LA VARIABLE &mesura=\\n\\n)writestring
+
+   fotli (>> la línia de composició &mesura=\\n)writestring  %% en punts/cíceros Didot
+   URLnorm 1 get
+   {  %% forall pel valor i el literal de les unitats originals cíceros/punts Didot
     dup type /integertype eq
     {  %% és el valor de &mesura=
      dup /araMesura exch def
      32 string cvs fotli exch writestring
     }
-    {  %% són les unitats (oju perquè aquí sí que poden faltar i llavors són punts) que s'han fet servir a la URL expressades de manera més entenedora
+    {  %% són les unitats (que aquí sempre hi són malgrat no hi siguin a la URL) que s'han fet servir a la URL expressades de manera més entenedora
+     araMesura /aValua exch def
      unitatsLiteraries exch get cvx exec  %% les convertim, entre parèntesi, si a la URL van en cíceros les passem a punts i viceversa
     }ifelse
    }forall
-}if
 
-%%SI supera o no el valor de desviació fem?
-   fotli (>> supera el llindar permès, en:\\n)writestring
+   %% valor de &mesura= en punts de Pica PS
+   gAlga 1 get  %% a l'índex 1 hi ha el valor de &mesura= en punts de Pica PS
+   32 string cvs fotli exch writestring fotli ( punts de Pica PS\\n)writestring
 
+   %% sumades les mesures de totes les peces del &reng=
+   fotli (\\n>> sumades les mesures de totes les peces del &reng=\\n)writestring  %% en punts/cíceros Didot
+   gAlga 0 get  %% a l'índex 0 hi ha la suma d'amples de les peces del &reng= en punts de Pica PS
    dup 100000 mul truncate 100000 div  %% considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
    dup 1.06554  %% del valor d'equivalència d'1 punt Didot a punt de Pica considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
-   div  %% en punts Didot
-   fotli (\\n    )writestring
-   32 string cvs fotli exch writestring fotli ( punts Didot\\n)writestring
-%pstack SUPERAelLLINDARiNOarriba
-%% per fer l'amidament directament en punts Didot hem d'adaptar l'algorisme
-%   /sumemAmpleReng 0 def
-%   URLnorm dup 1 get exch 2 get
-%   {  %% ara fem les mesures en punts Didot
-%    1 get 1 get sumemAmpleReng add /sumemAmpleReng exch def
-%   }forall
-%   sumemAmpleReng exch cvx exec sub 
-%% en mm
-%% en punts de Pica PS
-%%Ara hi mancaria el valor de la desviació (amb 3 unitats?): el valor absolut de la resta dels dos valors de la gAlga el restem del valor de la /desviacioPermesa
-   /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-  }
-  {  %% la suma d'amples de les peces del reng és més gran que la mesura de línia
-   %% supera el llindar de la desviació permesa?
-   gAlga cvx exec sub abs 32 string cvs
-%%S'ESDEVÉ si passa alguna de les coses que es descriuen al missatge
-   fotli ([#19] LA COMPOSICIÓ DE PECES DEL &reng= SUPERA L\\'AMPLE DE LA VARIABLE &mesura=\\n\\n)writestring
-pstack SUPERAelLLINDARiSOBREPASSA
-%%SI supera o no el valor de /desviacioPermesa què fem?
+   div cvi dup dup /rpDidot exch def  %% en punts Didot exactes
+   32 string cvs fotli exch writestring fotli ( punts Didot \()writestring
+   %% transformem els punts a cíceros i la resta a punts si no dóna exacte
+   dup 12 idiv dup fotli exch 32 string cvs writestring
+   fotli ( cíceros) writestring
+   12 mul sub dup 0 eq
+   {
+    pop fotli (\)\\n)writestring 
+   }
+   {
+    fotli ( amb )writestring
+    32 string cvs fotli exch writestring
+    fotli ( punts\)\\n)writestring
+   }ifelse
+   %% transformem els cíceros a mm
+   fotli rpDidot .3759 mul 32 string cvs writestring
+   fotli ( mm\\n) writestring
+   gAlga 0 get  %% a l'índex 0 hi ha la suma d'amples de les peces del &reng= en punts de Pica PS
+   32 string cvs fotli exch writestring fotli ( punts de Pica PS\\n)writestring
+
+   %% el valor absolut de la resta dels dos valors de la gAlga en 3 unitats
+   fotli (\\n>> excedeix en:\\n)writestring
+   gAlga 1 get  %% a l'índex 1 hi ha el valor de &mesura= en punts de Pica PS
+   gAlga 0 get  %% a l'índex 0 hi ha la suma d'amples de les peces del &reng= en punts de Pica PS
+   sub abs dup /dpPica exch def
+   dup 100000 mul truncate 100000 div  %% considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   dup 1.06554  %% del valor d'equivalència d'1 punt Didot a punt de Pica considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   div %cvi
+   dup dup /rpDidot exch def  %% en punts Didot exactes
+   32 string cvs fotli exch writestring fotli ( punts Didot \()writestring
+   %% transformem els punts a cíceros i la resta a punts si no dóna exacte
+   dup
+   cvi 12 idiv
+   dup fotli exch 32 string cvs writestring
+   fotli ( cíceros) writestring
+   12 mul sub dup 0 eq
+   {
+    pop fotli (\)\\n)writestring 
+   }
+   {
+    fotli ( amb )writestring
+    32 string cvs fotli exch writestring
+    fotli ( punts\)\\n)writestring
+   }ifelse
+   %% transformem els cíceros a mm
+   fotli rpDidot .3759 mul 32 string cvs writestring
+   fotli ( mm\\n) writestring
+   dpPica 32 string cvs fotli exch writestring fotli ( punts de Pica PS\\n)writestring
+
+   %% el valor de la desviació en 3 unitats
+   fotli (\\n>> el màxim llindar d\\'error permès, és de:\\n)writestring
+   desviacioPermesa dup /dpPica exch def
+   dup 100000 mul truncate 100000 div  %% considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   dup 1.06554  %% del valor d'equivalència d'1 punt Didot a punt de Pica considerem només els 5 primers decimals per arrodonir millor les conversions de Pica PS a Didot
+   div dup dup /rpDidot exch def  %% en punts Didot exactes
+   32 string cvs fotli exch writestring fotli ( punts Didot \()writestring
+   %% transformem els punts a cíceros i la resta a punts si no dóna exacte
+   dup 12 div dup fotli exch 32 string cvs writestring
+   fotli ( cíceros) writestring
+   12 mul sub dup 0 eq
+   {
+    pop fotli (\)\\n)writestring
+   }
+   {
+    fotli ( amb )writestring
+    32 string cvs fotli exch writestring
+    fotli ( punts\)\\n)writestring
+   }ifelse
+   %% transformem els cíceros a mm
+   fotli rpDidot .3759 mul 32 string cvs writestring
+   fotli ( mm\\n) writestring
+   dpPica 32 string cvs fotli exch writestring fotli ( punts de Pica PS\\n)writestring
+
    /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
   }ifelse
  }ifelse
@@ -923,12 +1087,10 @@ pstack SUPERAelLLINDARiSOBREPASSA
 }ifelse
 
 
-hihaERROR
 %%ENCARA que hi hagi alguna bruixa que no ens activi els missatges JS hauríem de poder generar el PDF (d'errors o gràfic) directament (en una nova pestanya o no)
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
-%fotli dup flushfile closefile
-%0 64 1024 {tOU exch 64 getinterval ==}for
-%LINPSnorm pstack CUAAAAAAAAA
+
+hihaERROR
 {
  % pstack SIhihaERRORcomseguim?
  fotli (\\n\\n________________________T E N I U   E R R O R S________________________\\n\\nSi prems…  [ Cancel·la ]  …et mantindràs en aquesta mateixa pàgina en blanc\\n\\nSi prems…  [ D\\'acord ]  …s\\'obrirà un PDF amb els errors transcrits en una nova pestanya del navegador)writestring
@@ -936,14 +1098,102 @@ hihaERROR
  %% fem que surti l'error al prompt de la web
  tOU =  %% treu tot el contingut de la cadena interpretant els retorns de carro correctament
  %% == treu la cadena amb el () sense interpretar el seu interior
+
+ %% aquí podem treballar sempre en A4 vertical
+ <</PageSize[595 842]>>setpagedevice
+
+ 1 0 0 setrgbcolor
+ 200 400 200 200 rectfill
+
+ 0 0 0 setrgbcolor
+ /Courier 10 selectfont
+ 50 600 moveto
+ tOU 0 256 getinterval 19 get 32 string cvs
+ %% ens cal un lector/componedor dels caràacters que escodifiquen en doble octet i per destriar \n com a retorn de carro i \' com apòstrof
+ show
+
+ showpage
 }
 {  %% sense errors
-% pstack sinohihaerrorCOMSEGUIM?
+%%S'ESDEVÉ
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6c&mesura=775P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
+	% pstack sinohihaerrorCOMSEGUIM?
  fotli (      E L   R E N G   S \\' H A   C O M P O S T   C O R R E C T A M E N T\\n\\nSi prems…  [ Cancel·la ]  …et mantindràs en aquesta mateixa pàgina en blanc\\n\\nSi prems…  [ D\\'acord ]  …s\\'obrirà el PDF amb la composició en una nova pestanya del navegador)writestring
  fotli dup flushfile closefile
  %% fem que surti l'error al prompt de la web
  tOU =  %% treu tot el contingut de la cadena interpretant els retorns de carro correctament
  %% == treu la cadena amb el () sense interpretar el seu interior
+
+ %% en funció del valor més gran de &mesura= o &reng= triarem DIN i orientació adequada a partir d'un A4
+ /margeS 30 def  %% valor per cadascun des 4
+ /falinia 595 def  %% valor simulat del valor més gran de &mesura= o &reng= 
+%% amples possibles a DIN i en funció dels margeS triats
+ [  %% només considerem l'ample perquè la componedora només compon 1 sola línia
+  595 margeS 2 mul sub  %% 0 A4 vertical
+  842 margeS 2 mul sub  %% 1 A4 horitzontal
+  842 margeS 2 mul sub  %% 2 A3 vertical
+  1191 margeS 2 mul sub %% 3 A3 horitzontal
+  1191 margeS 2 mul sub %% 4 A2 vertical
+  1684 margeS 2 mul sub %% 5 A2 horitzontal
+  1684 margeS 2 mul sub %% 6 A1 vertical
+  2384 margeS 2 mul sub %% 7 A1 horitzontal
+  2384 margeS 2 mul sub %% 8 A0 vertical
+  3370 margeS 2 mul sub %% 9 A0 horitzontal
+ ] /Xpossible exch def
+%% https://www.cl.cam.ac.uk/~mgk25/iso-paper.html
+ [  %% formats de pàgina
+  [595 842]  %% 0 A4 vertical
+  [842 595]  %% 1 A4 horitzontal
+  [842 1191]  %% 2 A3 vertical
+  [1191 842]  %% 3 A3 horitzontal
+  [1191 1684]  %% 4 A2 vertical
+  [1684 1191]  %% 5 A2 horitzontal
+  [1684 2384]  %% 6 A1 vertical
+  [2384 1684]  %% 7 A1 horitzontal
+  [2384 3370]  %% 8 A0 vertical
+  [3370 2384]  %% 9 A0 horitzontal
+ ] /A4_A0 exch def
+ [  %% formats de pàgina per escrit
+  (A4 vertical)
+  (A4 horitzontal)
+  (A3 vertical)
+  (A3 horitzontal)
+  (A2 vertical)
+  (A2 horitzontal)
+  (A1 vertical)
+  (A1 horitzontal)
+  (A0 vertical)
+  (A0 horitzontal)
+ ] /litA4_A0 exch def
+
+ /iFormat 0 def
+ Xpossible
+ {  %% forall per avaluar l'índex de quin format empremptem el resultat
+  falinia ge
+  {
+   exit
+  }if
+  iFormat 1 add /iFormat exch def
+ }forall
+
+ A4_A0 iFormat get
+ litA4_A0 iFormat get
+ Xpossible iFormat get
+ pstack AQUINFORMAT
+
+
+ 0 1 0 setrgbcolor
+ 200 400 200 200 rectfill
+
+ 0 0 0 setrgbcolor
+ /Courier 10 selectfont
+ 50 600 moveto
+ tOU 0 256 getinterval
+ %% ens cal un lector/componedor dels caràcters que es codifiquen en doble octet i per destriar \n com a retorn de carro i \' com apòstrof
+ show
+
+ showpage
+
 }ifelse
 
 
@@ -956,7 +1206,10 @@ false{
 
 %% tou de text admès:
 %% fins a 1000 caràcters, prou bé
-%% \\r \\n \\t  són equivalents!
+%% \\r \\n \\t  tot són retorns de carro equivalents!
+%% caràcters reservats que hem detectat que necessiten scape doncs sinó el JS es queda en blanc i no interpreta res:
+%% parèntesi: \( \)
+%% apòstrof: \\'
 %% JS no interpreta ni CSS ni HTML
 %% ens cal formatar un text molt bàsic per informar dels errors comesos
 
@@ -981,40 +1234,19 @@ tOU
 
 %%ERRORS A GESTIONAR per ordre de prioritat
 %% DE SINTAXI DINS LA URL
+    %% com es produeix
+    %% qui ho detecta?
+    %% com ho informem?
+    %% cap a on deriva?
   %% a la manca de variables | al nom de les variables | a la sintaxi amb = &
-    %% com es produeix?
-    %% qui ho detecta?
-    %% com ho informem?
-    %% cap a on deriva?
   %% a la sintaxi del nom de les Mesures de Blancs
-    %% com es produeix
-    %% qui ho detecta?
-    %% com ho informem?
-    %% cap a on deriva?
   %% a la sintaxi dels valors de les Mesures de Blancs
-    %% com es produeix
-    %% qui ho detecta?
-    %% com ho informem?
-    %% cap a on deriva?
 %% DE MESURES
   %% la peça de Mesura de Blancs no es troba dins de la taula
-    %% com es produeix 
-    %% qui ho detecta?
-    %% com ho informem?
-    %% cap a on deriva?
   %% la suma de Mesures de Blanc supera o no arriba al valor exacte (llindar d'1 punt?) de la variable mesura
-    %% com es produeix
-    %% qui ho detecta?
-    %% com ho informem?
-    %% cap a on deriva?
-
-
- 200 200 200 200 rectfill
- showpage
-
 
 %%+ un error de sintaxi és el millor mètode per provocar que tota l'stack quedi plasmada al prompt html que canalitzem via php
-% AEIOU %% ?
+% aixoESunERRORdeSINTAXI
 
 }stopped
 {
