@@ -7,17 +7,20 @@
 systemdict /EncodingDirectory get /WinAnsiEncoding get /WAE exch def
 
 %% de moment no el fem servir
-systemdict /AdobeGlyphList get /AGL exch def  %% diccionari de /nomDelGlif ###codi decimal Unicode (o una array si n'hi ha més d'1)
+%systemdict /AdobeGlyphList get /AGL exch def  %% diccionari de /nomDelGlif ###codi decimal Unicode (o una array si n'hi ha més d'1)
 
 
 /AliniesD1solOctet [] def  %% les línies un cop llegides i xifrades a 1 sol octet WinAnsi
 /araLinia () def  %% on muntem la línia que desxifrem
 /BS false def  %% gatell per saber si hem llegit una contrabarra (Back Slash)
-/OS false def  %% gatell per saber si hem llegit un octet senyal d'1 octet de més
+/OS2 false def  %% gatell per saber si hem llegit un octet senyal d'1 octet de més
+/OS3 false def  %% gatell per saber si hem llegit un octet senyal de 2 octets de més
 
-(\\nÀÈÉÍÓÚÏÜÇ\\nàèéíïóúüç\\nae i ou\\ns\\'acabat!\\n)  %% exemple complet de com funciona del desxifrat/xifrat
+%% la cadena de text o ve de l'stack o l'escrivim aqui
+%(\\n…ÀÈÉÍÓÚÏÜÇ\\n…àèéíïóúüç\\n…ae i ou\\n…s\\'acabat!\\n)  %% exemple complet de com funciona del desxifrat/xifrat a simple, doble i triple octet, retorns i apòstrofs
 %(\\A\\)  %% cas de la contrabarra sola o repetida o sense l'apòstrof o la n esperades, amb un altre glif qualsevol que li segueixi o a la cua de la cadena
 %(\\n\\'\\n\\'\\n\\n)  %% cas de l'apostrof i el retorn de carro
+%(…)  %% cas de l'el·lipsi de triple octet
 
 {  %% forall d'anàlisi de la cadena de text per rexifrar-la a 1 octet en els casos on es desplega en 2 i fer els retorns de carro
  dup 92 eq  %% és una contrabarra?
@@ -63,21 +66,55 @@ systemdict /AdobeGlyphList get /AGL exch def  %% diccionari de /nomDelGlif ###co
    }ifelse
    /BS false def  %% gatell per saber si hem llegit una contrabarra (Back Slash)
   }
-  {  %% aquí filtrarem la resta de glifs o amb doble octet o senzill
+  {  %% aquí filtrarem la resta de glifs o amb triple, doble octet o senzill
    dup 194 eq 1 index 195 eq or  %% potser algun dels dos senyals de glifs a doble octet
    {  %% octet senyal
-    pop
-    /OS true def  %% gatell per saber si hem llegit un octet senyal d'1 octet de més
+    194 eq
+    {
+     /FEM64 false def
+    }
+    {
+     /FEM64 true def
+    }ifelse
+    /OS2 true def  %% gatell per saber si hem llegit un octet senyal d'1 octet de més
 %194o195
    }
    {  %% caràcter d'1 octet o lligat a un senyal
-    OS  %% ve d'un senyal?
+    OS2  %% ve d'un senyal?
     {  %% perquè el segon octet és a 64 de distància del seu glif
-     64 add  %% WAE exch get  %% és una manera de comprovar-ho
-     /OS false def  %% gatell per saber si hem llegit un octet senyal d'1 octet de més
+     FEM64
+     {
+      64 add  %% WAE exch get  %% és una manera de comprovar-ho
+     }if
+     /OS2 false def  %% gatell per saber si hem llegit un octet senyal d'1 octet de més
+    }
+    {  %% triple octet?
+     dup 226 eq  %% detector de l'el·lipsi
+     {
+      pop /OS3 true def
+     }
+     {
+      OS3
+      {
+       dup 128 eq  %% detector de l'el·lipsi
+       {
+        pop
+       }
+       {
+        dup 166 eq  %% detector de l'el·lipsi
+	{
+         pop 133  %% fem l'el·lipsi!
+	}if
+	/OS3 false def
+       }ifelse
+      }if
+     }ifelse
+    }ifelse
+    OS3 not
+    {  %% sempre que no estiguem desxifrant un glif de triple octet
+     araLinia dup length dup /araVa exch def 1 add string dup 3 -1 roll 0 exch putinterval
+     dup araVa 4 -1 roll put /araLinia exch def
     }if
-    araLinia dup length dup /araVa exch def 1 add string dup 3 -1 roll 0 exch putinterval
-    dup araVa 4 -1 roll put /araLinia exch def
    }ifelse
   }ifelse
  }ifelse
@@ -96,5 +133,5 @@ araLinia length 0 ne
  dup araVa araLinia put /AliniesD1solOctet exch def
 }if
 
-AliniesD1solOctet pstack
+%AliniesD1solOctet pstack
 

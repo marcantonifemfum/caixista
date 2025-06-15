@@ -3,6 +3,18 @@
 // creem una galeta JS de l'hora del client
 echo "<script>var _quinHoraEs = new Date().toLocaleTimeString();setCookie('quinHoraEs', _quinHoraEs, 1);</script>";
 
+// cal veure si treballarà igual el servidor de la UB
+// si pot ser útil fer una captura de la URL aquí tenim el mètode, però:
+$url =  "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+//$url =  "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+// tenint en compte de si s'afegeixen dues barres // al principi de l'adreça (en localhost passa) que cal eliminar si volem que la URL sigui útil
+// tenint en compte també que la notació d'aquesta string segueix la pauta de p.e. esciure els espais en blanc com a %20 (el seu valor hexa)
+$urlplana = urldecode($url);  // aplanem la URL per tal que p.e. els espais en blanc no surtin com a %20
+
+// ho captura tallerdetipografia_componedoraRIMDA00.ps
+putenv("laURL=$urlplana");
+
 /*
 echo "<!-- TEST de si la galeta via JS es capta aquí? -->
 <script>
@@ -151,18 +163,21 @@ echo "</body></html>";
 
 // això és com un alert però més controlat per tal de redirigir un resultat cap a on es vulgui
 	  $pr0mpt = rtrim($prompt);
+
 // què caracu es desa quan llistem l'stack del ps?
 //var_dump($pr0mpt);
 //exit('  <<<< COMPINTA?');
 
 	 // exit("QUEFA? ".$pr0mpt);
-	 // $pr1mpt = ltrim($pr0mpt);  // ltrim sembla que no li cal
+	 //$pr1mpt = ltrim($pr0mpt);  // ltrim sembla que no li cal
+	 
  // exit($prompt);
- // echo "<script>alert('" . "$pr0mpt" . "');</script>";
+ //echo "<script>alert('" . "$pr0mpt" . "');</script>";
 
 	  // assagem via recodificat?
 	  //$pr3mpt = mb_convert_encoding($prompt, "ISO-8859-1", "auto");
-	  //echo mb_internal_encoding($prompt);
+          // echo "<script>alert('" . "$pr3mpt" . "');</script>";
+	  //exit ('mb_internal_encoding($prompt)');
 
 // si cancel·lem ens en anem aquí * i si fem OK anem cap al PDF que s'ha generat amb un nom únic
 echo "<script>if (window.confirm('" . $pr0mpt . "')) {window.location.href='$baseurlPDF$pdfnomes';};</script>";
@@ -206,11 +221,6 @@ echo "<script>if (window.confirm('" . $pr0mpt . "')) {window.location.href='$bas
 
 
 //@RIMDAUB * aquí és on ens en anem si cancel·lem
-// si pot ser útil fer una captura de la URL aquí tenim el mètode, però:
-$url =  "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-// tenint en compte de si s'afegeixen dues barres // al principi de l'adreça (en localhost passa) que cal eliminar si volem que la URL sigui útil
-// tenint en compte també que la notació d'aquesta string segueix la pauta de p.e. esciure els espais en blanc com a %20 (el seu valor hexa)
-$urlplana = urldecode($url);  // aplanem la URL per tal que p.e. els espais en blanc no surtin com a %20
 
   // aquí llistem l'ERROR del prompt i demanem que s'enviï
   echo "<center><span style='color:#ff0000;font-family:monospace;font-size:24px'><br><br>&gt;&gt;&gt; ERROR d'execuci&oacute; de l'algorisme &lt;&lt;&lt;</span>";

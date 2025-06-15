@@ -7,9 +7,18 @@
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=72&mesura=151p&reng=/espai(36 72 g)/interlinia(1p6C g)/llengot(18P6Cg)/imposicio (8c)
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(1 6cG)/llengot(6p 6Cg)/imposicio(60c)
 
+%% apunt de l'Enric Tormo: 1 Pica aglesa (no la PS ianqui) equival exactament a 11 punts Didot
 
 %(\n\nB O N   D I A  !\n\n) print flush
 %(B [O] N =  D I A  !\n\n) print flush
+
+(laURL) getenv
+{
+ /laURL exch def
+}
+{
+ pstack HIHAhagutUNerrorENlaCAPTURAdelaURL
+}ifelse
 
 %% capturem les variables d'entorn provinents de componedoraRIMDA00.php 
 (MRCT_cos)  getenv  %% la variable d'entorn existeix?
@@ -78,7 +87,7 @@
 }ifelse
 
 %% buffer de missatges per la finestra del prompt JS
-/tOU 1024 string def  %% una cadena amb capacitat de sobres
+/tOU 2048 string def  %% una cadena amb capacitat de sobres
 tOU /NullEncode filter /fotli exch def  %% l'string com a fitxer d'escriptura
 
 /hihaERROR false def  %% gatell per saber si hem de generar o no el PDF gràfic amb el reng
@@ -200,6 +209,18 @@ HIHAcos HIHAmesura HIHAreng and and
  }bind def
 
 %%TANT cos COM mesura HAURIEN DE FILTRAR-SE AMB L'ALGORISME QUE DÓNA COM A RESULTAT hies DONCS PODEN DUR UNITATS I CARÀCTERS ERRONIS I MÉS ENDAVANT D'ALTRES VALORS
+%%EP EP
+%% Si hi ha 2 unitats diferents per descuït a &mesura= genera un error PS (en fem un prompt JS?)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=6cp&reng=/imposicio(6c96pG)
+%% (6) Error: /stackunderflow in --copy-- Operand stack: 0 2
+%%EP EP
+%% Què passa si posem valors en negatiu a les variables?
+%%EP EP
+%% aquesta URL hauria de donar també error perquè té les unitats repetides i no ho fa:
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=138p&cos=6&reng=/llengot%20(6cc)
+%% amb una repetició de p a &cos= el JS es queda en blanc:
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=138&cos=6pp&reng=/llengot%20(6c)
+
  %% filtrem els errors de sintaxi del valor de cos
  HIHAcos
  {  %% si hi ha cos
@@ -216,10 +237,13 @@ HIHAcos HIHAmesura HIHAreng and and
   {
    pop
 %%S'ESDEVÉ si per exemple només hi han espais en blanc o altres caràcters estranys a la sintaxi
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=%20%20%20&mesura=%20%20%20&reng=/interlinia(%20%20%20)
+%% (1) (5) Error: /stackunderflow in --copy-- Operand stack: 0 2
    fotli (\\n\\n[#01] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
    fotli (>> no hi ha cap valor vàlid)writestring
    /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(1)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(1)==  %% marquem on activem els gatells d'error per pentinar
   }
   {
    3 ge
@@ -228,7 +252,8 @@ HIHAcos HIHAmesura HIHAreng and and
     fotli (\\n\\n[#02] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
     fotli (>> hi heu introduït massa valors)writestring
     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(2)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(2)==  %% marquem on activem els gatells d'error per pentinar
    }
    {
     %% que el primer element no sigui un enter o un real?
@@ -247,10 +272,13 @@ HIHAcos HIHAmesura HIHAreng and and
       }
       {  %% és una /g o un altre enter!
 %%S'ESDEVÉ si escrivim un caràcter g en comptes d'una unitat c p
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13g8p&cos=6g&reng=/llengot%20(6c)/espai(1/4)/espai(1/4)/espai(1/3)%20/espai(1/2)%20/espai(12%201/2%20g)%20/llengot(5g)%20/espai(18)
+%% (3) (6) Error: /stackunderflow in --copy-- Operand stack: 0 2
        fotli (\\n\\n[#03] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
        fotli (>> el segon valor no és cap unitat)writestring
        /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(3)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(3)==  %% marquem on activem els gatells d'error per pentinar
       }ifelse
      }
      {  %% tot correcte i treballa en punts!
@@ -264,10 +292,13 @@ HIHAcos HIHAmesura HIHAreng and and
     }
     {  %% no és cap numèric
 %%S'ESDEVÉ si escrivim les unitats sense cap valor numèric
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=p%20&mesura=c%20&reng=/interlinia(p)
+%% (4) (8) Error: /stackunderflow in --copy-- Operand stack: 0 2
      fotli (\\n\\n[#04] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
      fotli (>> el primer valor no és cap numèric)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(4)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(4)==  %% marquem on activem els gatells d'error per pentinar
     }ifelse
    }ifelse
   }ifelse
@@ -290,20 +321,27 @@ HIHAcos HIHAmesura HIHAreng and and
   {
    pop
 %%S'ESDEVÉ si per exemple només hi han espais en blanc o altres caràcters estranys a la sintaxi
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=%20%20%20&mesura=%20%20%20&reng=/interlinia(%20%20%20)
+%% (1) (5) Error: /stackunderflow in --copy-- Operand stack: 0 2
    fotli (\\n\\n[#05] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
    fotli (>> no hi ha cap valor vàlid)writestring
    /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(5)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(5)==  %% marquem on activem els gatells d'error per pentinar
   }
   {
    3 ge
    {
 %%S'ESDEVÉ si s'han introduï 3 o més enters, complint-se el què diu el missatge, vegeu l'exemple
-%%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=72&mesura=300 1 1 &reng=/interlinia(3 72 g)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=72&mesura=300 1 1 &reng=/interlinia(3 72 g)
+%% (6) Error: /stackunderflow in --copy-- Operand stack: 0 2
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13g8p&cos=6g&reng=/llengot%20(6c)/espai(1/4)/espai(1/4)/espai(1/3)%20/espai(1/2)%20/espai(12%201/2%20g)%20/llengot(5g)%20/espai(18)
+%% (3) (6) Error: /stackunderflow in --copy-- Operand stack: 0 2
     fotli (\\n\\n[#06] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
     fotli (>> hi heu introduït massa valors)writestring
     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(6)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(6)==  %% marquem on activem els gatells d'error per pentinar
    }
    {
     %% que el primer element no sigui un enter o un real?
@@ -322,11 +360,13 @@ HIHAcos HIHAmesura HIHAreng and and
       }
       {  %% és una /g o un altre enter!
 %%S'ESDEVÉ si es compleix el què diu el comentari, el missatge o l'exemple
-%%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=72&mesura=300 1 &reng=/interlinia(3 72 g)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=72&mesura=300 1 &reng=/interlinia(3 72 g)
+%% (7) Error: /stackunderflow in --copy-- Operand stack: 0 2
        fotli (\\n\\n[#07] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
        fotli (>> el segon valor no és cap unitat)writestring
        /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(7)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(7)==  %% marquem on activem els gatells d'error per pentinar
       }ifelse
      }
      {  %% tot correcte i treballa en punts!
@@ -340,11 +380,15 @@ HIHAcos HIHAmesura HIHAreng and and
     }
     {  %% no és cap numèric
 %%S'ESDEVÉ si només hi posem les unitats o gir c p g tal com l'exemple
-%%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=72&mesura=p&reng=/interlinia(3 72 g)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=72&mesura=p&reng=/interlinia(3 72 g)
+%% (8) Error: /stackunderflow in --copy-- Operand stack: 0 2
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=p%20&mesura=c%20&reng=/interlinia(p)
+%% (4) (8) Error: /stackunderflow in --copy-- Operand stack: 0 2
      fotli (\\n\\n[#08] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &mesura=\\n\\n)writestring
      fotli (>> el primer valor no és cap numèric)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(8)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(8)==  %% marquem on activem els gatells d'error per pentinar
     }ifelse
    }ifelse
   }ifelse
@@ -389,11 +433,13 @@ HIHAcos HIHAmesura HIHAreng and and
     {
      pop
 %%S'ESDEVÉ si només hi han espais en blanc
+%%EP EP aquí el JS ens la juga i ens deixa en una pantalla en blanc sense missatges!
 %%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&reng=%20%20%20%20%20%20%20&cos=6c&mesura=300
      fotli (\\n\\n[#09] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &reng=\\n\\n)writestring
      fotli (>> és buida de valors, amb només espais en blanc de teclat o amb notació hexa %20)writestring
      /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(9)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(9)==  %% marquem on activem els gatells d'error per pentinar
     }
     {
      cleartomark
@@ -461,6 +507,7 @@ HIHAcos HIHAmesura HIHAreng and and
          {  %% si hi ha una instrucció de gir i la peça només té 1 sol element
 %%S'ESDEVÉ si es compleix el que diu el comentari, sempre que existeixin aquests valors a la taula, tal i com podem veure a l'exemple
 %%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&reng=/imposicio%20(8c%20g)%20&cos=6c&mesura=300
+%% (10) Error: /ioerror in --flushfile--
           fotli (\\n\\n[#10] ERROR EN EL GIR D\\'UNA PEÇA DE LA VARIABLE &reng=\\n\\n)writestring
           fotli (>> la peça… )writestring
           fotli (/)writestring fotli AparellMB 0 get 32 string cvs writestring
@@ -473,7 +520,8 @@ HIHAcos HIHAmesura HIHAreng and and
           fotli (])writestring
           fotli ( …només duu el valor d\\'ample i li manca el valor del cos per tal que la instrucció de gir… g …pugui aplicar-se)writestring
           /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(10)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(10)==  %% marquem on activem els gatells d'error per pentinar
 	  userdict /girem false put  %% i desactivarem el gatell
 	 }if
          pop pop true  %% coincideix segur perquè és &cos= qui mana
@@ -504,6 +552,7 @@ HIHAcos HIHAmesura HIHAreng and and
 	 le  %% primer assegurem que no som més enllà de l'índex permès
          {  %% la peça d'aquest cos va més enllà de l'índex permès, llavors no existeix
 %%S'ESDEVÉ si es compleix el que pòsa el comentari o tal com pot veure's a l'exemple
+%%EP EP aquí el JS ens la juga i ens deixa en una pantalla en blanc sense missatges!
 %%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&reng=/imposicio%20(61c%20)%20&cos=61c&mesura=300
           fotli (\\n\\n[#11] ERROR EN EL VALOR DEL COS D\\'UNA PEÇA DE LA VARIABLE &reng=\\n\\n)writestring
           fotli (>> el cos… )writestring
@@ -520,13 +569,15 @@ HIHAcos HIHAmesura HIHAreng and and
           fotli tBlancsLiteraris ARAtaula get writestring
           pop
           /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(11)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(11)==  %% marquem on activem els gatells d'error per pentinar
          }
          {  %% potser pot existir
           icos get dup null eq 1 index type /nametype eq or
           {  %% la peça d'aquest cos no existeix
            pop
 %%S'ESDEVÉ si passa el que s'explica al missatge o a l'exemple
+%%EP EP aquí el JS ens la juga i ens deixa en una pantalla en blanc sense missatges!
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=19&mesura=300&reng=/espai(19 36)
            fotli (\\n\\n[#12] ERROR EN EL VALOR DEL COS D\\'UNA PEÇA DE LA VARIABLE &reng=\\n\\n)writestring
            fotli (>> el cos… )writestring
@@ -543,7 +594,8 @@ HIHAcos HIHAmesura HIHAreng and and
            fotli ( …no existeix a la taula… )writestring
            fotli tBlancsLiteraris ARAtaula get writestring
            /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(12)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(12)==  %% marquem on activem els gatells d'error per pentinar
           }
           {  %% el cos existeix i ara comprovem si l'ample existeix
            dup /pecesDELcos exch def  %% desem l'array d'amples de peces del cos existents en aquesta mesura de blancs
@@ -668,7 +720,8 @@ HIHAcos HIHAmesura HIHAreng and and
              {cvx exec}forall end
             ]  %% en aquesta array hi ha cos i ample (per aquest ordre!) en punts de Pica PS de la peça que es compon al reng
             %% a l'índex 2 hi ha el paquet, peça a peça per ordre de composició, dins una array amb:
-            LINPSnorm dup 2 get dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval dup  %% array ampliada a punt de rebre la peça següent
+%%EP EP què passa si és buida?
+	    LINPSnorm dup 2 get dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval dup  %% array ampliada a punt de rebre la peça següent
             4 -1 roll  %% les instruccions rectfill (alt x ample!) amb punts de Pica PS (quan hi hagi la imatge digitalitzada hi podrien anar els paràmetres image)
             %% el color RGB amb que cal pintar la peça (quan hi hagi la imatge digitalitzada hi podria anar el path al fitxer)
             %% el pesquem cridant la taula de colors que toca amb els mateixos índex de cos i ample amb els que hem localitzat la peça
@@ -678,6 +731,7 @@ HIHAcos HIHAmesura HIHAreng and and
 	   }
 	   {
 %%S'ESDEVÉ com descriu el missatge d'error i la URL d'exemple
+%%EP EP aquí el JS ens la juga i ens deixa en una pantalla en blanc sense missatges!
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/imposicio(36 72)
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/espai(6c p)
             fotli (\\n\\n[#13] ERROR EN EL VALOR DE L\\'AMPLE D\\'UNA PEÇA DE LA VARIABLE &reng=\\n\\n)writestring
@@ -692,15 +746,22 @@ HIHAcos HIHAmesura HIHAreng and and
             fotli (])writestring
 	    fotli ( …no existeix a la taula d\\'amples del cos… )writestring
             fotli cosVAL writestring
+	    fotli (\\n\\n)writestring
             /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(13)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(13) ==  %% marquem on activem els gatells d'error per pentinar
            }ifelse  %% l'ample hi és per aquest cos?
           }ifelse  %% però el cos existeix?
          }ifelse  %% el cos no supera el rang de la taula
         }
         {  %% si no coincideix
 %%S'ESDEVÉ com descriu el missatge d'error i la URL d'exemple
+%%EP EP aquí el JS ens la juga i ens deixa en una pantalla en blanc sense missatges!
 %%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/imposicio(36c%2072)
+%%EP EP en una repetició d'unitats d'una peça del &reng= a la G dóna error se sintaxi:
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96&mesura=6&reng=/imposicio(6c96pGg)
+%%EP EP repetint unitats de p en una peça del &reng= el JS es queda en blanc:
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96&mesura=6&reng=/imposicio(6c96ppg)
          fotli (\\n\\n[#14] ERROR EN EL VALOR D\\'UNA PEÇA A LA VARIABLE &reng=\\n\\n)writestring
          fotli (>> el valor de la variable &cos= )writestring
          fotli cosVAL writestring
@@ -715,30 +776,35 @@ HIHAcos HIHAmesura HIHAreng and and
          fotli (])writestring
          fotli ( …de la variable &reng=)writestring
          /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(14)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(14)==  %% marquem on activem els gatells d'error per pentinar
         }ifelse
        }
        {  %% el nom està mal escrit
 %%S'ESDEVÉ com descriu el missatge d'error i la URL d'exemple
+%%EP EP aquí el JS ens la juga i ens deixa en una pantalla en blanc sense missatges!
 %%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/iMposicio(36%2072)
         fotli (\\n\\n[#15] ERROR DE SINTAXI EN EL NOM D\\'UNA PEÇA A LA VARIABLE &reng=\\n\\n)writestring
 	fotli (>> el nom de la peça… /)writestring
         0 get 128 string cvs fotli exch writestring
 	fotli ( …està mal escrit)writestring
         /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(15)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(15)==  %% marquem on activem els gatells d'error per pentinar
        }ifelse
        iX 1 add /iX exch def  %% índex de peces dins la línia de composició
       }forall  %% per cadascuna de les arrays amb els parells /nomDelBlanc (valor)
      }
      {  %% les dades de reng van desaparellades
 %%S'ESDEVÉ si hi ha algun dels errors de sintaxi descrits al missatge tal i com demostra l'exemple
+%%EP EP aquí el JS ens la juga i ens deixa en una pantalla en blanc sense missatges!
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/espai(36)72
       fotli (\\n\\n[#16] ERROR DE SINTAXI EN ALGUN DELS VALORS DE LA VARIABLE &reng=\\n\\n)writestring
       fotli (>> hi ha alguna peça de Mesures de Blancs desaparellada: valor fora del parèntesi, nom sense el seu valor o viceversa)writestring
       cleartomark
       /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(16)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(16)==  %% marquem on activem els gatells d'error per pentinar
      }ifelse
     }ifelse  %% si &reng= és buit de dades?
 %   }stopped
@@ -746,7 +812,7 @@ HIHAcos HIHAmesura HIHAreng and and
 %%S'ESDEVÉ si hi ha algun dels errors de sintaxi descrits al missatge o a l'exemple
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/espai(6c C)
 %    fotli (\\n\\n[#17] ERROR DE SINTAXI EN ALGUN DELS VALORS DE LA VARIABLE &reng=\\n\\n)writestring
-%    fotli (>> hi ha algun nom d\\'alguna peça de Mesures de Blancs sense el… / …o algun dels seus valors no duu correctament els parèntesi… () …o hi ha caràcters estranys i/o repetits a la sintaxi d\\'aquesta variable)writestring
+%    fotli (>> hi ha algun nom d\\'alguna peça de Mesures de Blancs sense el… / …o algun dels seus valors no duu correctament els parèntesi… \(\) …o hi ha caràcters estranys i/o repetits a la sintaxi d\\'aquesta variable)writestring
 %    /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
 %   }if
   }if  %% si hi ha &reng=
@@ -788,6 +854,16 @@ HIHAcos HIHAmesura HIHAreng and and
  /desviacioPermesa 1 def  %% aquest és el llindar per valorar de si acceptem generar el PDF gràfic (ara en punts de Pica PS)
  /sumemAmpleReng 0 def
  LINPSnorm 2 get
+
+
+%%EP EP què passa si és buida?
+dup length 0 eq
+{
+ pop /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
+}
+{
+
+
 %%Les peces del &reng= com /imposicio(8c) dins a LINPSnorm duen només el valor de l'ample (ja convertit a punts PS) però podrien dur els 2 (cos/mesura) ja girats
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=72&mesura=151&reng=/espai(36 72g)/interlinia(1p6Cg)/llengot(18P6Cg)/imposicio(8c)
  {  %% forall sumador del total d'amples de cadascuna de les peces del &reg=
@@ -1062,10 +1138,13 @@ HIHAcos HIHAmesura HIHAreng and and
  }ifelse
 % pstack araQUADRA?
 
+}ifelse  %%EP EP
+
 }
 {  %% almenys en falla 1
  /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
-(18)==  %% marquem on activem els gatells d'error per pentinar
+%%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
+%(18)==  %% marquem on activem els gatells d'error per pentinar
 %%S'ESDEVÉ si passa alguna de les coses que es descriuen al missatge
  fotli ([#00] ERROR DE SINTAXI AL NOM DE LES VARIABLES:\\n\\n)writestring
 
@@ -1087,47 +1166,139 @@ HIHAcos HIHAmesura HIHAreng and and
 }ifelse
 
 
-%%ENCARA que hi hagi alguna bruixa que no ens activi els missatges JS hauríem de poder generar el PDF (d'errors o gràfic) directament (en una nova pestanya o no)
+hihaERROR
+{  %% amb errors
+%%S'ESDEVÉ amb totes les peces de Mesures de Blancs
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=792P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
 
-hihaERROR
-{
  % pstack SIhihaERRORcomseguim?
  fotli (\\n\\n________________________T E N I U   E R R O R S________________________\\n\\nSi prems…  [ Cancel·la ]  …et mantindràs en aquesta mateixa pàgina en blanc\\n\\nSi prems…  [ D\\'acord ]  …s\\'obrirà un PDF amb els errors transcrits en una nova pestanya del navegador)writestring
  fotli dup flushfile closefile
+
  %% fem que surti l'error al prompt de la web
- tOU =  %% treu tot el contingut de la cadena interpretant els retorns de carro correctament
- %% == treu la cadena amb el () sense interpretar el seu interior
+ tOU
+ (\000) search
+ {  %% filtrem els \000 de la cua del buffer de 2048
+  exch pop exch pop
+ }
+ {  %% si esgotessim el buffer ho detectaríem per aquí
+  TENIMunERRORamb_toU
+ }ifelse
 
- %% aquí podem treballar sempre en A4 vertical
- <</PageSize[595 842]>>setpagedevice
+% pop (\(\\n\\nEM VEUS?\\n\\n\))  %450 9 getinterval pstack QUECONYPASSAAQUI?
 
- 1 0 0 setrgbcolor
- 200 400 200 200 rectfill
+ =  %% treu tot el contingut de la cadena interpretant els retorns de carro correctament
+%  ==  %treu la cadena amb el () sense interpretar el seu interior
 
+ %% aquí podem treballar sempre en A4 horitzontal
+ <</PageSize[842 595]>>setpagedevice
+ /margeS 30 def  %% valor per cadascun des 4
+
+ 842 margeS 2 mul sub  %% A4 horitzontal
+ /Xpossible exch def
+
+ (/usr/share/fonts/truetype/hack/Hack-Regular.ttf)
+ findfont
+ dup length dict begin
+ {
+  1 index /FID ne
+  {def}{pop pop}ifelse
+ }forall
+ /Encoding systemdict /EncodingDirectory get /WinAnsiEncoding get def
+ currentdict end
+ /mono_WA exch definefont pop
+
+ %% mesurem l'ample dels glifs a 1 punt de cos
+ /mono_WA 1 selectfont
+ 0 0 moveto (i) stringwidth pop /ampleA1puntDcos exch def
+
+ tOU
+ (Si prems) search
+ {  %% filtrem des dels missatges de gestió del prompt fins els \000 de la cua del buffer de 2048
+  exch pop exch pop
+ }
+ {  %% si esgotessim el buffer ho detectaríem per aquí
+  TENIMunERRORamb_toU
+ }ifelse
+
+ %% lector/componedor dels caràcters que es codifiquen en simple, doble i triple octet i per destriar \n com a retorn de carro i \' com apòstrof
+ (decodificaWinAnsiEncoding_a1i2octets.ps)
+ (r) file cvx exec
+
+ %% afegim la darrera cadena amb la URL executada dins l'array
+ AliniesD1solOctet dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval
+ dup araVa laURL put /AliniesD1solOctet exch def
+
+ /lamesllarga 0 def  %% detectem quina és la línia més llarga
+ AliniesD1solOctet
+ {  %% forall
+  length dup lamesllarga gt
+  {
+   /lamesllarga exch def
+  }
+  {
+   pop
+  }ifelse
+ }forall
+ 
+ %% l'ample de pàgina imprimible dividit pel producte del nombre de glifs de la línia més llarga per l'ample d'1 glif a 1 punt
+ %% és = al coS perquè la línia més llarga faci exactament l'ample imprimible de pàgina
+ Xpossible  %% l'ample imprimible de pàgina
+ lamesllarga  %% nombre de glifs de la línia més llarga
+ ampleA1puntDcos  %% l'ample d'1 glif a 1 punt
+ mul div
+ /coS exch def
+ 
+ /mono_WA findfont coS scalefont setfont
  0 0 0 setrgbcolor
- /Courier 10 selectfont
- 50 600 moveto
- tOU 0 256 getinterval 19 get 32 string cvs
- %% ens cal un lector/componedor dels caràacters que escodifiquen en doble octet i per destriar \n com a retorn de carro i \' com apòstrof
- show
+ /iL coS 1.12 mul def
+ /caP %A4_A0 iFormat get 1 get
+ 595 margeS sub iL sub def  %% A4 horitzontal
+
+ 1 0 0 setrgbcolor  %% vermell d'error
+
+ AliniesD1solOctet
+ {  %% forall
+  margeS caP moveto show
+  caP iL sub /caP exch def
+ }forall
+
+ caP iL sub /caP exch def
+ margeS caP moveto
+
+ %litA4_A0 iFormat get show
 
  showpage
 }
 {  %% sense errors
-%%S'ESDEVÉ
+%%S'ESDEVÉ amb totes les peces de Mesures de Blancs
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6c&mesura=775P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
 	% pstack sinohihaerrorCOMSEGUIM?
  fotli (      E L   R E N G   S \\' H A   C O M P O S T   C O R R E C T A M E N T\\n\\nSi prems…  [ Cancel·la ]  …et mantindràs en aquesta mateixa pàgina en blanc\\n\\nSi prems…  [ D\\'acord ]  …s\\'obrirà el PDF amb la composició en una nova pestanya del navegador)writestring
  fotli dup flushfile closefile
+
  %% fem que surti l'error al prompt de la web
- tOU =  %% treu tot el contingut de la cadena interpretant els retorns de carro correctament
+ tOU
+ (\000) search
+ {  %% filtrem els \000 de la cua del buffer de 2048
+  exch pop exch pop
+ }
+ {  %% si esgotessim el buffer ho detectaríem per aquí
+  TENIMunERRORamb_toU
+ }ifelse
+
+ =  %% treu tot el contingut de la cadena interpretant els retorns de carro correctament
  %% == treu la cadena amb el () sense interpretar el seu interior
 
  %% en funció del valor més gran de &mesura= o &reng= triarem DIN i orientació adequada a partir d'un A4
  /margeS 30 def  %% valor per cadascun des 4
- /falinia 595 def  %% valor simulat del valor més gran de &mesura= o &reng= 
-%% amples possibles a DIN i en funció dels margeS triats
+
+ LINPSnorm dup 1 get 0 get  %% mesura de línia
+ /falinia exch def  %% el valor de &mesura= no cal comparar-lo amb &reng= perquè només poden diferir en la desviació permesa del llindar /desviacioPermesa
+ 0 get 0 get  %% cos
+ /facos exch def
+
+ %% amples possibles a DIN i en funció dels margeS triats
  [  %% només considerem l'ample perquè la componedora només compon 1 sola línia
   595 margeS 2 mul sub  %% 0 A4 vertical
   842 margeS 2 mul sub  %% 1 A4 horitzontal
@@ -1140,7 +1311,8 @@ hihaERROR
   2384 margeS 2 mul sub %% 8 A0 vertical
   3370 margeS 2 mul sub %% 9 A0 horitzontal
  ] /Xpossible exch def
-%% https://www.cl.cam.ac.uk/~mgk25/iso-paper.html
+
+ %% https://www.cl.cam.ac.uk/~mgk25/iso-paper.html
  [  %% formats de pàgina
   [595 842]  %% 0 A4 vertical
   [842 595]  %% 1 A4 horitzontal
@@ -1153,6 +1325,7 @@ hihaERROR
   [2384 3370]  %% 8 A0 vertical
   [3370 2384]  %% 9 A0 horitzontal
  ] /A4_A0 exch def
+
  [  %% formats de pàgina per escrit
   (A4 vertical)
   (A4 horitzontal)
@@ -1176,24 +1349,422 @@ hihaERROR
   iFormat 1 add /iFormat exch def
  }forall
 
- A4_A0 iFormat get
- litA4_A0 iFormat get
- Xpossible iFormat get
- pstack AQUINFORMAT
+ <<
+   /PageSize A4_A0 iFormat get
+   %% per assegurar precisió i qualitat
+   /HWResolution [4000 4000]
+ >> setpagedevice
+
+ (/usr/share/fonts/truetype/hack/Hack-Regular.ttf)
+ findfont
+ dup length dict begin
+ {
+  1 index /FID ne
+  {def}{pop pop}ifelse
+ }forall
+ /Encoding systemdict /EncodingDirectory get /WinAnsiEncoding get def
+ currentdict end
+ /mono_WA exch definefont pop
+
+ %% mesurem l'ample dels glifs a 1 punt de cos
+ /mono_WA 1 selectfont
+ 0 0 moveto (i) stringwidth pop /ampleA1puntDcos exch def
+
+ tOU
+ (E L) search
+ {  %% filtrem el missatge del prompt a la cua del buffer de 2048
+  exch pop exch pop
+ }
+ {  %% si esgotessim el buffer ho detectariem per aquí
+  TENIMunERRORamb_toU
+ }ifelse
+
+ %% lector/componedor dels caràcters que es codifiquen en simple, doble i triple octet i per destriar \n com a retorn de carro i \' com apòstrof
+ (decodificaWinAnsiEncoding_a1i2octets.ps)
+ (r) file cvx exec
+
+ %% afegim la darrera cadena amb la URL executada dins l'array
+ AliniesD1solOctet dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval
+ dup araVa laURL put /AliniesD1solOctet exch def
+
+ /lamesllarga 0 def  %% detectem quina és la línia més llarga
+ AliniesD1solOctet
+ {  %% forall
+  length dup lamesllarga gt
+  {
+   /lamesllarga exch def
+  }
+  {
+   pop
+  }ifelse
+ }forall
+ 
+ %% l'ample de pàgina imprimible dividit pel producte del nombre de glifs de la línia més llarga per l'ample d'1 glif a 1 punt
+ %% és = al coS perquè la línia més llarga faci exactament l'ample imprimible de pàgina
+ Xpossible iFormat get  %% l'ample imprimible de pàgina
+ lamesllarga  %% nombre de glifs de la línia més llarga
+ ampleA1puntDcos  %% l'ample d'1 glif a 1 punt
+ mul div
+ /coS exch def
+ 
+ /iL coS 1.12 mul def
+ /caP A4_A0 iFormat get 1 get margeS sub iL sub def
+
+ %% logo UB
+ gsave
+ /DeviceRGB setcolorspace
+ margeS caP iL 2.3 mul sub translate
+ 32 40.5 scale
+ <<
+   /ImageType 1
+   /Width 64
+   /Height 81
+   /BitsPerComponent 8
+   /Decode [0 1 0 1 0 1]
+   /ImageMatrix [64 0 0 81 neg 0 81]
+   /DataSource (nomesLogo2UB.jpg) (r) file <</ColorTransform 1>> /DCTDecode filter  %% treballant amb filtres no s'hi posen els {}
+ >> image
+ grestore
+
+ %% capçalera amb el nom del projecte i logo a caixa esquerra
+ /mono_WA findfont coS .7 mul scalefont setfont
+ margeS 2.5 mul caP moveto
+ (Taller Virtual de Tipografia en Plom) show
+ margeS 2.5 mul caP iL sub moveto
+ (Projecte RIMDA 2024DIG-UB/005) show
+ margeS 2.5 mul caP iL 2 mul sub moveto
+ (Facultat de Belles Arts) show
+
+ %% capçalera amb el nom de la componedora a caixa dreta
+ /mono_WA findfont coS scalefont setfont
+ gsave
+ 1 0 0 setrgbcolor
+ 0 0 moveto (componedoraRIMDA00) dup stringwidth pop
+ Xpossible iFormat get  %% l'ample imprimible de pàgina
+ exch sub margeS add caP moveto show
+ grestore
+
+ <efb34a>  %% color or vell ídem html
+ {
+  255 div
+ }forall
+ setrgbcolor
+
+ %% centrat a peu de pàgina
+ %% componem la URL que fa tot l'ample de la pàgina ajustada als margeS
+ AliniesD1solOctet dup 4 get margeS dup moveto show
+ %% componem la desviació permesa
+ 0 get dup 0 0 moveto stringwidth pop 2 div
+ Xpossible iFormat get 2 div exch sub  %% l'ample imprimible de pàgina
+ margeS iL add moveto show
+
+ %% componem el format de pàgina en literari
+ litA4_A0 iFormat get dup 0 0 moveto stringwidth pop 2 div
+ Xpossible iFormat get 2 div exch sub  %% l'ample imprimible de pàgina
+ margeS iL 2 mul add moveto show
+
+ %% la línia de composició centrada en horitzontal i vertical
+ A4_A0 iFormat get cvx exec
+ exch 2 div falinia 2 div sub dup /Xibalet exch def  %% la X per centrar horitzontalment la mesura
+ exch 2 div facos 2 div sub dup /Yibalet exch def  %% la Y per centrar verticalment la mesura
+ falinia facos rectfill
 
 
- 0 1 0 setrgbcolor
- 200 400 200 200 rectfill
+ %% les 2 regles graduades de dalt (cíceros/punts) i baix (cm/mm)
+ gsave
+ %% 1 punt Didot = 1.06554329 punts de Pica PS  %% aquest és el multiplicador mestre que haurem de fer servir pels algorismes del Taller de Tipografia de la FBBAAUB
+ /pD {1.06554329 mul}bind def
+ %% 1 mm = 2.83464575 punts de Pica PS=
+ /mm {2.83464575 mul}bind def
 
+%%+ tipus
+ (/usr/share/fonts/truetype/ubuntu/Ubuntu-C.ttf)
+ findfont
+ %% codifiquem pels accents catalans i els possibles glifs alternatius
+ dup length dict begin
+ {
+  1 index /FID ne
+  {def}{pop pop}ifelse
+ }forall
+ %% atenció que aquesta crida només és vàlida a Ghostscript!
+ /Encoding systemdict /EncodingDirectory get /WinAnsiEncoding get
+ %dup length array copy dup 0
+ %/Fhook put
+ %/uni0191 put
+ %/uni0492 put
+ %/Ghestrokecyrillic put
+ %/ghestrokecyrillic put
+ %/uni024D put
+ %/florin put
+ %/f put
+ %/uni0493 put
+ %/f_f put
+ def  %% xifrat WinAnsi
+ currentdict end /dUbuntu_WAp exch definefont pop
+ /dUbuntu_WAp findfont
+ /dFont exch def
+
+ %% marques de la regla mm/cm
+ /Ymm 5 mm def
+ /Ymig 7.5 mm def
+ /Ycm 10 mm def
+
+ %% marques de la regla punts/cíceros Didot
+ /YpD 12 pD def
+ /YmigpD 24 pD def
+ /Yc 36 pD def
+
+ true  %% quin mètode de comparació fem servir? (puntsPS vs mm)
+ /mtdC exch def
+ %%+ llindar en punts de Pica PS per sobre del qual (en valor absolut) desestimarem la coincidència d'unitats
+ /llindarIDEM .05 def
+
+ %% marquem en vermell les coincidències més acostades entre punts vs mm i mm vs punts
+ %% de manera que comprovant aquests valors veiem que en punts de Pica PS (la unitat nadiua del PDF) les coincidències són al primer decimal:
+ %% 8 p vs 3 mm | 11 c amb 9 p vs 53 mm | 12 c amb 5 p vs 56 mm | 22 c amb 10 p vs 103 mm | 23 c amb 6 p vs 106 mm | 35 c amb 3 p vs 159 mm | 47 c amb 0 p vs 212 mm
+ %% o al segon: 34 c amb 7 p vs 156 mm | 46 c amb 4 p vs 209 mm
+ /aCoincidencies <<>> def  %% diccionari amb posicions en mm vs null que indicaran les coincidències amb punts Didot
+
+%%+ regla horitzontal en punts/cíceros Didot
+ gsave
+ /cmlt 0 def  %% unitats acumulades en punts Didot
+ /cmltMM 0 def  %% unitats acumulades en mm
+ Xibalet Yibalet facos add translate
+ 0 setlinewidth
+ /ic 0 def
+
+ falinia 1.06554329 div 12 div ceiling cvi  %% nombre de cíceros a fer
+ {
+  0 1 11
+  {
+   dup /arac exch def
+   pD dup
+
+   mtdC  %% fem servir dos mètodes per detectar la coincidència d'unitats
+   {  %% +precís: amb dos comptadors de salts d'unitat convertim els salts de punt Didot a punt de Pica PS i els salts de mm a punt de Pica PS i comparem en base a un llindar
+    cmlt 1.06554329 mul  %% de punt Didot a punt de Pica PS
+    cmltMM 2.83464575 mul  %% de mm a punt de Pica PS
+    2 copy sub abs llindarIDEM gt
+    {  %% desestimem la coincidència d'unitats
+     %% com fem córrer els comptadors d'unitats?
+     gt  %% els punts Didot han superat els mm?
+     {
+      cmltMM 1 add /cmltMM exch def
+     }if
+     cmlt 1 add /cmlt exch def
+     false
+    }
+    {  %% hi ha coincidència d'unitats!
+%%EP! hem de desactivar els missatges del prompt perquè ens maten l'alert JS
+     %% llistem: els 2 valors en punts de Pica PS
+     %(\n\n >>> coindidència d'unitats: )print flush 32 string
+     pop %cvs print flush
+     %( (pDidot) vs ) print flush
+     pop %32 string cvs print flush ( (mm)\n)print flush
+     %% llistem els punts Didot que coincideixen amb els mm
+     %cmlt 6 string cvs print flush ( punts Didot ...ídem a... )print flush
+     %% llistem els mm que coincideixem amb els punts Didot
+     cmltMM 6 string cvs %dup print flush ( mm)print flush
+     aCoincidencies exch null put  %% desem per quan fem els mm
+     %% fem córrer els comptadors d'unitats
+     cmltMM 1 add /cmltMM exch def
+     cmlt 1 add /cmlt exch def
+     true
+    }ifelse
+   }
+   {  %% -precís: convertim els punts Didot a mm i desem només els que a la part decimal comencen amb 2 zeros
+    cmlt
+    .3759 mul  %% quin valor a mm dóna 2 zeros decimals?
+    100 mul cvi 32 string cvs dup length dup 1 eq
+    {
+     1 sub 1 getinterval cvx exec 0 eq
+    }
+    {
+     2 sub 2 getinterval cvx exec 0 eq
+    }ifelse
+    cmlt 1 add /cmlt exch def
+   }ifelse
+   /aVermell exch def  %% marcarem en vermell les coinncidències punts vs mm
+
+   0 pD moveto
+   arac 6 eq
+   {
+    YmigpD
+   }
+   {
+    arac 0 eq
+    {
+     Yc
+     gsave
+     0 0 0 setrgbcolor
+     2 copy moveto dFont 10 scalefont setfont ic 3 string cvs show
+     ic 1 add /ic exch def
+     grestore
+    }
+    {
+     YpD
+    }ifelse
+   }ifelse
+   aVermell
+   {
+    1 0 0 setrgbcolor
+   }
+   {
+    0 0 0 setrgbcolor
+   }ifelse
+   lineto stroke
+   0 0 0 setrgbcolor
+  }for
+  12 pD 0 translate
+ }repeat
+ %% la darrera marca en cíceros
+ 0 0 moveto 0 Yc
+ gsave
  0 0 0 setrgbcolor
- /Courier 10 selectfont
- 50 600 moveto
- tOU 0 256 getinterval
- %% ens cal un lector/componedor dels caràcters que es codifiquen en doble octet i per destriar \n com a retorn de carro i \' com apòstrof
- show
+ 2 copy moveto dFont 10 scalefont setfont ic 3 string cvs show ( c\355ceros) show
+ grestore
+ lineto stroke
+ grestore
+
+
+%%+ regla horitzontal en mm/cm
+ gsave
+ /cmlt 0 def  %% unitats acumulades en mm
+ /cmltPD 0 def  %% unitats acumulades en punts Didot
+ Xibalet Yibalet translate
+ 0 setlinewidth
+ /icm 0 def
+ falinia 2.83464575 div 10 div ceiling cvi  %% nombre de centímetres a fer
+ {
+  0 1 9
+  {
+   dup /aramm exch def
+   mm dup
+
+   mtdC  %% fem servir dos mètodes de comparació
+   {  %% +precís: amb dos comptadors de salts d'unitat convertim els salts en mm a punt de Pica PS i els salts en punts Didot a punt de Pica PS i comparem en base al llindar
+
+    aCoincidencies cmlt 6 string cvs known
+    {
+     true
+    }
+    {
+     false
+    }ifelse
+
+    cmlt 1 add /cmlt exch def
+   }
+   {  %% -precís: convertim els mm a punts Didot i desem només els que a la part decimal comencen amb 2 zeros
+    cmlt 1 .3759 div mul %% quin valor a punts dóna 2 zeros decimals?
+    100 mul cvi 32 string cvs dup length dup 1 eq
+    {
+     1 sub 1 getinterval cvx exec 0 eq
+    }
+    {
+     2 sub 2 getinterval cvx exec 0 eq
+    }ifelse
+    cmlt 1 add /cmlt exch def
+   }ifelse
+   /aVermell exch def  %% marcarem en vermell les coinncidències punts vs mm
+
+   0 mm moveto
+   aramm 5 eq
+   {
+    Ymig neg
+   }
+   {
+    aramm 0 eq
+    {
+     Ycm neg
+     gsave
+     0 0 0 setrgbcolor
+     2 copy 10 neg add moveto dFont 10 scalefont setfont icm 3 string cvs show
+     icm 1 add /icm exch def
+     grestore
+    }
+    {
+     Ymm neg
+    }ifelse
+   }ifelse
+   aVermell
+   {
+    1 0 0 setrgbcolor
+   }
+   {
+    0 0 0 setrgbcolor
+   }ifelse
+   lineto stroke
+  }for
+  10 mm 0 translate
+ }repeat
+ %% la darrera marca en cm
+ 0 0 moveto 0 Ycm neg
+ gsave
+ 0 0 0 setrgbcolor
+ 2 copy 10 neg add moveto dFont 10 scalefont setfont icm 3 string cvs show ( cm) show
+ grestore
+ lineto stroke
+ grestore
+
+
+% 1 1 1 setrgbcolor
+% Xibalet Ybalet
+%%EP ens cal poder perfilar només en blanc les peces les Mesures de Blanc a compondre vs omplir-les (primer de color i després amb la seva digitalització)
+ gsave
+ /araX 0 def
+ 0 setlinewidth
+ Xibalet Yibalet translate
+ LINPSnorm 2 get  %% mesura de línia
+ {  %% forall per totes les peces del &reng=
+  false  %% només perfilem?
+  {
+   gsave
+   1 1 1 setrgbcolor
+   1 get dup length
+   2 eq
+   {  %% duu cos i ample
+    0 exch 0 exch
+    araX 0 translate
+    cvx exec dup araX add /araX exch def
+    exch rectstroke
+   }
+   {  %% bomés duu ample
+    0 exch 0 exch
+    araX 0 translate
+    cvx exec dup araX add /araX exch def
+    facos rectstroke
+   }ifelse
+   grestore
+  }
+  {  %% perfilem i omplim!
+   gsave
+   dup 0 get /araColorMB exch def  %% ara és un color però podria ser la imatge de la peça
+   1 get dup length
+   2 eq
+   {  %% duu cos i ample
+    0 exch 0 exch
+    araX 0 translate
+    cvx exec dup araX add /araX exch def
+    exch 4 copy 
+    araColorMB cvx exec rectfill
+    1 1 1 setrgbcolor rectstroke
+   }
+   {  %% bomés duu ample
+    0 exch 0 exch
+    araX 0 translate
+    cvx exec dup araX add /araX exch def
+    facos 4 copy 
+    araColorMB cvx exec rectfill
+    1 1 1 setrgbcolor rectstroke
+   }ifelse
+   grestore
+  }ifelse
+ }forall
+ grestore
+
+ grestore
 
  showpage
-
 }ifelse
 
 
