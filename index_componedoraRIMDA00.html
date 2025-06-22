@@ -210,22 +210,22 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/interlinia</span><br>
 <span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. La barra <span style="color: #ff0000">/</span> de l'inici pot ometre's.</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/llengot</span><br>
 <span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. La barra <span style="color: #ff0000">/</span> de l'inici pot ometre's.</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/espai</span><br>
 <span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. La barra <span style="color: #ff0000">/</span> de l'inici pot ometre's.</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/imposicio</span><br>
 <span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
 <span style="color: #777777"><i>Ordre</i>: la seva posició dins la variable… <span style="color: #ff0000">reng</span> …determina l'ordre de les Mesures de Blanc que compondran la línia</span><br>
-<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: pot dur un o més espais en blanc, abans o després. La barra <span style="color: #ff0000">/</span> de l'inici pot ometre's.</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;parèntesi i valors a dins <span style="color: #ff0000">()</span><br>
 <span style="color: #777777"><i>Notació</i>: els parèntesi actuen com a contenidor de dades del cos i/o l'ample de cada peça de Mesures de Blanc. Al seu interior hi juguen valors numèrics amb unitats i ordres de rotació de la peça. Uns exemples significatius:<br>
@@ -271,10 +271,10 @@ Interlínies en vermell <span style="background-color: #ff0000">&nbsp;&nbsp;&nbs
 </span>
 <br>
 &nbsp;&nbsp;&nbsp;línia de composició<br>
-<span style="color: #777777">L'àrea rectangular de la componedora <span style="color: #ff0000">&cos=</span> x <span style="color: #ff0000">&mesura=</span> on hi haurien d'encaixar perfectament les diverses peces del <span style="color: #ff0000">&reng=</span> de Mesures de Blancs que es componguin, anirà acolorida en or vell <span style="background-color: #efb34a">&nbsp;&nbsp;&nbsp;&nbsp;</span> S'hi ajustarà per dalt una regla en cíceros/punts Didot i per baix una regla en cm/mm.</span>
+<span style="color: #777777">L'àrea rectangular de la componedora <span style="color: #ff0000">&cos=</span> x <span style="color: #ff0000">&mesura=</span> on hi haurien d'encaixar perfectament les diverses peces del <span style="color: #ff0000">&reng=</span> de Mesures de Blancs que es componguin, anirà acolorida en un to blat <span style="background-color: #efb34a">&nbsp;&nbsp;&nbsp;&nbsp;</span> S'hi ajustarà per dalt una regla en cíceros/punts Didot i per baix una regla en cm/mm.</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;regles<br>
-<span style="color: #777777">Dinàmicament es generaran unes regles (en cíceros/punts Didot i cm/mm) ajustades a l'ample de composició que s'hagi establert a la variable <span style="color: #ff0000">&mesura=</span></span>
+<span style="color: #777777">Dinàmicament es generaran unes regles (en cíceros/punts Didot i cm/mm) ajustades a l'ample de composició que s'hagi establert a la variable <span style="color: #ff0000">&mesura=</span> de manera que s'ajustaran fins la unitat més propera (cícero/centímetre).<br>Ambdues regles duen en vermell les unitats on hi ha concordança, entre punts i mm, en base a un <i>llindar</i> de precisió interna que treballa segons la concordança mestre: 48 punts Didot = 18 mm.</span>
 <br>
 
 <br>
@@ -290,12 +290,13 @@ La componedoraRIMDA00 treballa amb un navegador d'Internet i facilita una mínim
 &nbsp;&nbsp;&nbsp;<i>Toleràncies d'amidament</i><br>
 En determinats casos quan els resultats d'amidament s'acosten molt a zero (en nombres molt petits amb molts decimals) l'intèrpret fa servir la notació científica de… -6.10352e-05 …que en aquest cas equival a… 0.0000610352<br>
 &nbsp;&nbsp;&nbsp;<i>Toleràncies de sintaxi</i><br>
-(…per completar…)
+Dins la URL podem escriure els noms de les peces de Mesures de Blancs sense la barra <span style="color: #ff0000">/</span> de l'inici (…per completar…)
 </span>
 <br><br>
 &nbsp;&nbsp;&nbsp;missatges per pantalla i errors<br>
 <span style="color: #777777">En condicions normals, a l'executar la URL el navegador generarà sempre un missatge amb un seguit d'anotacions (prompt) interpretant el resultat de la línia de la comanda escrita.<br>
 Al cap de diverses execucions és possible que el navegador, dins el mateix missatge, ens previngui dient una cosa semblant a… <i>No permetis que ub.edu/tallerdetipografia m'ho torni a demanar</i> …podem continuar sense clicar l'opció de fer-li cas.<br>
+Si no necessitem generar el PDF (p.e. perquè hi tenim errors), podem ometre prémer un dels dos botons del missatge de pantalla i ajustar de nou els paràmetres de la URL per generar una nova execució (prement entrada si tenim el cursor dins la URL o amb el botó de recarregar la pàgina del navegador).<br>
 Si no hi han hagut errors (els propis de la feina de compondre tipus) ens ho dirà i podrem accedir (o no) al resultat en PDF. Si hi han hagut errors, ens els detallarà i podrem accedir (o no) a la seva transcripció en PDF.<br>
 Els errors aliens al fet de compondre la línia de Mesures de Blancs, poden ser:<br>
 &nbsp;&nbsp;&nbsp;<i>Errors de PostScript</i><br>
@@ -313,7 +314,7 @@ Els amidaments fets sobre la pantalla del PDF (…per completar…)<br>
 Els valors d'amidament expressats numèricament (…per completar…)</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;anotacions<br>
-<span style="color: #777777">Farem servir les anomendes anotacions de PDF per donar informació addicional (…per completar…)</span>
+<span style="color: #777777">Fem servir les anomenades anotacions de PDF per informar (per pantalla passant-hi el cursor per sobre) del nom i mesura de cada peça que s'ha compost.</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;capes<br>
 <span style="color: #777777">Farem servir les capes de PDF per aïllar visualment o a l'hora d'imprimir, determinats elements del resultat gràfic (…per completar…)</span>
