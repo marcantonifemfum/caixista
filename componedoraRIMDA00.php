@@ -34,6 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
  putenv('reng=');  // M2
  putenv('cos=');  // M3
 
+ putenv('nu=');  // de si només perfilem les peces o mostrem ple (color o imatge) el seu interior
+
  //SNRD inicialitzem la galeta/variable de l'hora del client
  putenv('MRCT_qhe=');
  
@@ -50,6 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
 
  $cos=$_GET['cos'];  // M3
  //echo($cos.'<br>');
+
+ $nu=$_GET['nu'];  // de si només perfilem les peces o mostrem ple (color o imatge) el seu interior
+ //echo($nu.'<br>');
 
 }
 else
@@ -81,6 +86,8 @@ putenv("MRCT_PDFunic=$PDFunic");  // desem el numèric únic a la variable d'ent
 putenv("MRCT_mesura=$mesura");  // paràmetre de la llargada de línia (reng) al motlle de composició
 putenv("MRCT_reng=$reng");  // noms i valors de cadascuna de les Mesures de Blancs amb les que componem el reng d'esquerra a dreta
 putenv("MRCT_cos=$cos");  // cos fix per a tot el reng
+
+putenv("MRCT_nu=$nu");  // de si només perfilem les peces o mostrem ple (color o imatge) el seu interior
 
 // crida a partir de la versió GS 9.55 al localhost del MacBookAir
 //$command = $somaGS . "gs -q -dNOSAFER -o '" . $pdfFile . "' -dALLOWPSTRANSPARENCY -sDEVICE=pdfwrite -dAutoRotatePages=/None -dNEWPDF=false  -f '" . $PSapplet . "'";

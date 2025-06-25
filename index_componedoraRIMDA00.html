@@ -149,13 +149,18 @@ Cadascuna de les peces de Mesures de Blancs té un nom propi (notació en vermel
 Són 3 les variables (notació en vermell) que, de moment, configuren la composició de Mesures de Blancs en una sola línia. A l'apartat de SINTAXI se'n concreta el comportament. Aquí es descriuen breument:<br><br>
 
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">mesura</span><br>
-<span style="color: #777777">És el valor únic de la llargada de línia que es vol compondre, segons les unitats que haguem triat. És un valor absolut que hauria de coincidir amb la suma de valors d'ample de cadascuna de les peces crites a la variable <i>reng</i>.</span>
+<span style="color: #777777">És el valor únic de la llargada de línia que es vol compondre, segons les unitats que haguem triat. És un valor absolut que hauria de coincidir amb la suma de valors d'ample de cadascuna de les peces escrites a la variable <i>reng</i>.</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">cos</span><br>
 <span style="color: #777777">És un valor únic del cos per totes les peces que configuren el <i>reng</i> a compondre.</span>
 <br><br>
 &nbsp;&nbsp;&nbsp;<span style="color: #ff0000">reng</span><br>
 <span style="color: #777777">Diversos valors descriuen les peces de Mesures de Blancs que formen la línia a compondre. La suma de valors d'ample de cadascuna de les peces hauria de coincidir amb el valor de la variable <i>mesura</i>.</span>
+<br><br>
+De moment, hi ha una sola variable en relació a l'aspecte gràfic del PDF resultant:
+<br>
+&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">nu</span><br>
+<span style="color: #777777">Pot només mostrar el perfil de les peces de la variable <i>reng</i>.</span>
 <br>
 
 <br>
@@ -206,6 +211,12 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 <span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
 <span style="color: #777777"><i>Toleràncies</i>: es pot ignorar el… <span style="color: #ff0000">&</span> …que el precedeix, sempre que sigui la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
 <span style="color: #777777"><i>Errors</i>: si s'ignora produeix un error de sintaxi de la variable</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;variable <span style="color: #ff0000">nu</span><br>
+<span style="color: #777777"><i>Notació</i>: s'ha d'escriure exactament precedida d'un… <span style="color: #ff0000">&</span> …i seguida, sense espais, d'un… <span style="color: #ff0000">=</span> …amb un valor… <i>true</i> (només perfilarà les peces del reng sense mostrar el color del seu interior) …o… <i>false</i> (mostrarà el color interior de les peces del reng, farà el mateix efecte si ometem d'escriure-la dins la URL)</span><br>
+<span style="color: #777777"><i>Ordre</i>: pot escriure's en qualsevol posició dins la URL</span><br>
+<span style="color: #777777"><i>Toleràncies</i>: per tractar-se d'una variable que només afecta a l'aspecte gràfic, podem ometre-la. Es pot ignorar el… <span style="color: #ff0000">&</span> …que el precedeix, sempre que sigui la primera variable que va després del… <span style="color: #ff0000">?</span></span><br>
+<span style="color: #777777"><i>Errors</i>: true o false s'escriuen sempre en caixa baixa. Qualsevol altre valor produirà un error de PostScript</span><br>
 <br>
 &nbsp;&nbsp;&nbsp;peça <span style="color: #ff0000">/interlinia</span><br>
 <span style="color: #777777"><i>Notació</i>: el nom de la peça de blanc s'ha d'escriure exactament precedint el seu valor… <span style="color: #ff0000">()</span></span><br>
@@ -259,6 +270,10 @@ Descriurem la sintaxi de cadascun dels elements que formen part de la URL (adre�
 &nbsp;&nbsp;&nbsp;format de pàgina<br>
 <span style="color: #777777">L'encaix del resultat en PDF de la componedora serà en un format DIN a partir de l'A4, sigui horitzontal o vertical, per facilitar la seva reproducció a mida real i la impressió en paper en impressores estàndard.</span>
 <br><br>
+&nbsp;&nbsp;&nbsp;perfils de les Mesures de Blancs<br>
+<span style="color: #777777">Les diverses Mesures de Blancs sempre aniran perfilades amb un filet blanc que té un gruix simbòlic de 0 punts, cosa que farà que visualment aparegui sempre amb un gruix mínim, sigui per pantalla (segons el zoom) o imprès.<br>
+</span>
+<br>
 &nbsp;&nbsp;&nbsp;colors de les Mesures de Blancs<br>
 <span style="color: #777777">El codi de colors per representar les diverses Mesures de Blancs és:<br>
 Imposicions en gris &nbsp;&nbsp;&nbsp;<span style="background-color: #777777">&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
@@ -326,23 +341,29 @@ Els valors d'amidament expressats numèricament (…per completar…)</span>
 <br>
 <h3>EXEMPLES</h3>
 
-&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA, amb tot el repertori de toleràncies permeses en la notació de variables i valors (espais, majúscules, absència d'unitats, caràcters estranys a ignorar)<br>
-<a href="" target="_blank">(…per completar…)</a>
+&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA, amb tot el repertori de Mesures de Blancs i de toleràncies permeses en la notació de variables i valors (espais, majúscules, absència d'unitats, etc.)<br>
+<a href="https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php? cos= 6c &mesura= 775 P &   reng=  /espai ( 48 p  72  G )   /interlinia (1 6 c G) /llengot ( 6  6 C g ) /imposicio( 60 c )" target="_blank">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php? cos=6c &mesura=775P &   reng=  /espai ( 48 p 72  G )   /interlinia (1 6 c G) /llengot ( 6  6 C g ) /imposicio( 60 c )</a>
 <br><br>
 &nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA, ídem a l'anterior, optimitzant al màxim espais i notació<br>
-<a href="" target="_blank">(…per completar…)</a>
+<a href="https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6c&mesura=775&reng=/espai(48 72g)/interlinia(1 6cg)/llengot(6 6cg)/imposicio(60c)" target="_blank">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6c&mesura=775&reng=/espai(48 72g)/interlinia(1 6cg)/llengot(6 6cg)/imposicio(60c)</a>
 <br><br>
-&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però IMPRECISA, per superar a<br>
-<a href="" target="_blank">(…per completar…)</a>
+&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però IMPRECISA, per superar el valor de l'ample determinat per la variable &mesura= la suma de peces compostes al &reng=…<br>
+<a href="https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=1c&reng=/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)" target="_blank">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=1c&reng=/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)</a>
 <br><br>
-&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però IMPRECISA, per quedar-se curta la<br>
-<a href="" target="_blank">(…per completar…)</a>
+&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però IMPRECISA, per quedar-se curta la línia de peces compostes al &reng= i no arribar a l'ample determinat per la variable &mesura=…<br>
+<a href="https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=73P&reng=/imposicio(6c96pG)" target="_blank">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=73P&reng=/imposicio(6c96pG)</a>
 <br><br>
-&nbsp;&nbsp;&nbsp;Adreça URL ERRÒNIA, per errors de sintaxi a<br>
-<a href="" target="_blank">(…per completar…)</a>
+&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però IMPRECISA, per fer ús d'una peça de Mesures de Blancs d'un cos que no existeix dins les taules…<br>
+<a href="https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&reng=/imposicio%20(61c%20)%20&cos=61c&mesura=300" target="_blank">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&reng=/imposicio (61c) &cos=61c&mesura=300</a>
 <br><br>
-&nbsp;&nbsp;&nbsp;Adreça URL ERRÒNIA, per errors de sintaxi a<br>
-<a href="" target="_blank">(…per completar…)</a>
+&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però IMPRECISA, per fer ús d'una peça de Mesures de Blancs d'un ample que no existeix dins les taules…<br>
+<a href="https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/imposicio(36 72)" target="_blank">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/imposicio(36 72)</a>
+<br><br>
+&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però amb un ERROR DE SINTAXI, en una peça de Mesures de Blancs…<br>
+<a href="https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/iMposicio(36%2072)" target="_blank">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/iMposicio(36%2072)</a>
+<br><br>
+&nbsp;&nbsp;&nbsp;Adreça URL VÀLIDA però amb un ERROR DE SINTAXI, en una peça de Mesures de Blancs…<br>
+<a href="https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/espai(36)72" target="_blank">https://www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/espai(36)72</a>
 <br><br>
 </article>
 </body>

@@ -1,23 +1,17 @@
 %!
 %% cridat per componedoraRIMDA00.php
 
-%% URLs amb errors:
-%% massa valors
-%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13c8p&cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)
-%%EPS aquí un error PS que cal veure si interessa resoldre o conservar
-%% Error: /typecheck in --div--
-%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13c&cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)
+%% URLs amb errors NOUS?
 
 %% URLs bones per implicar almenys 1 element de cadascuna de les 4 taules de blancs:
 %% es compon en un A4 vertical
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=72&mesura=151p&reng=/espai(36 72 g)/interlinia(1p6C g)/llengot(18P6Cg)/imposicio (8c)
 %% es compon en un A3 horitzontal
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=6c&mesura=775P&reng=/espai(48p72PG)/interlinia(1 6cG)/llengot(6p 6Cg)/imposicio(60c)
-%% EN 3 peces es veu millor si la caguem amb el rectangle del Widget
-%% localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=8P&reng=/interlinia(1 6cG)/llengot(6p 6Cg)/interlinia(1 6cG)
-%% exemple bo
-%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=21P&reng=/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)
-%%EPS una peça sense la barra dóna un error PS de undefined
+%% només 3 peces primes i curtes
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=8P&reng=/interlinia(1 6cG)/llengot(6p 6Cg)/interlinia(1 6cG)
+%% exemple bo encara que s'ometi la / a les peces del reng
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=21P&reng= interlinia(1%206cG) llengot(6p%206Cg) interlinia(1%206cG) llengot(6p%206Cg) interlinia(1%206cG) llengot(6p%206Cg)
 
 %% apunts de l'Enric Tormo:
 %% 1 Pica aglesa (no la PS ianqui), o sigui un cícero amglès, equival exactament a 11 punts Didot
@@ -39,7 +33,28 @@
 }ifelse
 
 %% capturem les variables d'entorn provinents de componedoraRIMDA00.php 
-(MRCT_cos)  getenv  %% la variable d'entorn existeix?
+
+(MRCT_nu) getenv  %% la variable d'entorn existeix?  de si només perfilem les peces o mostrem ple (color o imatge) el seu interior
+{  %% existeix perquè l'hem inicialitzat via php i hauria de dur una string amb valors
+  dup length 0 eq
+ {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a cos=
+    %% no cal gestionar cap error perquè no afecta a la sintaxi
+  pop 
+  /nua false def
+%cosNOEXISTEIXoesBUIDA!
+ }
+ {  %% té dades perquè l'executem via php mètode $_POST o via URL php amb paràmetres mètode $_GET
+  cvx exec  %% és una string que hauríem d'avaluar si el que duu és correcte per un segon nivell d'error de sintaxi?
+  /nua exch def
+%cosAVEUREQUEDUUS?
+ }ifelse
+}
+{  %% NO existeix perquè estem executant l'applet en local via Terminal per línia de comanda
+%cosVIAterminal!
+  /nua true def
+}ifelse
+
+(MRCT_cos) getenv  %% la variable d'entorn existeix?
 {  %% existeix perquè l'hem inicialitzat via php i hauria de dur una string amb valors
   dup length 0 eq
  {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a cos=
@@ -60,7 +75,7 @@
  /HIHAcos true def
 }ifelse
 
-(MRCT_mesura)  getenv  %% la variable d'entorn existeix?
+(MRCT_mesura) getenv  %% la variable d'entorn existeix?
 {  %% existeix perquè l'hem inicialitzat via php i hauria de dur una string amb valors
  dup length 0 eq
  {  %% arriba buida perquè l'executem amb el php sense paràmetres, o no l'hem escrit, o no l'hem escrit bé, o no hem escrit el =, o no hem escrit el = enganxat a mesura=
@@ -226,18 +241,6 @@ HIHAcos HIHAmesura HIHAreng and and
   >>
  }bind def
 
-%%TANT cos COM mesura HAURIEN DE FILTRAR-SE AMB L'ALGORISME QUE DÓNA COM A RESULTAT hies DONCS PODEN DUR UNITATS I CARÀCTERS ERRONIS I MÉS ENDAVANT D'ALTRES VALORS
-%%EPS
-%% Si hi ha 2 unitats diferents per descuït a &mesura= genera un error PS (en fem un prompt JS?)
-%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=6cp&reng=/imposicio(6c96pG)
-%% (6) Error: /stackunderflow in --copy-- Operand stack: 0 2
-%%EPS
-%% Què passa si posem valors en negatiu a les variables?
-%%EPS
-%% aquesta URL hauria de donar també error perquè té les unitats repetides i no ho fa?
-%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=138p&cos=6&reng=/llengot%20(6cc)
-%% amb una repetició de p a &cos= el JS es queda en blanc:
-%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=138&cos=6pp&reng=/llengot%20(6c)
 
  %% filtrem els errors de sintaxi del valor de cos
  HIHAcos
@@ -268,6 +271,7 @@ HIHAcos HIHAmesura HIHAreng and and
    {
 %%S'ESDEVÉ si repetim més d'1 caràcter d'unitats… c p …o gir… g
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=12pp%20&mesura=300%20&reng=/interlinia(%20%20%20)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=6cp&reng=/imposicio(6c96pG)
     fotli (\\n\\n[#02] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
     fotli (>> hi heu introduït massa valors)writestring
     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
@@ -293,7 +297,7 @@ HIHAcos HIHAmesura HIHAreng and and
 %%S'ESDEVÉ si escrivim un caràcter g en comptes d'una unitat c p
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13g8p&cos=6g&reng=/llengot%20(6c)/espai(1/4)/espai(1/4)/espai(1/3)%20/espai(1/2)%20/espai(12%201/2%20g)%20/llengot(5g)%20/espai(18)
 %% (3) (6) Error: /stackunderflow in --copy-- Operand stack: 0 2
-       fotli (\\n\\n[#03] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
+       fotli (\\n\\n[#http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=12pp%20&mesura=300%20&reng=/interlinia(%20%20%20)03] ERROR DE SINTAXI AL VALOR DE LA VARIABLE &cos=\\n\\n)writestring
        fotli (>> el segon valor no és cap unitat)writestring
        /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
 %%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
@@ -352,6 +356,8 @@ HIHAcos HIHAmesura HIHAreng and and
    3 ge
    {
 %%S'ESDEVÉ si s'han introduï 3 o més enters, complint-se el què diu el missatge, vegeu l'exemple
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=6cp&reng=/imposicio(6c96pG)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13c8p&cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=72&mesura=300 1 1 &reng=/interlinia(3 72 g)
 %% (6) Error: /stackunderflow in --copy-- Operand stack: 0 2
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13g8p&cos=6g&reng=/llengot%20(6c)/espai(1/4)/espai(1/4)/espai(1/3)%20/espai(1/2)%20/espai(12%201/2%20g)%20/llengot(5g)%20/espai(18)
@@ -800,9 +806,8 @@ HIHAcos HIHAmesura HIHAreng and and
         {  %% si no coincideix
 %%S'ESDEVÉ com descriu el missatge d'error i la URL d'exemple
 %%http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/imposicio(36c%2072)
-%%EPS en una repetició d'unitats d'una peça del &reng= a la G dóna error se sintaxi:
-%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96&mesura=6&reng=/imposicio(6c96pGg)
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96&mesura=6&reng=/imposicio(6c96ppg)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96&mesura=6&reng=/imposicio(6c96pGg)
          fotli (\\n\\n[#14] ERROR EN EL VALOR D\\'UNA PEÇA A LA VARIABLE &reng=\\n\\n)writestring
          fotli (>> el valor de la variable &cos= )writestring
          fotli cosVAL writestring
@@ -815,7 +820,7 @@ HIHAcos HIHAmesura HIHAreng and and
           fotli ( ) writestring
          }forall
          fotli (])writestring
-         fotli ( …de la variable &reng=)writestring
+         fotli ( …de la variable &reng=\\n\\n)writestring
          /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
 %%NO hi pot haver cap flux d'elements a l'stack fora dels que s'escriuen a tOU, doncs sinó ens fa petar el prompt de JS!
 %(14)==  %% marquem on activem els gatells d'error per pentinar
@@ -850,6 +855,7 @@ HIHAcos HIHAmesura HIHAreng and and
    {
 %%S'ESDEVÉ si hi ha algun dels errors de sintaxi descrits al missatge o a l'exemple
 %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=36&mesura=300&reng=/espai(6c C)
+%% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?mesura=13c&cos=6&reng=/llengot (6c)/espai(1/4)/espai(1/4)/espai(1/3) /espai(1/2) /espai(12 1/2 g) /llengot(5c) /espai(18)
     fotli (\\n\\n[#17] ERROR DE SINTAXI EN ALGUN DELS VALORS DE LA VARIABLE &reng=\\n\\n)writestring
     fotli (>> hi ha algun nom d\\'alguna peça de Mesures de Blancs sense el… / …o algun dels seus valors no duu correctament els parèntesi… \(\) …o hi ha caràcters estranys i/o repetits a la sintaxi d\\'aquesta variable)writestring
     /hihaERROR true def  %% NO generarem el PDF gràfic amb el reng (però pot ser en farem un anotant els errors)
@@ -1070,6 +1076,7 @@ HIHAcos HIHAmesura HIHAreng and and
     %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=774P&reng=/espai(48p72PG)/interlinia(1%206cG)/llengot(6p%206Cg)/imposicio(60c)
     %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?&cos=6c&mesura=1c&reng=/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)/interlinia(1%206cG)/llengot(6p%206Cg)
     %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=69P&reng=/imposicio(6c96pG)
+    %% http://localhost/www.ub.edu/tallerdetipografia/caixista/componedoraRIMDA00.php?cos=96p&mesura=6cp&reng=/imposicio(6c96pG)
 
     fotli ([#19] LA COMPOSICIÓ DE PECES DEL &reng= SUPERA L\\'AMPLE DE LA VARIABLE &mesura=\\n\\n)writestring
 
@@ -1552,8 +1559,8 @@ hihaERROR
 
  true  %% quin mètode de comparació fem servir? (puntsPS vs mm)
  /mtdC exch def
- %%+ llindar en punts de Pica PS per sobre del qual (en valor absolut) desestimarem la coincidència d'unitats
- /llindarIDEM .13 def  %% segons l'Enric Tormo: 48 punts Didot = 18 mm = concordança mestre, només quadra quan posem un llindar a partir del .13
+%%+ llindar en punts de Pica PS per sobre del qual (en valor absolut) desestimarem la concordança d'unitats
+ /llindarIDEM .13 def  %% segons l'Enric Tormo: 48 punts Didot = 18 mm = concordança mestre, només quadra quan posem un llindar a partir de 0.13
 
  %% marquem en vermell les coincidències més acostades entre punts vs mm i mm vs punts
  %% de manera que comprovant aquests valors veiem que en punts de Pica PS (la unitat nadiua del PDF) les coincidències són al primer decimal:
@@ -1752,8 +1759,8 @@ hihaERROR
  /ipesa 0 def  %% aquest índex ara serveix per a extraure les dades de cada peça del &reng= i enumerar-les a /T
  /araXanot 0 def  %% suma progressiva de les X per situar el Widget
  {  %% forall per totes les peces del &reng=
-%%EPS aquest paràmetre podríem incloure'l dins una variable URL
-  false  %% només perfilem?
+%%EPS ja hem inclòs aquest paràmetre dins una variable URL
+  nua  %% ve, si existeix, de la variable &nua= i si val true només perfilem
   {
    gsave
    1 1 1 setrgbcolor
