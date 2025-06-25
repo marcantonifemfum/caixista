@@ -1,10 +1,4 @@
 <?php
-// fa que ens entengui Unicode?
-echo '
-<link rel="icon" href="http://www.ub.edu/web/system/modules/edu.ub.presentation/resources/img/favicon.png" type="image/x-icon" />
-<meta http-equiv="content-language" content="ca" />
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-';
 
 // creem una galeta JS de l'hora del client
 echo "<script>var _quinHoraEs = new Date().toLocaleTimeString();setCookie('quinHoraEs', _quinHoraEs, 1);</script>";
@@ -73,28 +67,17 @@ else
 //@RIMDAUB
 //amb l'hora del servidor en prou com a nom únic?
 $PDFunic = date("d"."B"."H"."i"."s");
-
 // EP! aquí cal veure si al servidor UB podem posar-hi o no les 3 www al davant
-//$baseURL = "http://localhost/www.ub.edu/tallerdetipografia/caixista/";  // localhost de Tuxedo
-$baseURL = "https://www.ub.edu/tallerdetipografia/caixista/";  // servidor UB
-
+$baseURL = "http://localhost/www.ub.edu/tallerdetipografia/caixista/";  // localhost de Tuxedo
 // adreça absoluta al directori dels PDFs resultants
-//$somaPDF = "/var/www/html/www.ub.edu/tallerdetipografia/caixista/pdfs/";  // localhost Tuxedo
-$somaPDF = "/wub/tallerdetipografia/caixista/pdfs/";  // servidor UB
-
-//$somaGS = "/usr/bin/";  // path a l'executable de Ghostscript al localhost de Tuxedo
-$somaGS = "/usr/local/bin/";  // path a l'executable de Ghostscript al servidor de la UB
-
-//$baseurlPDF = "http://localhost/www.ub.edu/tallerdetipografia/caixista/pdfs/";  // base url al pdf al localhost de Tuxedo
-$baseurlPDF = "https://www.ub.edu/tallerdetipografia/caixista/pdfs/";  // base url al pdf del servidor de la UB
-
+$somaPDF = "/var/www/html/www.ub.edu/tallerdetipografia/caixista/pdfs/";  // localhost Tuxedo
+$somaGS = "/usr/bin/";  // path a l'executable de Ghostscript al localhost de Tuxedo
+$baseurlPDF = "http://localhost/www.ub.edu/tallerdetipografia/caixista/pdfs/";  // base url al pdf al localhost de Tuxedo
 $PSapplet = $somaPS . "tallerdetipografia_componedoraRIMDA00.ps";
 
 // i la cridarem després de l'execució
 $pdfnomes = $PDFunic . "_tallerVirtualDeTipografia_componedoraRIMDA00.pdf";
-
-//$pdfFile = $somaPDF . $pdfnomes;  // al localhost del Tuxedo podem treballar amb l'adreça absoluta
-$pdfFile = "pdfs/" . $pdfnomes;  // al servidor de la UB em de treballar obligatòriament amb adreces relatives!
+$pdfFile = $somaPDF . $pdfnomes;
 
 
 //@EP aquí desem $PDFunic com a variable d'entorn per tal de capturar-la, si calgués, p.e. per desar-hi un HTML amb les dades de composició
@@ -250,7 +233,7 @@ echo "<script>if (window.confirm('" . $pr0mpt . "')) {window.location.href='$bas
   echo "<center><span style='color:#ff0000;font-family:monospace;font-size:24px'><br><br>&gt;&gt;&gt; ERROR d'execuci&oacute; de l'algorisme &lt;&lt;&lt;</span>";
   echo "<br><br><span style='color:#999999;font-family:monospace;font-size:24px'>".$prompt." + ".$ElQtorna."<br></span>";
 //@RIMDAUB localhost
-  exit("<br><p><br><p><span style='color:#ff0000;font-family:monospace;font-size:24px'><a style='color:#ff0000;font-family:monospace;font-size:24px' href='mailto:marcantoni.malagarriga.picas@ub.edu'>podeu documentar-nos l'error via email? (<i>copieu i enganxeu el text en gris i la URL en groc</i>) gr&agrave;cies!</a><br><br><a style='color:#0000ff;font-family:monospace;font-size:18px' href='$baseURL'>Podeu tornar a la p&agrave;gina d'inici o esmenar l'error de la URL corregint la l&iacute;nia que heu executat...</a></span><br><pre style='color:#ff0000;font-family:monospace;font-size:16px;background-color:#ffffbb'>http:$urlplana</pre><br><br><br></center>");
+  exit("<br><p><br><p><span style='color:#ff0000;font-family:monospace;font-size:24px'><a style='color:#ff0000;font-family:monospace;font-size:24px' href='mailto:marcantoni.malagarriga.picas@ub.edu'>podeu documentar-nos l'error via email? (<i>copieu i enganxeu el text en gris i la URL en groc</i>) gr&agrave;cies!</a><br><br><a style='color:#0000ff;font-family:monospace;font-size:18px' href='$baseURL'>Podeu tornar a la pàgina d'inici o esmenar l'error de la URL corregint la línia que heu executat...</a></span><br><pre style='color:#ff0000;font-family:monospace;font-size:16px;background-color:#ffffbb'>http:$urlplana</pre><br><br><br></center>");
  }
 
  echo "</body></html>";

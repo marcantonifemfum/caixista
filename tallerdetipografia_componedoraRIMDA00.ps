@@ -1238,7 +1238,8 @@ hihaERROR
  842 margeS 2 mul sub  %% A4 horitzontal
  /Xpossible exch def
 
- (/usr/share/fonts/truetype/hack/Hack-Regular.ttf)
+ %(/usr/share/fonts/truetype/hack/Hack-Regular.ttf)  %% localhost Tuxedo
+ (Hack-Regular.ttf)  %% servidor UB / localhost Tuxedo
  findfont
  dup length dict begin
  {
@@ -1396,7 +1397,8 @@ hihaERROR
    /HWResolution [4000 4000]
  >> setpagedevice
 
- (/usr/share/fonts/truetype/hack/Hack-Regular.ttf)
+ %%(/usr/share/fonts/truetype/hack/Hack-Regular.ttf)
+ (Hack-Regular.ttf)  %% servidor UB / localhost Tuxedo
  findfont
  dup length dict begin
  {
@@ -1521,7 +1523,8 @@ hihaERROR
  /mm {2.83464575 mul}bind def
 
 %%+ tipus
- (/usr/share/fonts/truetype/ubuntu/Ubuntu-C.ttf)
+ %% (/usr/share/fonts/truetype/ubuntu/Ubuntu-C.ttf)
+ (Ubuntu-C.ttf)  %% servidor UB / localhost Tuxedo
  findfont
  %% codifiquem pels accents catalans i els possibles glifs alternatius
  dup length dict begin
